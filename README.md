@@ -24,3 +24,8 @@ Notes:
 
 * we recommend to deploy the app in a fresh metaphactory installation
 * please make sure to use a compatible app version (e.g. Wikidata 3.5 for metaphactory 3.5.x)
+
+
+## Building the app artifact
+
+Using the provided `build.sh` script it is possible to (re)-build the Wikidata app artifact (e.g. when you did local modifications). The artifact can then be deployed on the target system as described above.
