@@ -1,0 +1,62 @@
+<style>
+    .page {
+     padding-top: 0px;
+  }
+</style>
+
+[[#> app:FeatureDemonstration title="Timeline of Space Probes"]]
+  [[#*inline "motivation"]]
+<p> A timeline is a chart that depicts how a set of resources are used over time. </p> 
+    
+  [[/inline]]
+[[#*inline "solution"]]
+    <p> In this example, the idea is to represent Space Probes along a scrollable horizontal timeline. </p>
+  [[/inline]]
+  [[#*inline "configuration"]]
+
+<div class="page">
+  <div class='page__body'>
+
+    <semantic-timeline query='PREFIX bd: <http://www.bigdata.com/rdf#>
+      SELECT ?item ?itemLabel ?start ?end (SAMPLE(?image) AS ?image)
+      WHERE
+      {
+        ?item wdt:P31 wd:Q26529 .
+          ?item wdt:P619 ?start .
+        ?item wdt:P621  ?end.
+        ?item rdfs:label ?itemLabel .
+        FILTER (lang(?itemLabel)="en")
+        #SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en" }
+          OPTIONAL { ?item wdt:P18 ?image }
+      }
+      GROUP BY ?item ?itemLabel ?start ?end' 
+		tuple-template="{{> template}}" 
+    tuple-template-height='100'
+    default-item-options='{"type":"point"}'>
+            <template id="template">
+              <div>
+                <b>{{itemLabel.value}}</b>
+                 <div>{{dateTimeFormat start.value "YYYY/MM/DD"}}</div>
+                <mp-resource-thumbnail style="max-width: 100px; max-height: 50px;" iri='{{item.value}}'></mp-resource-thumbnail>
+                
+               
+              </div>
+            </template>
+    </semantic-timeline>
+  </div>
+</div>
+
+[[/inline]]
+	[[#*inline "description"]]
+		<p>Configuration description</p>
+		<p><semantic-link iri="[[resolvePrefix "Help:SemanticTimeline"]]">Learn More</semantic-link></p>
+	[[/inline]]
+  [[#*inline "features"]]
+    <semantic-link iri='app:Start'>Timeline Visualization</semantic-link>
+  [[/inline]]
+  [[#*inline "demo"]]
+    <div style='height: 500px'> 
+        [[> configuration]]
+    </div>
+  [[/inline]]
+[[/app:FeatureDemonstration]]

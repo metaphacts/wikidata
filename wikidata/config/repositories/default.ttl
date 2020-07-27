@@ -1,0 +1,19 @@
+@prefix lookup: <http://www.metaphacts.com/ontologies/platform/repository/lookup#> .
+@prefix mph: <http://www.metaphacts.com/ontologies/platform/repository#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix rep: <http://www.openrdf.org/config/repository#> .
+@prefix sparql: <http://www.openrdf.org/config/repository/sparql#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+[] a rep:Repository;
+  lookup:configuration [
+      lookup:targetRepository "wikidata";
+      lookup:type "metaphacts:wikidataLookup"
+    ];
+  rep:repositoryID "default";
+  rep:repositoryImpl [
+      mph:quadMode true;
+      rep:repositoryType "metaphactory:SPARQLRepository";
+      sparql:query-endpoint <https://wikidata.metaphacts.com/bigdata/sparql>
+    ];
+  rdfs:label "SPARQL repository" .

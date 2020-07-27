@@ -1,0 +1,63 @@
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX sp: <http://spinrdf.org/sp#>
+PREFIX spin: <http://spinrdf.org/spin#>
+PREFIX spl: <http://spinrdf.org/spl#>
+PREFIX word2vec: <http://www.metaphacts.com/ontologies/word2vec#>
+PREFIX geo: <http://www.opengis.net/ont/geosparql#>
+PREFIX ephedra: <http://www.metaphacts.com/ontologies/platform/ephedra#>
+PREFIX : <http://www.metaphacts.com/ontologies/platform/service/custom#>
+
+ephedra:most-similar a ephedra:Service ;
+<http://www.openrdf.org/config/sail#sailType> "metaphacts:RESTService" ;
+<http://www.w3.org/2000/01/rdf-schema#label> "A wrapper for a REST API." ;
+ephedra:hasSPARQLPattern (
+  [
+    sp:subject :_results ;
+    sp:predicate word2vec:search ;
+    sp:object :_search
+  ]
+
+  [
+    sp:subject :_result ;
+    sp:predicate word2vec:item ;
+    sp:object :_item
+  ]
+  [
+    sp:subject :_result ;
+    sp:predicate word2vec:similarity ;
+    sp:object :_similarity
+  ]
+) ;
+
+spin:constraint
+[
+  a spl:Argument ;
+    rdfs:comment "search" ;
+    spl:predicate :_search ;
+    spl:valueType xsd:string
+] ;
+
+spin:column
+[
+  a spin:Column ;
+    rdfs:comment "result" ;
+    spl:predicate :_results ;
+    spl:valueType rdfs:Resource;
+    ephedra:jsonPath "$.most_similar[*]"
+] ;
+spin:column
+[
+  a spin:Column ;
+    rdfs:comment "item" ;
+    spl:predicate :_item ;
+    spl:valueType xsd:string;
+    ephedra:jsonPath "$.item"
+] ;
+spin:column
+[
+  a spin:Column ;
+    rdfs:comment "similarity" ;
+    spl:predicate :_similarity ;
+    spl:valueType xsd:decimal;
+    ephedra:jsonPath "$.similarity"
+] .

@@ -1,0 +1,22 @@
+<mp-code-example>
+<![CDATA[
+<semantic-map query='
+PREFIX osm: <http://www.metaphacts.com/ontologies/osm#>
+PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+PREFIX wd: <http://www.wikidata.org/entity/>
+
+SELECT (?feature as ?link) ?lat ?lng ?description WHERE {
+?s wdt:P206 wd:Q584; wdt:P1566 ?geonamesID
+  BIND(uri(concat("http://sws.geonames.org/",?geonamesID,"/")) as ?geonames)
+  SERVICE <https://geonames.metaphacts.com/blazegraph/sparql> {
+  ?feature <http://www.geonames.org/ontology#parentFeature> ?geonames .
+  ?feature <http://www.geonames.org/ontology#featureCode> <http://www.geonames.org/ontology#S.HTL> .
+  ?feature <http://www.w3.org/2003/01/geo/wgs84_pos#lat> ?lat .
+  ?feature <http://www.w3.org/2003/01/geo/wgs84_pos#long> ?lng .
+  ?feature <http://www.geonames.org/ontology#name> ?description
+  }
+}
+  '>
+  </semantic-map>
+]]>
+</mp-code-example>

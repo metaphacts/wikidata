@@ -1,0 +1,171 @@
+<style>
+  .semantic-form-input-decorator {
+  width: 40%;
+  }
+  
+  .Select-control {
+  	width: 400px;
+  }
+  
+  .Select {
+    width: 400px;
+  }
+
+  .autocomplete-text-field__main-row{
+  width: 400px;
+  }
+  
+    #buttonId {
+  	margin-left: 20px;
+    background-color: #e6e6e6;
+      border: 1px;
+      border-style: solid;
+      border-color: #b3b3b3;
+  }
+  
+  .semantic-form-input-decorator__label {
+  margin-left: 15px;
+  }
+
+  
+  .page {
+     padding-top: 0px;
+  }
+</style>
+[[#> app:FeatureDemonstration title="Visualization of the shortest path between two taxa"]]
+  [[#*inline "motivation"]]
+		We want to show how two taxa are related in a taxonomic structure by finding and visualizing the shortest path between them.
+    
+  [[/inline]]
+	[[#*inline "solution"]]
+    <p>We use our search framework with a parameterized SPARQL query that finds the shortest path in a tree of taxonomic relations. The two input nodes (taxa) are specified by the user through a search form with auto-suggestions; the query result is visualized as a tree (dendrogram). </p>
+  [[/inline]]
+  [[#*inline "configuration"]]
+
+<semantic-search>
+  <!-- 1. search definition -->
+  <semantic-search-form-query
+     query-template='{
+       "queryString": " PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+                      SELECT ?node ?parent WHERE {
+                        ?node wdt:P171* ?leastCommonSubsumer .
+                        ?parent wdt:P171* ?leastCommonSubsumer . 
+                        ?node wdt:P171 ?parent .
+                   		 	    { ?a wdt:P171* ?node } 
+                		  UNION {?b wdt:P171* ?node }
+                      ?leastCommonSubsumer ^wdt:P171* ?a, ?b .
+                      filter not exists {
+                      ?sublcs ^wdt:P171* ?a, ?b ;
+                            wdt:P171 ?leastCommonSubsumer .
+      }
+    }",  
+       "arguments": {
+         "a": {"type": "xsd:anyURI"},
+         "b": {"type": "xsd:anyURI"}
+       }
+     }'
+     fields='[
+       {
+         "id": "a",
+         "label": "Taxon 1",
+         "xsdDatatype": "xsd:anyURI"
+       },
+       {
+         "id": "b",
+         "label": "Taxon 2",
+         "xsdDatatype": "xsd:anyURI"
+       }
+     ]'>
+       <semantic-form-autocomplete-input 
+                 id="inputId" 
+                 for="a"
+                 value-binding-name="resource"
+                 placeholder='Type the name of a taxon (e.g. lion) ..'
+                 lookup-query='{
+          "type": "sparql",
+          "query": "PREFIX wd: <http://www.wikidata.org/entity/>
+                PREFIX lookup: <http://www.metaphacts.com/ontologies/platform/repository/lookup#>
+          		SELECT ?resource (?name AS ?label) WHERE {
+                  SERVICE Repository:lookup  {
+                        ?resource lookup:token ?__token__ .
+                        ?resource lookup:type wd:Q16521 .
+                      }
+                }
+             ORDER BY DESC(?score)",
+          "params": {
+              "__token__": {
+                   "type": "token",
+                   "required": true,
+                   "escapeLuceneSyntax": false,
+                   "tokenizeLuceneQuery": false
+              }
+           }
+        }'>
+    	</semantic-form-autocomplete-input>
+       <semantic-form-autocomplete-input 
+                    id="inputId" for="b"
+                    placeholder='Type the name of a taxon (e.g. elephant)..'
+                    value-binding-name="resource"
+                    lookup-query='{
+          "type": "sparql",
+          "query": "PREFIX wd: <http://www.wikidata.org/entity/>
+                PREFIX lookup: <http://www.metaphacts.com/ontologies/platform/repository/lookup#>
+          		SELECT ?resource (?name AS ?label) WHERE {
+                SERVICE Repository:lookup  {
+                        ?resource lookup:token ?__token__ .
+                        ?resource lookup:type wd:Q16521 .
+                      }
+                }
+             ORDER BY DESC(?score)",
+          "params": {
+              "__token__": {
+                   "type": "token",
+                   "required": true,
+                   "escapeLuceneSyntax": false,
+                   "tokenizeLuceneQuery": false
+              }
+           }
+        }'           
+             ></semantic-form-autocomplete-input>
+       
+       <button type='button' name='submit' id="buttonId" className='btn btn-default'>Visualize Tree</button>
+   </semantic-search-form-query>
+  <!-- 2. facet is optional -->
+  <!-- <semantic-search-facet></semantic-search-facet> -->
+  <semantic-search-result-holder>
+    <semantic-search-result > <!-- 3. result visualization -->
+ <semantic-tree id="tree"            
+   query='SELECT * WHERE {} ' provider='d3-dendrogram' >
+  <template id='tupleTemplate'>
+    <div style="height: 250px; width: 250px; margin: 10px;" class="panel panel-default">         
+      <div class="panel-heading" style="overflow: hidden; text-overflow: ellipsis;">
+        <a title="{{label.value}}" href="/resource/?uri={{uri.value}}">{{label.value}}</a>
+      </div>
+      <div class="panel-body">
+        <img 
+           class="img-responsive img-thumbnail"
+           style="max-height:130px;display:block;margin-left:auto;margin-right:auto;"
+           src="{{thumbnail.value}}"
+          />
+      </div>
+    </div>      
+  </template>
+</semantic-tree>
+
+    </semantic-search-result>
+  </semantic-search-result-holder>
+</semantic-search>
+[[/inline]]
+	[[#*inline "description"]]
+		<p>Configuration description</p>
+		<p><semantic-link iri="[[resolvePrefix "Help:FormBasedSearch"]]">Learn More</semantic-link></p>
+	[[/inline]]
+  [[#*inline "features"]]
+    <semantic-link iri='app:Start'>Form Based Search</semantic-link>
+  [[/inline]]
+  [[#*inline "demo"]]
+    <div style='height: 500px'> 
+        [[> configuration]]
+    </div>
+  [[/inline]]
+[[/app:FeatureDemonstration]]

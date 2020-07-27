@@ -1,0 +1,10 @@
+
+[] a <http://www.openrdf.org/config/repository#Repository> ;
+	<http://www.openrdf.org/config/repository#repositoryID> "assets" ;
+	<http://www.w3.org/2000/01/rdf-schema#label> "Asset repository for platform or user specific artefacts." ;
+	<http://www.openrdf.org/config/repository#repositoryImpl> _:node1bu0r36f4x2 .
+
+_:node1bu0r36f4x2 <http://www.openrdf.org/config/repository#repositoryType> "openrdf:SailRepository" ;
+	<http://www.openrdf.org/config/repository/sail#sailImpl> _:node1bu0r36f4x3 .
+
+_:node1bu0r36f4x3 <http://www.openrdf.org/config/sail#sailType> "openrdf:NativeStore" .

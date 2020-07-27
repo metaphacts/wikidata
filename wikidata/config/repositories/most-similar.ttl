@@ -1,0 +1,23 @@
+@prefix ephedra: <http://www.metaphacts.com/ontologies/platform/ephedra#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix rep: <http://www.openrdf.org/config/repository#> .
+@prefix sail: <http://www.openrdf.org/config/sail#> .
+@prefix sr: <http://www.openrdf.org/config/repository/sail#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+[] a rep:Repository;
+  rep:repositoryID "most-similar";
+  rep:repositoryImpl [
+      rep:repositoryType "openrdf:SailRepository";
+      sr:sailImpl [
+          ephedra:httpHeader [
+              ephedra:name "Accept";
+              ephedra:value "application/json"
+            ];
+          ephedra:httpMethod "GET";
+          ephedra:implementsService ephedra:most-similar;
+          ephedra:serviceURL "https://wembedder.toolforge.org/api/most-similar/{search}";
+          sail:sailType "metaphacts:RESTService"
+        ]
+    ];
+  rdfs:label "Repository to connect to a remote REST API." .

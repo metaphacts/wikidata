@@ -1,0 +1,22 @@
+  <li>
+    <semantic-link title="Assets" iri="http://www.metaphacts.com/resource/assets/">Assets</semantic-link>
+  </li>
+  <li>
+    <semantic-link title="Ontologies" iri="http://www.metaphacts.com/resource/assets/Ontologies">Ontologies</semantic-link>
+  </li>
+	[[> link tripleMode=true]]
+  [[#*inline "link"]]
+	<semantic-query 
+                  query='SELECT ?ontology {
+  										[[# if tripleMode]]
+                        ?ontology a owl:Ontology. <[[this]]> a ?type
+                      [[else]]
+                        GRAPH ?g {
+                          ?ontology a owl:Ontology. <[[this]]> a ?type
+                        }
+                      [[/if]]
+										} LIMIT 1'
+                  template='<li><semantic-link iri="{{bindings.0.ontology.value}}"></semantic-link></li>'
+  >
+  </semantic-query>
+	[[/inline]]

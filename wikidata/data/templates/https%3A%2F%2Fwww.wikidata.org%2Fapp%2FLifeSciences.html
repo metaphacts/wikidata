@@ -1,0 +1,20 @@
+<div class="page">
+  <div class='page__body'>
+    <bs-col sm=4 sm-offset=4 class="text-center">
+      <img width="200" src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/GeneWikidata-logo-en.png/320px-GeneWikidata-logo-en.png" class="text-center"/>
+      <br/>
+
+      <div style="height:80px;" class="text-center">
+        [[> app:SimpleSearchTemplate placeholder='Search for something e.g. "Diabetes"' constraints='SERVICE Repository:wikidata { ?resource wdt:P279|wdt:P31 ?type . FILTER(?type in (wd:Q7187, wd:Q8054, wd:Q16521, wd:Q12140, wd:Q12136)) }']]
+      </div>
+
+      <semantic-link iri='[[resolvePrefix "app:LifeScienceConcepts"]]'>Main Concepts</semantic-link> | 
+      <semantic-link iri='[[resolvePrefix "app:LifeScienceExternalLinks"]]'>External Links</semantic-link> |   
+      <!--<semantic-link iri='[[resolvePrefix "app:GraphScope"]]'>GraphScope Search</semantic-link> | -->
+      <semantic-link iri='[[resolvePrefix "app:LinksMedical"]]'>Links to Medical Databases</semantic-link> <br/>      
+      <semantic-link iri='[[resolvePrefix "app:ChemicalDrawing"]]'>Chemical Structure Search</semantic-link> | 
+      <semantic-link iri='[[resolvePrefix "app:LifeScienceStructuredSearch"]]'>Structured Search</semantic-link> |
+      <semantic-link iri='[[resolvePrefix "app:LifeSciencesKeywordTypeSearch"]]'>Keyword-type Search</semantic-link>
+    </bs-col>
+  </div>
+</div>

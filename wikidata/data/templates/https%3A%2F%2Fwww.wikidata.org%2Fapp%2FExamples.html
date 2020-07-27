@@ -1,0 +1,78 @@
+<style>
+    .page {
+     padding-top: 0px;
+  }
+</style>
+
+
+<div class="page">
+  <div class="page__header">
+    <div class='page__header-thumbnail'></div>
+    <div class='page__header-body'>
+      <h1 style="margin-top: 0;">Example Gallery</h1>
+
+    </div>
+  </div>
+  <div class="page__body">
+
+              <h3></h3>
+          	<semantic-carousel
+  		query="
+        SELECT ?subject ?thumbnail ?label WHERE {                    
+          VALUES (?subject ?thumbnail ?label){ 
+            (app:StructuredSearchGeneral '/images/help/structured-search-life-sciences.png' 'Structured Query Builder')
+            (app:GeoSPARQL '/images/help/map-widget.png' 'Geographic Map Component')
+          }
+        }"
+  			tuple-template='    <div class="text-center panel panel-default" style="border:none;margin-right:20px;font-size:12px;height:300px;width: 100%;">
+      <div class="panel-body" style="height: 280px;">
+        <img src="{{thumbnail.value}}" style="max-height:260px; margin: 0 auto;" class="img-rounded">
+      </div>
+      <div class="panel-footer" style="position: relative;  border: none;">
+        <semantic-link title="{{label.value}}" class="grid-resource-link" uri="{{subject.value}}">{{label.value}}</semantic>
+      </div>
+    </div>'
+                               
+        options='{ "centerMode": false }'
+                               
+						></semantic-carousel>
+    
+
+<h2>Search</h2>
+<ul>
+  <li><semantic-link iri='[[resolvePrefix "app:LifeSciencesKeywordTypeSearch"]]'>Keyword-type Search in the Life Sciences</semantic-link></li>
+  <li><semantic-link iri='[[resolvePrefix "app:ChemicalDrawing"]]'>Chemical Structure Search</semantic-link></li>  
+  <li><semantic-link iri='[[resolvePrefix "app:GeoSearch"]]'>Geographical Search</semantic-link></li>  
+  <li><semantic-link iri='[[resolvePrefix "app:VirtualCollection"]]'>Search example for virtual collection of a museum</semantic-link></li>
+  <li><semantic-link iri='[[resolvePrefix "app:ShortestPathExample"]]'>Form-based search to find shortest path between two  nodes</semantic-link></li>  
+ 
+</ul>    
+    
+<h2>Data Visualization</h2>
+<ul>
+  <li><semantic-link iri='[[resolvePrefix "app:WikidataTimeline"]]'>Timeline of Space Probes</semantic-link></li>
+  <li><semantic-link iri='[[resolvePrefix "app:GeoSPARQL"]]'>Spatial Queries &amp; Map Component</semantic-link></li>
+  <li><semantic-link iri='[[resolvePrefix "Assets:Diagrams"]]'>Ontodia Diagrams</semantic-link></li>  
+</ul>
+   
+
+
+<h2>Federation</h2>
+<ul>
+  <li><semantic-link iri='[[resolvePrefix "app:Word2VecSimilarity"]]'>Federated Queries over Wikidata and a Word2vec (Similarity search)</semantic-link></li>  
+  <li><semantic-link iri='[[resolvePrefix "app:PolygonExample"]]'>Federated Queries over OpenStreetMap and Wikidata</semantic-link></li>
+  <li><semantic-link iri='[[resolvePrefix "app:PolygonExamplePiran"]]'>Federated Queries over OpenStreetMap and Wikidata (Piran)</semantic-link></li>
+  <li><semantic-link iri='[[resolvePrefix "app:PolygonExampleMonaLisa"]]'>Federated Query using OpenStreetMap Geo Search (Mona Lisa)</semantic-link></li>  
+  <li><semantic-link iri='[[resolvePrefix "wd:Q21114990"]]'>Federation in the Life Sciences: AKT1 Protein</semantic-link></li>  
+  <li><semantic-link iri='[[resolvePrefix "wd:Q23831639"]]'>Linked Data Traversal: Peter Haase / DBLP</semantic-link></li> 
+  <li><a href="https://wikidata.metaphacts.com/resource/?diagram=https%3A%2F%2Fwikidata.metaphacts.com%2Fcontainer%2FontodiaDiagramContainer%2FWikidata_federation_architecture&uri=http%3A%2F%2Fwww.metaphacts.com%2Fresource%2Fassets%2FOntodiaView">Wikidata Federation Architecture</a></li>
+</ul>
+    
+
+<h2>Event System</h2>
+<ul>
+  <li><semantic-link iri='[[resolvePrefix "app:EventTree"]]'>Property Explorer</semantic-link></li>   
+</ul>      
+
+  </div>
+</div>

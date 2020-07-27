@@ -1,0 +1,16 @@
+
+[] a <http://www.openrdf.org/config/repository#Repository> ;
+	<http://www.openrdf.org/config/repository#repositoryID> "chemsimilarity" ;
+	<http://www.w3.org/2000/01/rdf-schema#label> "Repository to wrap the ChEMBL chemical structure similarity service." ;
+	<http://www.openrdf.org/config/repository#repositoryImpl> _:node1b9j1riotx2 .
+
+_:node1b9j1riotx2 <http://www.openrdf.org/config/repository#repositoryType> "openrdf:SailRepository" ;
+ 									<http://www.openrdf.org/config/repository/sail#sailImpl> _:node1b9j1riotx3 .
+
+_:node1b9j1riotx3 <http://www.openrdf.org/config/sail#sailType> "metaphacts:RESTService" ;
+									<http://www.metaphacts.com/ontologies/platform/ephedra#serviceURL> "https://www.ebi.ac.uk/chembl/api/data/similarity" ;
+									<http://www.metaphacts.com/ontologies/platform/ephedra#httpHeader> [
+										<http://www.metaphacts.com/ontologies/platform/ephedra#name> "Accept" ;
+										<http://www.metaphacts.com/ontologies/platform/ephedra#value> "application/json" ;
+									] ;
+									<http://www.metaphacts.com/ontologies/platform/ephedra#implementsService> <http://www.metaphacts.com/ontologies/platform/service#chemsimilarity> .

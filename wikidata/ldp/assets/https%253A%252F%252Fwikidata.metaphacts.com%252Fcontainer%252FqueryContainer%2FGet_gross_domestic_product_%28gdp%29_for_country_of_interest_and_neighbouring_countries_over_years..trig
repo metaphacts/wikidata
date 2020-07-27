@@ -1,0 +1,38 @@
+
+<https://wikidata.metaphacts.com/container/queryContainer/Get_gross_domestic_product_(gdp)_for_country_of_interest_and_neighbouring_countries_over_years./context> {
+  <https://wikidata.metaphacts.com/container/queryContainer/Get_gross_domestic_product_(gdp)_for_country_of_interest_and_neighbouring_countries_over_years.>
+    a <http://spinrdf.org/sp#Query>, <http://spinrdf.org/sp#Select>;
+    <http://www.w3.org/2000/01/rdf-schema#label> "Get gross domestic product (gdp) for country of interest and neighbouring countries over years.";
+    <http://spinrdf.org/sp#text> """PREFIX wd: <http://www.wikidata.org/entity/>
+PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+PREFIX p: <http://www.wikidata.org/prop/>
+PREFIX ps: <http://www.wikidata.org/prop/statement/>
+PREFIX pq: <http://www.wikidata.org/prop/qualifier/>
+PREFIX hint: <http://www.bigdata.com/queryHints#> 
+SELECT DISTINCT ?country  ?countryLabel ?year (AVG(?gdp) AS ?gdpAvg) WHERE {
+  hint:Query hint:optimizer \"None\" 
+  {
+    BIND(?countryOfInterest as ?country)
+    #BIND(wd:Q183 as ?country)
+  }UNION{
+    ?country wdt:P47 ?countryOfInterest.
+    #?country wdt:P47 wd:Q183.
+  }
+  ?country rdfs:label ?countryLabel.
+  FILTER((LANG(?countryLabel)) = \"en\")
+  ?country p:P2131 ?gdpStatement.
+  ?gdpStatement ps:P2131 ?gdp.
+  ?gdpStatement pq:P585 ?date.
+  BIND (YEAR(?date) AS ?year) 
+}GROUP BY ?country  ?countryLabel ?year 
+""";
+    a <http://www.w3.org/ns/prov#Entity>;
+    <http://www.w3.org/ns/prov#wasAttributedTo> <http://www.metaphacts.com/resource/user/admin>;
+    <http://www.w3.org/ns/prov#generatedAtTime> "2020-02-05T14:57:38.559Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> .
+  
+  <http://www.metaphacts.com/ontologies/platform#queryContainer> <http://www.w3.org/ns/ldp#contains>
+      <https://wikidata.metaphacts.com/container/queryContainer/Get_gross_domestic_product_(gdp)_for_country_of_interest_and_neighbouring_countries_over_years.> .
+  
+  <https://wikidata.metaphacts.com/container/queryContainer/Get_gross_domestic_product_(gdp)_for_country_of_interest_and_neighbouring_countries_over_years.>
+    a <http://www.w3.org/ns/ldp#Resource> .
+}

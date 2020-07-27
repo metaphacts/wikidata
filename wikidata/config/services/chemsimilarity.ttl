@@ -1,0 +1,119 @@
+PREFIX sp: <http://spinrdf.org/sp#>
+PREFIX spin: <http://spinrdf.org/spin#>
+PREFIX spl: <http://spinrdf.org/spl#>
+PREFIX chem: <http://www.metaphacts.com/ontologies/chem#>
+PREFIX geo: <http://www.opengis.net/ont/geosparql#>
+PREFIX ephedra: <http://www.metaphacts.com/ontologies/platform/ephedra#>
+PREFIX : <http://www.metaphacts.com/ontologies/platform/service/custom#>
+
+<http://www.metaphacts.com/ontologies/platform/service#chemsimilarity> a ephedra:Service ;
+	<http://www.openrdf.org/config/sail#sailType> "metaphacts:RESTService" ;
+	<http://www.w3.org/2000/01/rdf-schema#label> "A wrapper for the chemical similarity service." ;
+	ephedra:hasSPARQLPattern (
+		[
+			sp:subject :_results ;
+			sp:predicate chem:hasSMILES ;
+			sp:object :_smiles
+		]
+		[
+			sp:subject :_results ;
+			sp:predicate chem:hasSimilarityThreshold ;
+			sp:object :_similarity
+		]
+		[
+			sp:subject :_results ;
+			sp:predicate chem:format ;
+			sp:object :_format
+		]
+		[
+			sp:subject :_results ;
+			sp:predicate chem:hasMoleculeChEMBLID ;
+			sp:object :_molecule_chembl_id
+		]
+		[
+			sp:subject :_results ;
+			sp:predicate chem:hasSimilarity ;
+			sp:object :_score
+		]
+		[
+			sp:subject :_results ;
+			sp:predicate chem:hasCanonicalSMILES ;
+			sp:object :_canonical_smiles
+		]
+		[
+			sp:subject :_results ;
+			sp:predicate chem:hasStandardInChIKey ;
+			sp:object :_standard_inchi_key
+		]
+	) ;
+	spin:constraint
+	[
+		a spl:Argument ;
+		rdfs:comment "SMILES structure to search for" ;
+		spl:predicate :_smiles ;
+		spl:valueType xsd:string
+    ] ;
+    spin:constraint
+	[
+		a spl:Argument ;
+		rdfs:comment "similarity threshold" ;
+		spl:predicate :_similarity ;
+		spl:defaultValue "70"^^xsd:integer ;
+		spl:valueType xsd:integer
+    ] ;
+    spin:constraint
+	[
+		a spl:Argument ;
+		rdfs:comment "format" ;
+		spl:predicate :_format ;
+		spl:defaultValue "json" ;
+		spl:valueType xsd:string
+    ] ;
+    spin:column
+	[
+		a spin:Column ;
+		rdfs:comment "results" ;
+		spl:predicate :_results ;
+		spl:valueType rdfs:Resource;
+		ephedra:jsonPath "$.molecules"
+	] ;
+	spin:column
+	[
+		a spin:Column ;
+		rdfs:comment "molecule ChEMBL ID" ;
+		spl:predicate :_molecule_chembl_id ;
+		spl:valueType xsd:string;
+		ephedra:jsonPath "$.molecule_chembl_id"
+	] ;
+	spin:column
+	[
+		a spin:Column ;
+		rdfs:comment "Similarity score" ;
+		spl:predicate :_score ;
+		spl:valueType xsd:double;
+		ephedra:jsonPath "$.similarity"
+	] ;
+	spin:column
+	[
+		a spin:Column ;
+		rdfs:comment "Similarity score" ;
+		spl:predicate :_score ;
+		spl:valueType xsd:double;
+		ephedra:jsonPath "$.similarity"
+	] ;
+	spin:column
+	[
+		a spin:Column ;
+		rdfs:comment "canonical SMILES structure" ;
+		spl:predicate :_canonical_smiles ;
+		ephedra:jsonPath "$.molecule_structures.canonical_smiles" ;
+		spl:valueType xsd:string
+	] ;
+	spin:column
+	[
+		a spin:Column ;
+		rdfs:comment "standard InChI key" ;
+		spl:predicate :_standard_inchi_key ;
+		ephedra:jsonPath "$.molecule_structures.standard_inchi_key" ;
+		spl:valueType xsd:string
+	] .

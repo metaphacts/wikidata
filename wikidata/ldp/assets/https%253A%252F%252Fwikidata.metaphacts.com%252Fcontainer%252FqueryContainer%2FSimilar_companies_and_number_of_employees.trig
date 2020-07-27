@@ -1,0 +1,37 @@
+
+<https://wikidata.metaphacts.com/container/queryContainer/Similar_companies_and_number_of_employees/context> {
+  <https://wikidata.metaphacts.com/container/queryContainer/Similar_companies_and_number_of_employees>
+    a <http://spinrdf.org/sp#Query>, <http://spinrdf.org/sp#Select>;
+    <http://www.w3.org/2000/01/rdf-schema#label> "Similar companies and number of employees";
+    <http://spinrdf.org/sp#text> """PREFIX Repository: <http://www.metaphacts.com/ontologies/repository#>
+PREFIX word2vec: <http://www.metaphacts.com/ontologies/word2vec#>
+PREFIX wd: <http://www.wikidata.org/entity/>
+PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+PREFIX fed: <http://www.metaphacts.com/ontologies/platform/repository/federation#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?similarCompanyName ?numberOfEmployees WHERE {
+  BIND(STRAFTER(STR(?company), STR(<http://www.wikidata.org/entity/>)) AS ?qName)
+  SERVICE fed:most-similar {
+    ?res word2vec:search ?qName;
+      word2vec:item ?newQName;
+      word2vec:similarity ?similarity.
+  }
+  BIND(URI(CONCAT(STR(<http://www.wikidata.org/entity/>), STR(?newQName))) AS ?similarCompany)
+  ?similarCompany rdfs:label ?similarCompanyName .
+  FILTER((LANG(?similarCompanyName)) = \"en\")
+  SERVICE Repository:default {
+    SELECT (MAX(?nEmployees) AS ?numberOfEmployees) WHERE {
+      ?similarCompany wdt:P1128 ?nEmployees
+    } 
+  }
+} """;
+    a <http://www.w3.org/ns/prov#Entity>;
+    <http://www.w3.org/ns/prov#wasAttributedTo> <http://www.metaphacts.com/resource/user/admin>;
+    <http://www.w3.org/ns/prov#generatedAtTime> "2020-03-31T15:28:58.633+02:00"^^<http://www.w3.org/2001/XMLSchema#dateTime> .
+  
+  <http://www.metaphacts.com/ontologies/platform#queryContainer> <http://www.w3.org/ns/ldp#contains>
+      <https://wikidata.metaphacts.com/container/queryContainer/Similar_companies_and_number_of_employees> .
+  
+  <https://wikidata.metaphacts.com/container/queryContainer/Similar_companies_and_number_of_employees>
+    a <http://www.w3.org/ns/ldp#Resource> .
+}

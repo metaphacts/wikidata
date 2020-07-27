@@ -1,0 +1,6 @@
+iri = https://wikidata.metaphacts.com/container/queryTemplateContainer/similar-companies-and-number-of-employees
+disabled = false
+responseformat = application/sparql-results+json
+aclPermission = qaas:execute:*
+repository = ephedra
+publisher = http://www.metaphacts.com/resource/user/admin

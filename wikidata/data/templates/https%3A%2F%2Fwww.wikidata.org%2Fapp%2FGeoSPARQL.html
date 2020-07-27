@@ -1,0 +1,80 @@
+
+
+
+<div class="page">
+  <div class='page__body'>
+    <h2>Objects within 10 km radius from the centre of Berlin</h2>
+    <pre>
+    <code>
+    PREFIX geo: &lt;http://www.bigdata.com/rdf/geospatial#&gt;
+    PREFIX example: &lt;http://www.example.com/&gt;
+    SELECT ?lat ?lng ?description ?link WHERE {
+    SERVICE geo:search {
+        ?link geo:search "inCircle" .
+        ?link geo:predicate &lt;http://www.wikidata.org/prop/direct/P625&gt;.
+        ?link geo:spatialCircleCenter "52.516666666667#13.383333333333" . # Berlin
+        ?link geo:spatialCircleRadius "10" . # default unit: Kilometers
+        ?link geo:locationValue ?locationValue. 
+        ?link geo:coordSystem "2" . 
+        ?link geo:latValue ?lat.
+        ?link geo:lonValue ?lng .  
+      }
+      ?link rdfs:label ?description 
+      FILTER (LANG(?description) = "en")
+    }
+    </code>
+    </pre>
+    <semantic-map query='PREFIX geo: <http://www.bigdata.com/rdf/geospatial#>
+                          PREFIX example: <http://www.example.com/>
+                          SELECT ?lat ?lng ?description ?link WHERE {
+                          SERVICE geo:search {
+                              ?link geo:search "inCircle" .
+                              ?link geo:predicate <http://www.wikidata.org/prop/direct/P625>.
+                              ?link geo:spatialCircleCenter "52.516666666667#13.383333333333" . # Berlin
+                              ?link geo:spatialCircleRadius "10" . # default unit: Kilometers
+                              ?link geo:locationValue ?locationValue. 
+                              ?link geo:coordSystem "2" . 
+                              ?link geo:latValue ?lat.
+                              ?link geo:lonValue ?lng .  
+                            }
+                            ?link rdfs:label ?description
+                            FILTER (LANG(?description) = "en")
+                          }'>
+    </semantic-map>
+    <h2>Objects within a defined rectangular area</h2>
+    <pre>
+      <code>
+        PREFIX geo: &lt;http://www.bigdata.com/rdf/geospatial#&gt;
+        SELECT ?lat ?lng ?description ?link WHERE {
+          SERVICE geo:search {
+                ?link geo:search "inRectangle" .
+                ?link geo:predicate &lt;http://www.wikidata.org/prop/direct/P625&gt;.
+                ?link geo:spatialRectangleSouthWest "52.5#13.35" .
+                ?link geo:spatialRectangleNorthEast "52.52#13.45" .
+                ?link geo:latValue ?lat.
+                ?link geo:lonValue ?lng .  
+                ?link geo:locationValue ?locationValue
+          }
+          ?link rdfs:label ?description .
+          FILTER (LANG(?description) = "en")
+        }
+      </code>
+    </pre>
+    <semantic-map query='PREFIX geo: <http://www.bigdata.com/rdf/geospatial#>
+                                      SELECT ?lat ?lng ?description ?link WHERE {
+                                        SERVICE geo:search {
+                                              ?link geo:search "inRectangle" .
+                                              ?link geo:predicate <http://www.wikidata.org/prop/direct/P625>.
+                                              ?link geo:spatialRectangleSouthWest "52.5#13.35" .
+                                              ?link geo:spatialRectangleNorthEast "52.52#13.45" .
+                                          ?link geo:latValue ?lat.
+                                              ?link geo:lonValue ?lng .  
+                                          ?link geo:locationValue ?locationValue .
+                                          ?link geo:coordSystem "2" . 
+                                        }
+                                          ?link rdfs:label ?description
+                                          FILTER (LANG(?description) = "en")
+                                      }'>
+    </semantic-map>
+  </div>
+</div>

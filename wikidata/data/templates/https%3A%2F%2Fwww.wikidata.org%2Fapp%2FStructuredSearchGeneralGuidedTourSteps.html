@@ -1,0 +1,175 @@
+<rs-guided-tour id='guided-tour-search' steps='[{
+      "title": "Structured Search",
+      "text": "<p>Welcome to this guided tour of Structured Search.</p><p>Click <strong>Next</strong> to continue.</p><p>You can click on <strong>Skip Tour</strong> at any time to finish.</p>",
+      "selector": ".QueryBuilder--guideLinks li:nth-of-type(1)",
+      "position": "none"
+    },
+    {
+      "title": "Select Organization",
+      "text": "With your mouse choose the category <strong>Organization</strong>. This first category defines what you are looking for.",
+      "selector": ".QueryBuilder--domainSelection li:nth-of-type(3)",
+      "position": "right",
+      "style": {"button": {"display": "none"}},
+      "progressEvent": {"eventType": "Search.CategoryOrRelationSelected", "source": "semantic-query-builder", "data": "http://www.wikidata.org/entity/Q43229"}
+    },
+    {
+      "title": "Select Place",
+      "text": "Now choose a category that will be used to define the context of the search. For this example choose <strong>Place</strong>.",
+      "selector": ".QueryBuilder--rangeSelection li:nth-of-type(3)",
+      "position": "right",
+      "style": {"button": {"display": "none"}},
+      "progressEvent": {"eventType": "Search.CategoryOrRelationSelected", "source": "semantic-query-builder", "data": "http://www.wikidata.org/entity/Q17334923"}
+    },
+    {
+      "title": "Select Relationship",
+      "text": "<p>Now choose the contextual relationship.</p><p>For this example choose <strong>country</strong>.</p>",
+      "selector": ".QueryBuilder--relationSelector li[aria-label=country]",
+      "position": "right",
+      "style": {"button": {"display": "none"}},
+      "progressEvent": {"eventType": "Search.CategoryOrRelationSelected", "source": "semantic-query-builder", "data": "http://www.wikidata.org/prop/direct/P17"}
+    },
+    {
+      "title": "Enter an Organization",
+      "text": "Now type an organization in the box. Type \"France\" and select <strong>France</strong> from the list.",
+      "selector": ".QueryBuilder--hierarchySelector input",
+      "position": "left",
+      "style": {"button": {"display": "none"}},
+      "progressEvent": {"eventType": "Search.TreeInputSelected", "source": "semantic-query-builder", "data": "http://www.wikidata.org/entity/Q142"}
+    },
+    {
+      "title": "Fetching results",
+      "text": "Loading...",
+      "selector": ".QueryBuilder--searchAreaHolder",
+      "progressEvent": {"eventType": "Component.Loaded", "source": "results-grid"},
+      "style": {"button": {"display": "none"}},
+      "position": "none"
+    },
+    {
+      "title": "Results Displayed",
+      "text": "Here you have results with thumbnails and titles.",
+      "selector": "#search-results",
+      "position": "top"
+    },
+    {
+      "title": "Extend the Search",
+      "text": "Let&apos;s extend the search! Move the mouse arrow over the end of the search bar, and click <strong>AND</strong>",
+      "selector": ".QueryBuilder--addConjunctButton.QueryBuilder--selectedItem.QueryBuilder--actionableItem",
+      "position": "bottom",
+      "style": {"button": {"display": "none"}},
+      "progressEvent": {"eventType": "Search.AndConjunctSelected", "source": "semantic-query-builder"}
+    },
+    {
+      "title": "Create New Clause",
+      "text": "...and another search bar is initiated. This time let&apos;s narrow the search by <strong>Class</strong>.",
+      "selector": ".ItemSelector--itemSelector.QueryBuilder--rangeSelection li:nth-of-type(4)",
+      "position": "right",
+      "style": {"button": {"display": "none"}},
+      "progressEvent": {"eventType": "Search.CategoryOrRelationSelected", "source": "semantic-query-builder", "data": "http://www.w3.org/2002/07/owl#Class"}
+    },
+    {
+      "title": "Choose Relationship",
+      "text": "<p>And choose <strong>industry</strong> as the new relationship.</p>",
+      "selector": ".QueryBuilder--relationSelector li[aria-label=industry]",
+      "position": "right",
+      "style": {"button": {"display": "none"}},
+      "progressEvent": {"eventType": "Search.CategoryOrRelationSelected", "source": "semantic-query-builder", "data": "http://www.wikidata.org/prop/direct/P452"}
+    },
+    {
+      "title": "Enter an Industry",
+      "text": "Now type \"pharmaceut\" and select <strong>pharmaceutical industry</strong> from the list.",
+      "selector": ".QueryBuilder--hierarchySelector input",
+      "position": "left",
+      "style": {"button": {"display": "none"}},
+      "progressEvent": {"eventType": "Search.TreeInputSelected", "source": "semantic-query-builder", "data": "http://www.wikidata.org/entity/Q507443"}
+    },
+    {
+      "title": "Fetching results",
+      "text": "Loading...",
+      "selector": ".QueryBuilder--searchAreaHolder",
+      "progressEvent": {"eventType": "Component.Loaded", "source": "results-grid"},
+      "style": {"button": {"display": "none"}},
+      "position": "none"
+    },
+    {
+      "title": "Results Updated",
+      "text": "The results were updated to reflect the industry you just added.",
+      "selector": "#search-results",
+      "position": "top"
+    },
+    {
+      "title": "Add an Alternative Industry",
+      "text": "For this search we will add an alternative industry. Mouse over the search bar and click on <strong>OR</strong>.",
+      "selector": ".QueryBuilder--searchArea > div:last-child .QueryBuilder--addDisjunctButton.QueryBuilder--selectedItem.QueryBuilder--actionableItem",
+      "position": "bottom",
+      "style": {"button": {"display": "none"}},
+      "progressEvent": {"eventType": "Search.OrDisjunctSelected", "source": "semantic-query-builder"}
+    },
+    {
+      "title": "Enter Alternative Industry",
+      "text": "Type \"manufa\" and select <strong>manufacturing</strong> from the list.",
+      "selector": ".QueryBuilder--hierarchySelector input",
+      "position": "left",
+      "style": {"button": {"display": "none"}},
+      "progressEvent": {"eventType": "Search.TreeInputSelected", "source": "semantic-query-builder", "data": "http://www.wikidata.org/entity/Q187939"}
+    },
+    {
+      "title": "Fetching results",
+      "text": "Loading...",
+      "selector": ".QueryBuilder--searchAreaHolder",
+      "progressEvent": {"eventType": "Component.Loaded", "source": "results-grid"},
+      "style": {"button": {"display": "none"}},
+      "position": "none"
+    },
+    {
+      "title": "Results Updated",
+      "text": "The results were updated to reflect the industry you just added.",
+      "selector": "#search-results",
+      "position": "top"
+    },
+    {
+      "title": "Explore Facets",
+      "text": "<p>Now let&apos;s have a look at facets.</p><p>The relationships in facets are used to drill down into the details of the results. They give us a way of filtering the data we&apos;ve just retrieved.</p><p>Click here to show the facet panel.</p>",
+      "selector": ".show-facet-button",
+      "style": {"button": {"display": "none"}},
+      "progressEvent": {"eventType": "Search.FilterToggled", "source": "semantic-search-facet"},
+      "position": "right"
+    },
+    {
+      "title": "Select Facet Category",
+      "text": "<p>The facets are arranged according to the same categories as those we used at the start of the search. You can limit the facets to particular categories by clicking on their icons.</p><p>Click the <strong>Place</strong> icon: <div style=\"display:inline-block;width:38px;height:38px\"><img src=\"../images/help/thenounproject/noun_1146586.svg\"></div></p>",
+      "selector": ".facet__category-selector-holder",
+      "position": "right",
+      "style": {"button": {"display": "none"}},
+      "progressEvent": {"eventType": "Search.FacetCategorySelected", "source": "semantic-search-facet", "data": "http://www.wikidata.org/entity/Q17334923"}
+    },
+    {
+      "title": "Select Relationship",
+      "text": "Now open up the <strong>headquarters location</strong> relationship.",
+      "selector": ".facet-relations div:nth-of-type(2)",
+      "position": "right",
+      "style": {"button": {"display": "none"}},
+      "progressEvent": {"eventType": "Search.FacetPropertySelected", "source": "semantic-search-facet", "data": "http://www.wikidata.org/prop/direct/P159"}
+    },
+    {
+      "title": "Fetching results",
+      "text": "Loading...",
+      "selector": ".facet-relations div:nth-of-type(2)",
+      "progressEvent": {"eventType": "Component.Loaded", "source": "semantic-search-facet"},
+      "style": {"button": {"display": "none"}},
+      "position": "none"
+    },
+    {
+      "title": "Select Facets",
+      "text": "Choose the facet <strong>Paris</strong>. The list of results is updated, according to your selection.",
+      "selector": ".facet__relation__values .facet__relation__values__value:nth-of-type(7)",
+      "position": "right",
+      "style": {"button": {"display": "none"}},
+      "progressEvent": {"eventType": "Component.Loaded", "source": "results-grid"}
+    },
+    {
+      "title": "Explore Wikidata",
+      "text": "<p>That&apos;s the end of this short introductory tour of semantic search.</p><p>Enjoy exploring Wikidata!</p>",
+      "selector": "#search-results",
+      "position": "none"
+    }]'>
+</rs-guided-tour>

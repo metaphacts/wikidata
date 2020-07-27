@@ -1,0 +1,119 @@
+<style> 
+.page {
+   padding-top: 0px;
+}
+</style>
+
+<div class="page">
+
+  <bs-tabs id="tabs" class='page__body-navtabs' unmount-on-exit=true>
+            <bs-tab event-key="1" title="Classes">
+               <bs-row>
+  							<bs-col sm=8> 
+									 <semantic-table query="SELECT DISTINCT ?Class WHERE { 
+                                            #GRAPH ?g {
+                                          #?Class rdf:type owl:Class .
+                                          
+                                          { ?Class wdt:P279 wd:Q35120. }
+                                            UNION
+                                          { ?parent wdt:P279 wd:Q35120.
+                                            ?Class wdt:P279 ?parent. }
+                                            UNION
+                                          { ?parent wdt:P279/wdt:P279 wd:Q35120.
+                                            ?Class wdt:P279 ?parent. }
+                                          
+                                          ?? rdf:type owl:Ontology
+                                          #}
+                                          FILTER( !isBlank(?Class))
+                                           } ORDER BY ?Class"
+                                  options='{"showTableHeading": false, "filterPlaceholderText":"Filter Classes"}'
+                                  no-result-template='<i>No Classes.</i>'
+                  ></semantic-table>
+                 </bs-col>
+                 <bs-col sm=4>
+                   <div style='height: 500px'>
+                    <semantic-lazy-tree
+                      roots-query='
+                        SELECT ?item ?hasChildren WHERE {
+                          ?? rdf:type owl:Ontology.
+                          ?item wdt:P279 wd:Q35120 .
+                          OPTIONAL { ?subClass wdt:P279 ?item }
+                          BIND (IF(BOUND(?subClass), true, false) AS ?hasChildren)
+                        }
+                      '
+                      children-query='
+                        SELECT ?item ?hasChildren WHERE {
+                          ?? rdf:type owl:Ontology.
+                          ?item wdt:P279 ?parent .
+                          OPTIONAL { ?subClass wdt:P279 ?item }
+                          BIND (IF(BOUND(?subClass), true, false) AS ?hasChildren)
+                        }
+                      '>
+                    </semantic-lazy-tree>
+                  </div>
+                   [[!--<semantic-tree 
+                             query="
+                                SELECT DISTINCT ?node ?parent WHERE {
+                                  GRAPH ?g {
+                                    ?? a owl:Ontology .
+                                    { ?node a owl:Class } UNION { ?x rdfs:subClassOf ?node }
+                                  }
+                                  OPTIONAL {
+                                    ?node rdfs:subClassOf ?parent.
+                                    FILTER(ISIRI(?parent))
+                                  }
+                                  FILTER(ISIRI(?node))
+                                }
+                                ORDER BY ?node"                                    
+                             collapsed="true"
+                             keys-opened='["[[this]]"]'
+                             parentBindingName="parent"
+                             nodeBindingName="node">
+                  	</semantic-tree>--]]
+                 </bs-col>
+                </bs-row>
+            </bs-tab>
+            <bs-tab event-key="2" title="Object Properties">
+               <semantic-table query="SELECT distinct ?ObjectProperty WHERE { 
+                                      	#GRAPH ?g {
+                                      ?ObjectProperty rdf:type owl:ObjectProperty . ?? rdf:type owl:Ontology .
+                                      ?claim <http://wikiba.se/ontology#directClaim> ?ObjectProperty .
+                                      #}
+                                     } order by ?ObjectProperty"
+                            	options='{"showTableHeading": false, "filterPlaceholderText":"Filter Object Properties"}'
+                              no-result-template='<i>No Object Properties.</i>'>
+               </semantic-table>
+            </bs-tab>
+            <bs-tab event-key="3" title="Datatype Properties">
+               <semantic-table query="SELECT distinct ?DatatypeProperty WHERE { 
+                                      	#GRAPH ?g {
+                                      ?DatatypeProperty rdf:type owl:DatatypeProperty . ?? rdf:type owl:Ontology .
+                                      ?claim <http://wikiba.se/ontology#directClaim> ?DatatypeProperty .
+                                      #}
+                                     } order by ?DatatypeProperty"
+                               options='{"showTableHeading": false, "filterPlaceholderText":"Filter Datatype Properties"}'
+                               no-result-template='<i>No Datatype Properties.</i>'>
+               </semantic-table>
+            </bs-tab>    
+            <bs-tab event-key="4" title="Individuals">
+              <semantic-table query='SELECT ?Individual ?Class WHERE { 
+                            					#GRAPH ?g {
+                                        #?Individual rdf:type ?Class . ?Class rdf:type owl:Class .
+                                        ?Individual wdt:P31 ?Class .
+                                        ?Class wdt:P279 ?parent .
+  																			?? rdf:type owl:Ontology .
+                                      #} 
+                                     	FILTER( !isBlank(?Individual))
+                           					} LIMIT 500'
+                              options='{"filterPlaceholderText":"Filter Individuals"}'
+                              no-result-template='<i>No Individuals.</i>'>
+              </semantic-table>
+            </bs-tab>
+            [[!--
+            <bs-tab event-key="5" title="Diagrams">
+              
+               <mp-page-loader iri='http://www.metaphacts.com/resource/assets/OntodiaDiagramsTable' urlqueryparam-ontology-iri='[[this]]'></mp-page-loader>    
+            </bs-tab>
+  --]]
+  </bs-tabs>
+</div>

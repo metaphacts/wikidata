@@ -1,0 +1,27 @@
+
+<https://wikidata.metaphacts.com/container/queryContainer/persons-name-dob-dod/context> {
+  <https://wikidata.metaphacts.com/container/queryContainer/persons-name-dob-dod> a
+      <http://spinrdf.org/sp#Query>, <http://spinrdf.org/sp#Select>;
+    <http://www.w3.org/2000/01/rdf-schema#label> "persons-name-dob-dod";
+    <http://spinrdf.org/sp#text> """PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+PREFIX wd: <http://www.wikidata.org/entity/>
+
+SELECT ?person ?name ?dob ?dod WHERE {
+  ?person wdt:P31 ?sub0 .
+  ?person rdfs:label ?name .
+  ?sub0 (wdt:P279)* wd:Q5.
+  ?person wdt:P569 ?dob.
+  ?person wdt:P570 ?dod.
+} LIMIT 10""";
+    a <http://www.w3.org/ns/prov#Entity>;
+    <http://www.w3.org/ns/prov#wasAttributedTo> <http://www.metaphacts.com/resource/user/admin>;
+    <http://www.w3.org/ns/prov#generatedAtTime> "2019-05-30T15:32:11.407Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> .
+  
+  <http://www.metaphacts.com/ontologies/platform#queryContainer> <http://www.w3.org/ns/ldp#contains>
+      <https://wikidata.metaphacts.com/container/queryContainer/persons-name-dob-dod> .
+  
+  <https://wikidata.metaphacts.com/container/queryContainer/persons-name-dob-dod> a
+      <http://www.w3.org/ns/ldp#Resource> .
+}

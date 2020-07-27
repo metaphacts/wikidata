@@ -1,0 +1,23 @@
+
+<ttps://wikidata.metapahacts.com/container/queryContainer/Transparent_FedX_Federation:_Get_a_disease_in_different_languages_from_Wikidata_and_synonym_from_MeSH/context> {
+  <ttps://wikidata.metapahacts.com/container/queryContainer/Transparent_FedX_Federation:_Get_a_disease_in_different_languages_from_Wikidata_and_synonym_from_MeSH>
+    a <http://spinrdf.org/sp#Query>, <http://spinrdf.org/sp#Select>;
+    <http://www.w3.org/2000/01/rdf-schema#label> "Transparent FedX Federation: Get a disease in different languages from Wikidata and synonym from MeSH";
+    <http://spinrdf.org/sp#text> """PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX wd: <http://www.wikidata.org/entity/>
+SELECT ?wikidataLabel (LANG(?wikidataLabel) as ?wikidataLanguage) ?meshSynonym WHERE {
+    ?wikidataDisease (<http://www.wikidata.org/prop/direct-normalized/P486>|<http://www.wikidata.org/prop/direct-normalized/P6680>) ?meshIri;
+      rdfs:label ?wikidataLabel.
+      ?meshIri rdfs:label ?meshSynonym.
+} LIMIT 10""";
+    a <http://www.w3.org/ns/prov#Entity>;
+    <http://www.w3.org/ns/prov#wasAttributedTo> <http://www.metaphacts.com/resource/user/jt%40metaphacts.com>;
+    <http://www.w3.org/ns/prov#generatedAtTime> "2020-03-31T06:45:23.257Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> .
+  
+  <http://www.metaphacts.com/ontologies/platform#queryContainer> <http://www.w3.org/ns/ldp#contains>
+      <ttps://wikidata.metapahacts.com/container/queryContainer/Transparent_FedX_Federation:_Get_a_disease_in_different_languages_from_Wikidata_and_synonym_from_MeSH> .
+  
+  <ttps://wikidata.metapahacts.com/container/queryContainer/Transparent_FedX_Federation:_Get_a_disease_in_different_languages_from_Wikidata_and_synonym_from_MeSH>
+    a <http://www.w3.org/ns/ldp#Resource> .
+}

@@ -1,0 +1,38 @@
+
+<https://wikidata.metaphacts.com/container/queryTemplateContainer/similar-companies-and-number-of-employees/context> {
+  <http://metaphacts.com/query/similar-companies-and-number-of-employees/arg/0> <http://spinrdf.org/spl#predicate>
+      <http://metaphacts.com/query/similar-companies-and-number-of-employees/predicate/company>;
+    <http://www.w3.org/2000/01/rdf-schema#label> "company";
+    <http://spinrdf.org/spl#defaultValue> <http://www.wikidata.org/entity/Q81230>;
+    <http://www.w3.org/2000/01/rdf-schema#comment> "IRI of the companay, default value is Siemens" .
+  
+  <https://wikidata.metaphacts.com/container/queryTemplateContainer/similar-companies-and-number-of-employees>
+    <http://spinrdf.org/spin#constraint> <http://metaphacts.com/query/similar-companies-and-number-of-employees/arg/0> .
+  
+  <http://metaphacts.com/query/similar-companies-and-number-of-employees/arg/0> <http://spinrdf.org/spl#optional>
+      false .
+  
+  <https://wikidata.metaphacts.com/container/queryTemplateContainer/similar-companies-and-number-of-employees>
+    <http://www.w3.org/2000/01/rdf-schema#label> "Similar companies and number of employees";
+    <http://spinrdf.org/spin#body> <https://wikidata.metaphacts.com/container/queryContainer/Similar_companies_and_number_of_employees> .
+  
+  <http://metaphacts.com/query/similar-companies-and-number-of-employees/arg/0> a <http://spinrdf.org/spl#Argument> .
+  
+  <https://wikidata.metaphacts.com/container/queryTemplateContainer/similar-companies-and-number-of-employees>
+    <http://www.w3.org/2000/01/rdf-schema#comment> "Similar companies and number of employees";
+    a <http://spinrdf.org/spin#Template> .
+  
+  <http://metaphacts.com/query/similar-companies-and-number-of-employees/arg/0> <http://spinrdf.org/spl#valueType>
+      <http://www.w3.org/2001/XMLSchema#anyURI> .
+  
+  <https://wikidata.metaphacts.com/container/queryTemplateContainer/similar-companies-and-number-of-employees>
+    a <http://spinrdf.org/spin#SelectTemplate>, <http://www.w3.org/ns/prov#Entity>;
+    <http://www.w3.org/ns/prov#wasAttributedTo> <http://www.metaphacts.com/resource/user/querycatalog>;
+    <http://www.w3.org/ns/prov#generatedAtTime> "2020-03-31T15:28:58.660+02:00"^^<http://www.w3.org/2001/XMLSchema#dateTime> .
+  
+  <http://www.metaphacts.com/ontologies/platform#queryTemplateContainer> <http://www.w3.org/ns/ldp#contains>
+      <https://wikidata.metaphacts.com/container/queryTemplateContainer/similar-companies-and-number-of-employees> .
+  
+  <https://wikidata.metaphacts.com/container/queryTemplateContainer/similar-companies-and-number-of-employees>
+    a <http://www.w3.org/ns/ldp#Resource> .
+}

@@ -1,0 +1,83 @@
+<style>
+  .page {
+     padding-top: 0px;
+  }
+</style>
+
+
+<div class="page">
+  <div class='page__header'>
+    <div class='page__header-body'>
+      <h1>Fundamental Categories and Relations for the Life Sciences</h1>
+    </div>
+  </div>
+  <div class='page__body'>
+    <semantic-graph height='600px' query='
+    PREFIX wd: <http://www.wikidata.org/entity/>
+    PREFIX wdt: <http://www.wikidata.org/prop/direct/>                                      
+
+    CONSTRUCT { ?category ?prop ?range . ?uri <http://schema.org/thumbnail> ?thumbnail  } WHERE {
+    VALUES (?uri ?label ?thumbnail ?order) {
+      (wd:Q7187 "Gene" "https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/Gene.png/120px-Gene.png" 1)
+      (wd:Q8054 "Protein" "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/Peptide_bond.png/120px-Peptide_bond.png" 2)
+      (wd:Q16521 "Taxon" "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Hierarchical_clustering_diagram.png/120px-Hierarchical_clustering_diagram.png" 3)
+      (wd:Q2996394 "Process" "https://upload.wikimedia.org/wikipedia/commons/thumb/0/06/Protein_synthesis_%28editors_version%29.svg/106px-Protein_synthesis_%28editors_version%29.svg.png" 4)
+      (wd:Q15989253 "Cell Component" "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/0312_Animal_Cell_and_Components.jpg/120px-0312_Animal_Cell_and_Components.jpg" 5)
+      (wd:Q12140 "Drug" "//upload.wikimedia.org/wikipedia/commons/4/4f/Farm-Fresh_pill.png" 2)
+      (wd:Q12136 "Disease" "//upload.wikimedia.org/wikipedia/commons/thumb/4/43/Blue_circle_for_diabetes.svg/32px-Blue_circle_for_diabetes.svg.png" 1)                                      
+    }
+      VALUES (?category ?prop ?range ?propLabel) {
+      ( wd:Q7187 wdt:P703 wd:Q16521 "found in" )
+      ( wd:Q7187 wdt:P688 wd:Q8054 "encodes" )
+      ( wd:Q8054 wdt:P702 wd:Q7187 "encodedBy" )
+      ( wd:Q8054 wdt:P681 wd:Q15989253 "located in" )
+      ( wd:Q8054 wdt:P703 wd:Q16521 "found in" )
+      ( wd:Q8054 wdt:P682 wd:Q2996394 "biological process" )
+      ( wd:Q12140 wdt:P2175 wd:Q12136 "medical condition treated" )
+      ( wd:Q12136 wdt:P2176 wd:Q12140 "drug used for treatment" )
+      ( wd:Q7187 wdt:P2293 wd:Q12136 "genetic association" )
+      ( wd:Q12136 wdt:P2293 wd:Q7187 "genetic association" )
+       }
+    }'
+    hide-predicates='["<http://schema.org/thumbnail>"]' 
+    graph-style='[
+        {       
+          "selector": "edge",             
+          "style" : {
+            "target-arrow-shape": "triangle",
+            "target-arrow-color": "#bbb",
+            "content": "data(label)",
+            "text-valign": "center",
+            "text-halign": "center",
+            "width": "1",
+            "font-size": "8px",
+            "curve-style": "bezier"
+
+          }
+        },
+
+        {       
+          "selector": "node",
+
+          "style": {
+            "background-fit": "contain",
+            "background-color": "white",
+            "background-image": "{{#if [<http://schema.org/thumbnail>]}}{{{[<http://schema.org/thumbnail>].[0].value}}}{{else}}http://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/200px-No_image_available.svg.png  {{/if}}",
+            "content": "data(label)",
+            "shape": "ellipse",             
+            "text-valign": "bottom",
+            "text-halign": "center",      
+            "font-size": "10px",
+            "border-color": "#bbb",
+            "border-width": "1",
+            "width": "40",
+            "height": "40"
+          }
+        }                
+      ]'                
+    >
+      <semantic-graph-layout-cose-bilkent ideal-edge-length='100' />
+     <!-- <semantic-graph-layout-circle></semantic-graph-layout-circle>-->
+    </semantic-graph>    
+  </div>
+</div>

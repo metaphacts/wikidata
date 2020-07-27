@@ -1,0 +1,24 @@
+    <semantic-simple-search
+      query='
+           PREFIX lookup: <http://www.metaphacts.com/ontologies/platform/repository/lookup#>
+           SELECT DISTINCT ?resource (?name AS ?label) ?description WHERE {
+             
+             SERVICE Repository:lookup {
+                  ?resource lookup:token ?__token__ .
+             }
+             [[#if constraints]] [[constraints]] [[/if]]
+           } 
+           ORDER BY DESC(?score) 
+           LIMIT 10'
+          template='{{> suggestion}}' 
+
+          placeholder='[[placeholder]]'
+          escape-lucene-syntax=false
+          tokenize-lucene-query=false
+    >
+      <template id='suggestion'>
+        <span title='{{resource.value}}'>
+          <mp-resource-thumbnail iri='{{resource.value}}' style="height: 30px;"></mp-resource-thumbnail> {{label.value}} ({{description.value}})
+        </span>
+      </template>
+    </semantic-simple-search>

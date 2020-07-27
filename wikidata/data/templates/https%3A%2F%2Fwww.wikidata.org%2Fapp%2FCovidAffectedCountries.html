@@ -1,0 +1,16 @@
+<semantic-map
+  query='
+PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+
+SELECT ?country ?country_outbreak ?wkt (max(?cases) as ?current_cases) (max(?deaths) as ?current_deaths) WHERE {
+  ?country_outbreak wdt:P361 wd:Q83741704;
+    wdt:P17 ?country;
+      wdt:P625 ?wkt
+  OPTIONAL { ?country_outbreak wdt:P1603 ?cases. }
+  OPTIONAL { ?country_outbreak wdt:P1120 ?deaths. }
+}
+GROUP BY  ?country    ?country_outbreak  ?wkt
+ORDER BY DESC (?cases) DESC (?deaths)
+  '       
+  tuple-template='<semantic-link title="{{{country.value}}}" uri="{{{country_outbreak.value}}}"></semantic-link><br/><b>Cases: {{current_cases.value}}<br/> Deaths: {{current_deaths.value}}</b>'
+></semantic-map>

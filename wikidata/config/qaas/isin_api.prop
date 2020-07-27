@@ -1,0 +1,5 @@
+iri = https://wikidata.metaphacts.com/container/queryTemplateContainer/isin-revenue-profit
+disabled = false
+responseformat = application/sparql-results+json
+aclPermission = qaas:execute:*
+publisher = http://www.metaphacts.com/resource/user/admin

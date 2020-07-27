@@ -1,0 +1,11 @@
+[] a <http://www.openrdf.org/config/repository#Repository> ;
+    <http://www.openrdf.org/config/repository#repositoryID> "wikidata-property-suggester" ;
+    <http://www.w3.org/2000/01/rdf-schema#label> "Repository to test the VISmart word2vec property suggester." ;
+    <http://www.openrdf.org/config/repository#repositoryImpl> _:node1b9j1riotx2 .
+
+_:node1b9j1riotx2 <http://www.openrdf.org/config/repository#repositoryType> "openrdf:SailRepository" ;
+                                    <http://www.openrdf.org/config/repository/sail#sailImpl> _:node1b9j1riotx3 .
+
+_:node1b9j1riotx3 <http://www.openrdf.org/config/sail#sailType> "vismart:WikidataPropertySuggester" ;
+                                    <http://www.metaphacts.com/ontologies/platform/ephedra#serviceURL> "http://ontodia-prop-suggest.apps.vismart.biz/wikidata-prop-suggest" ;
+                                    <http://www.metaphacts.com/ontologies/platform/ephedra#implementsService> <http://www.metaphacts.com/ontologies/platform/service#property-suggester> .

@@ -1,0 +1,55 @@
+
+<div class="page">
+    <div class='page__body'>
+        <bs-col sm=4 sm-offset=4 class="text-center">
+            <img width="200" src="//upload.wikimedia.org/wikipedia/commons/thumb/6/66/Wikidata-logo-en.svg/1052px-Wikidata-logo-en.svg.png"/>
+            <br>
+            <div style="height:80px;" class="text-center">
+                <semantic-simple-search
+                  query='
+                 PREFIX lookup: <http://www.metaphacts.com/ontologies/platform/repository/lookup#>
+                 SELECT ?resource (?name AS ?label) ?description WHERE {
+                   SERVICE Repository:lookup {
+                      ?resource lookup:token ?__token__  .
+                      ?resource lookup:limit 10 .
+                   }
+                 } ORDER BY DESC(?score)
+                   '
+                  template='{{> suggestion}}' 
+                  placeholder='Search for something e.g. "Covid"'
+                  escape-lucene-syntax=false
+                  tokenize-lucene-query=false
+                >
+                  <template id='suggestion'>
+                    <span title='{{resource.value}}'>
+                      <mp-resource-thumbnail iri='{{resource.value}}' style="height: 30px;"></mp-resource-thumbnail> {{label.value}} ({{description.value}})
+                    </span>
+                  </template>
+                </semantic-simple-search>
+            </div> 
+            <!-- <semantic-link iri='[[resolvePrefix "app:About"]]'>About</semantic-link> | -->
+            <semantic-link iri='[[resolvePrefix "app:StructuredSearchGeneral"]]'>Advanced Search</semantic-link> |
+            <semantic-link iri='[[resolvePrefix "app:Examples"]]'>Example Gallery</semantic-link> 
+          <br/><br/>
+           <h3>Use Cases</h3>
+          	<semantic-carousel
+  		query="
+        SELECT ?subject ?thumbnail ?label WHERE {                    
+          VALUES (?subject ?thumbnail ?label){ 
+            (app:LifeSciences 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/Peptide_bond.png/300px-Peptide_bond.png' 'Life Sciences')
+            (app:Geiser '/images/help/map-widget.png' 'Geo Data')
+            (app:Corona 'http://commons.wikimedia.org/wiki/Special:FilePath/COVID-19%20Nurse%20%28cropped%29.jpg' 'Covid')
+          }
+        }"
+  			tuple-template='    <div class="text-center panel panel-default" style="border:none;margin-right:20px;font-size:12px;height:300px;width: 100%;">
+      <div class="panel-body" style="height: 280px;">
+        <img src="{{thumbnail.value}}" style="max-height:260px; margin: 0 auto;" class="img-rounded">
+      </div>
+      <div class="panel-footer" style="position: relative;  border: none;">
+        <semantic-link title="{{label.value}}" class="grid-resource-link" uri="{{subject.value}}">{{label.value}}</semantic>
+      </div>
+    </div>'
+						></semantic-carousel>
+        </bs-col>
+    </div>
+</div>

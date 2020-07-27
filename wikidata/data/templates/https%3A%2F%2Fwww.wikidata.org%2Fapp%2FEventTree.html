@@ -1,0 +1,94 @@
+<style>
+    .page {
+     padding-top: 0px;
+  }
+</style>
+
+[[#> app:FeatureDemonstration title="Property Explorer"]]
+  [[#*inline "motivation"]]
+<p> Dynamic exploration of Wikidata properties </p> 
+    
+  [[/inline]]
+[[#*inline "solution"]]
+    <p> In this example, we show how we can combine a tree view with a dynamic table using our event system across components. </p>
+  [[/inline]]
+  [[#*inline "configuration"]]
+
+
+<div style='display: flex;margin:200px;margin-top:100px;'>
+           <div style='flex: 1'>
+
+        
+          <semantic-tree
+               query=" 
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+PREFIX  wd: <http://www.wikidata.org/entity/>
+
+SELECT DISTINCT (?type as ?node) (?supertype as ?parent)
+{
+         ?type wdt:P279* wd:Q18616576 .   
+          OPTIONAL { ?type  wdt:P279 ?supertype . ?supertype wdt:P279* wd:Q18616576 . }
+
+         FILTER (?type!=wd:Q18616576)                         
+} ORDER BY ?node      " 
+               collapsed="true"
+                keys-opened='["http://www.wikidata.org/entity/Q18616576"]'
+               tuple-template='{{> node}}'>
+            <template id='node'>
+               <mp-event-trigger id='event-trigger' type='Component.TemplateUpdate' data='{"iri": "{{node.value}}"}' targets='["event-target"]'>
+                  <div>
+                    <span>
+                      <a class="event-link"> <mp-label iri='{{node.value}}'></mp-label></a>
+                    </span>
+                  </div>
+                </mp-event-trigger>
+             </template>
+          </semantic-tree>
+        </div>
+        <div style='background: #f5f5f5; flex: 1; padding: 10px 20px'>
+          <mp-event-target-template-render id='event-target' template='{{> template}}'>
+            <template id='template'>
+              <div>
+                {{#if iri}}
+
+                <semantic-table query='
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+PREFIX wd: <http://www.wikidata.org/entity/>
+SELECT * {
+         ?Property wdt:P31/wdt:P279*<{{iri}}> ; rdfs:label ?Label . OPTIONAL {?Property <http://schema.org/description> ?Description. }
+
+                    }
+                  ' 
+                >
+
+                </semantic-table>
+
+
+                {{else}}Select a property from the tree {{/if}}
+              </div>
+            </template>
+          </mp-event-target-template-render>
+       </div>  
+    </div>
+
+[[/inline]]
+	[[#*inline "description"]]
+		<p>Configuration description</p>
+		<p><semantic-link iri="[[resolvePrefix "Help:EventSystem"]]">Learn More</semantic-link></p>
+	[[/inline]]
+  [[#*inline "features"]]
+    <semantic-link iri='app:Start'>Event System</semantic-link>
+  [[/inline]]
+  [[#*inline "demo"]]
+    <div style='height: 500px'> 
+        [[> configuration]]
+    </div>
+  [[/inline]]
+[[/app:FeatureDemonstration]]
+
+
+ 

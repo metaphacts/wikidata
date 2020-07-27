@@ -1,0 +1,90 @@
+<ontodia-sparql-provider
+        provider-settings='{
+      	"defaultPrefix": "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+      	  PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+      	  PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+      	  PREFIX wd: <http://www.wikidata.org/entity/>
+      	  PREFIX owl:  <http://www.w3.org/2002/07/owl#>
+      	  PREFIX lookup: <http://www.metaphacts.com/ontologies/platform/repository/lookup#>",
+      	"schemaLabelProperty": "rdfs:label",
+      	"dataLabelProperty": "rdfs:label",
+      	"fullTextSearch": {
+          "prefix": "",
+          "queryPattern": "
+            SERVICE Repository:lookup {
+               ?inst lookup:token \"${text}\" .
+            }
+            BIND(xsd:integer(substr(str(?inst), 33)) as ?q)
+            "
+        },
+        "classTreeQuery":
+        	"SELECT distinct ?class ?parent WHERE {
+            { ?class wdt:P279 wd:Q35120. }
+              UNION
+            { ?parent wdt:P279 wd:Q35120.
+              ?class wdt:P279 ?parent. }
+              UNION
+            { ?parent wdt:P279/wdt:P279 wd:Q35120.
+              ?class wdt:P279 ?parent. }
+        	}",
+        "linksInfoQuery":
+          "SELECT ?source ?type ?target WHERE {
+            VALUES (?source) {${ids}}
+            VALUES (?target) {${ids}}
+            ${linkConfigurations}
+          }",
+        "elementInfoQuery":
+          "CONSTRUCT {
+            ?inst rdf:type ?class .
+            ?inst ?propType ?propValue.
+          } WHERE {
+            VALUES (?inst) {${ids}}
+            OPTIONAL {
+              ?inst wdt:P31 ?class
+            }
+            OPTIONAL {
+              ${propertyConfigurations}
+              FILTER (isLiteral(?propValue))
+            }
+          }",
+          "imageQueryPattern":
+            "{ ?inst ?linkType ?fullImage } UNION { ?inst wdt:P163/wdt:P18 ?fullImage }
+            BIND(CONCAT(\"https://commons.wikimedia.org/w/thumb.php?f=\",
+              STRAFTER(STR(?fullImage), \"Special:FilePath/\"), \"&w=200\") AS ?image)
+            ",
+          "linkTypesOfQuery":
+            "SELECT DISTINCT ?link WHERE {
+              ${linkConfigurations}
+              ?claim <http://wikiba.se/ontology#directClaim> ?link .
+            }",
+          "linkTypesStatisticsQuery":
+            "SELECT (${linkId} as ?link) (COUNT(?outObject) AS ?outCount) (COUNT(?inObject) AS ?inCount)
+            WHERE {
+              {
+                {
+                  SELECT DISTINCT ?outObject WHERE {
+                    ${linkConfigurationOut}
+                    FILTER(ISIRI(?outObject))
+                    FILTER EXISTS { ?outObject ?someprop ?someobj }
+                  }
+                  LIMIT 101
+                }
+              } UNION {
+                {
+                  SELECT DISTINCT ?inObject WHERE {
+                    ${linkConfigurationIn}
+                    FILTER(ISIRI(?inObject))
+                  }
+                  LIMIT 101
+                }
+              }
+            }",
+          "filterRefElementLinkPattern": "?claim <http://wikiba.se/ontology#directClaim> ?link .",
+          "filterTypePattern": "?inst wdt:P31 ?instType. ?instType wdt:P279* ?class",
+          "filterAdditionalRestriction":
+            "FILTER ISIRI(?inst)",
+          "filterElementInfoPattern":
+            "OPTIONAL { ?inst wdt:P31 ?foundClass }
+            BIND (COALESCE(?foundClass, owl:Thing) as ?class)"
+      }'>
+</ontodia-sparql-provider>

@@ -1,0 +1,17 @@
+
+<https://wikidata.metaphacts.com/container/queryTemplateContainer/persons-name-dob-dod/context> {
+  <https://wikidata.metaphacts.com/container/queryTemplateContainer/persons-name-dob-dod>
+    a <http://spinrdf.org/spin#SelectTemplate>, <http://spinrdf.org/spin#Template>;
+    <http://www.w3.org/2000/01/rdf-schema#comment> "persons-name-dob-dod";
+    <http://www.w3.org/2000/01/rdf-schema#label> "persons-name-dob-dod";
+    <http://spinrdf.org/spin#body> <https://wikidata.metaphacts.com/container/queryContainer/persons-name-dob-dod>;
+    a <http://www.w3.org/ns/prov#Entity>;
+    <http://www.w3.org/ns/prov#wasAttributedTo> <http://www.metaphacts.com/resource/user/querycatalog> ;
+    <http://www.w3.org/ns/prov#generatedAtTime> "2019-05-30T15:32:32.234Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> .
+  
+  <http://www.metaphacts.com/ontologies/platform#queryTemplateContainer> <http://www.w3.org/ns/ldp#contains>
+      <https://wikidata.metaphacts.com/container/queryTemplateContainer/persons-name-dob-dod> .
+  
+  <https://wikidata.metaphacts.com/container/queryTemplateContainer/persons-name-dob-dod>
+    a <http://www.w3.org/ns/ldp#Resource> .
+}

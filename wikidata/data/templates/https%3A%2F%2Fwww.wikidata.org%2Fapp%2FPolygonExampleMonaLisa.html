@@ -1,0 +1,55 @@
+<style>
+    .page {
+     padding-top: 0px;
+  }
+</style>
+
+[[#> app:FeatureDemonstration title="Federated queries over Wikidata and OSM - Mona Lisa"]]
+  [[#*inline "motivation"]]
+  <p>Our simple example use case will deal with museum artifacts and their storage locations. We will retrieve this data from the knowledge graph, combine it using Ephedra with information about geographical borders of these locations from the OpenStreetMap API, and show it as regions on a map.</p>
+  [[/inline]]
+	[[#*inline "solution"]]
+    <p>OpenStreetMap (OSM) is integrated as a REST wrapper service in an Ephedra federation. A federated SPARQL query is issued against Wikidata and OSM that queries for the information about the location of the museum containing "Mona Lisa" from Wikidata: "Mona Lisa" (<code>wd:Q12418</code>) is stored (<code>wdt:P276/wdt:P361*</code>) in Louvre, which is located in (<code>wdt:P131</code>) the 1st arrondissement of Paris. This data is retrieved from the wikidata knowledge graph.</p>
+
+<p>
+Furthermore, the borders of the museum location district (that make it possible to draw it on a map) is retrieved from OpenStreetMap. While this clause is retrieved using a SERVICE keyword, this request is actually sent to a remote OpenStreetMap REST API.</p>
+
+<p>
+The result of this query is applied in the metaphactory platform to display the location district ("1st arrondissement of Paris") on a map using retrieved polygons described in the WKT format:</p>
+  [[/inline]]
+  [[#*inline "configuration"]]
+	<semantic-map id='map-result' 
+		query='
+			PREFIX wd: <http://www.wikidata.org/entity/> 
+			PREFIX osm: <http://www.metaphacts.com/ontologies/osm#> 
+			PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
+			PREFIX wdt: <http://www.wikidata.org/prop/direct/> 
+			SELECT ?label ?wkt WHERE { 
+
+  			wd:Q12418 wdt:P276/wdt:P361* ?museum . 
+  			?museum wdt:P131 ?geolocation . 
+  			?geolocation rdfs:label ?label . 
+  			FILTER (LANG(?label) = "en")
+
+  			SERVICE <http://www.metaphacts.com/ontologies/platform/repository/federation#openstreetmap> { 
+    			?result osm:hasSearchTerm ?label . 
+    			?result osm:polygon ?wkt . 
+  			}
+  			FILTER(STRSTARTS(STR(?wkt), "POLYGON")) 
+			} LIMIT 1'
+		fix-zoom-level=12 > 
+	</semantic-map> 
+  [[/inline]]
+	[[#*inline "description"]]
+		<p>Configuration description</p>
+		<p><semantic-link iri="[[resolvePrefix "Help:SemanticMap"]]">Learn More</semantic-link></p>
+	[[/inline]]
+  [[#*inline "features"]]
+    <semantic-link iri='http://example.com'>SPARQL Federation</semantic-link>, <semantic-link iri='http://example.com'>Ephedra</semantic-link>, <semantic-link iri='http://example.com'>Geographic Map Component</semantic-link>
+  [[/inline]]
+  [[#*inline "demo"]]
+    <div style='height: 500px'> 
+        [[> configuration]]
+    </div>
+  [[/inline]]
+[[/app:FeatureDemonstration]]

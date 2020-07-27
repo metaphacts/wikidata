@@ -1,0 +1,111 @@
+<style>
+    .component-page-toolbar { display: none}
+  
+.page {
+   padding-top: 0px;
+}
+
+  #tabs .tab-ontodia {
+    margin: 0px;
+    padding: 2px 0px 0px;
+    width: 100%;
+    height: calc(100vh - 280px);
+  }
+  
+    .panel-primary > .panel-heading {
+    color: black;
+    background-color: #fafaf9;
+    border-color: #008cba;
+  	height: 60px;
+ padding: 20px 20px 20px 20px; 
+}
+ 
+  .panel-primary {
+  border-color: #008cba;
+   background-color: #fafaf9;
+    border-radius: 2px;
+     border-left-width: 10px;
+  }  
+
+    .page {
+     padding-top: 0px;
+  }
+</style>
+
+[[!-- include default ontodia customization templates --]]
+[[> "http://www.metaphacts.com/resource/OntodiaUserTemplates" ]]
+
+<div class="page">
+  <div class='page__header-navtabs'>
+  </div>
+  <bs-tabs id="tabs" class='page__body-navtabs' unmount-on-exit=true>
+     
+          <bs-tab event-key="2" class="tab-ontodia" title="External Links">
+          <ontodia id='ontodia' hide-navigation-confirmation=true
+
+                query='
+                PREFIX wd: <http://www.wikidata.org/entity/>
+                PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+                PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+
+                        CONSTRUCT { ??  ?direct ?uri }
+                        WHERE {
+
+                        ?? ?direct ?object .
+                         ?property  <http://wikiba.se/ontology#directClaim> ?direct.
+                         {
+                          ?property <http://www.wikidata.org/prop/direct/P31> <http://www.wikidata.org/entity/Q19847637> .
+                         }
+                         UNION
+                         {
+                          ?property  (<http://www.wikidata.org/prop/direct/P31>/<http://www.wikidata.org/prop/direct/P279>*) <http://www.wikidata.org/entity/Q19847637> .
+                         }
+                         ?property <http://www.wikidata.org/prop/direct/P1630> ?url_template .
+                         OPTIONAL
+                         {
+                           ?property <http://www.wikidata.org/prop/direct/P1629> ?organization .
+                         }
+                          BIND(str(REPLACE(?url_template, "\\$1", ENCODE_FOR_URI(?object))) AS ?uri_str)
+                          # robustness: filter non supported characters
+                          FILTER(!REGEX (?uri_str, ".*(\\|).*"))
+                          BIND(URI(?uri_str) AS ?uri)
+                       }'
+                   [[> OntodiaClassAndLinksCustomization ]]
+                      >
+              <ontodia-data-providers>
+                  [[!-- since we use specific magic in populating the diagram, we also need to change elementsInfo query in data provider --]]
+                  [[> "http://www.metaphacts.com/resource/OntodiaExternalLinksDataProvider" ]]
+              </ontodia-data-providers>
+              [[> "http://www.metaphacts.com/resource/OntodiaSimpleWorkspace" readonly=true]]
+          </ontodia>
+       </bs-tab>
+		
+
+
+    [[#if (ask " ASK{{?? <http://www.wikidata.org/prop/direct-normalized/P486>|<http://www.wikidata.org/prop/direct-normalized/P6680> ?meshIri.}}")]]
+    <bs-tab event-key="4" title='Mesh Topical Descriptor'>
+      [[>app:MeshDiseaseTreeInclude]]
+    </bs-tab>
+    [[/if]]
+    
+
+<!--       <bs-tab event-key="100"  title="DBpedia">
+        <mp-code-example>
+<semantic-table query="
+    		PREFIX wd: <http://www.wikidata.org/entity/>
+				SELECT ?predicate ?object WHERE {
+  
+   				 SERVICE <http://dbpedia.org/sparql> { 
+               ?dbpedia owl:sameAs ?? ; 
+                        ?predicate ?object
+                              
+               FILTER(isiri(?object)) 
+           }
+        }
+"></semantic-table>
+          </mp-code-example>
+        </bs-tab>-->
+    
+    [[#if customTabs]][[> customTabs]][[/if]]
+  </bs-tabs>
+</div>

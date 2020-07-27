@@ -1,0 +1,117 @@
+<ontodia-sparql-provider
+        provider-settings='{
+      	"defaultPrefix": "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+      	  PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+      	  PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+      	  PREFIX wd: <http://www.wikidata.org/entity/>
+      	  PREFIX owl:  <http://www.w3.org/2002/07/owl#>",
+      	"schemaLabelProperty": "rdfs:label",
+      	"dataLabelProperty": "rdfs:label",
+      	"fullTextSearch": {
+          "prefix": "PREFIX bds: <http://www.bigdata.com/rdf/search#>",
+          "queryPattern": "?inst rdfs:label ?searchLabel.
+            SERVICE bds:search {
+              ?searchLabel bds:search \"${text}*\" ;
+                bds:minRelevance \"0.5\" ;
+                bds:matchAllTerms \"true\" .
+            }
+            BIND(IF(STRLEN(?strInst) > 33,
+              0-<http://www.w3.org/2001/XMLSchema#integer>(SUBSTR(?strInst, 33)),
+              -10000
+            ) as ?score)
+            "
+        },
+        "classTreeQuery":
+        	"SELECT distinct ?class ?parent WHERE {
+            { ?class wdt:P279 wd:Q35120. }
+              UNION
+            { ?parent wdt:P279 wd:Q35120.
+              ?class wdt:P279 ?parent. }
+              UNION
+            { ?parent wdt:P279/wdt:P279 wd:Q35120.
+              ?class wdt:P279 ?parent. }
+        	}",
+        "linksInfoQuery":
+          "SELECT ?source ?type ?target WHERE {
+            VALUES (?source) {${ids}}
+            VALUES (?target) {${ids}}
+            ${linkConfigurations}
+          }",
+        "elementInfoQuery":
+                "PREFIX wd: <http://www.wikidata.org/entity/>
+                PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+                PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+                PREFIX wikibase: <http://wikiba.se/ontology#>
+
+                CONSTRUCT { ?? a ?class.
+                            ?uri a <http://www.wikidata.org/entity/external>;
+                                skos:prefLabel ?orgLabel.
+                           }
+                WHERE {
+                  ?? ?direct ?object .
+                  OPTIONAL { ?? wdt:P31 ?class. }
+                  ?property wikibase:directClaim ?direct.
+                  {
+                   ?property wdt:P31 wd:Q19847637.
+                  }
+                  UNION
+                  {
+                   ?property (wdt:P31/(wdt:P279*)) wd:Q19847637.
+                  }
+                  ?property wdt:P1630 ?url_template
+                  OPTIONAL {
+                    ?property wdt:P1629 ?organization.
+                    ?organization rdfs:label ?orgLabelMatch.
+                    FILTER (lang(?orgLabelMatch) = \"en\" || lang(?orgLabelMatch) = \"\")
+                  }
+                  BIND(coalesce(?orgLabelMatch, \"wikidata external\") as ?orgLabel)
+                  BIND(str(REPLACE( ?url_template, \"\\\\$1\", encode_for_uri(?object))) AS ?uri_str)
+                  FILTER(!REGEX (?uri_str, \".*(\\\\|).*\"))
+                  BIND(URI(?uri_str) AS ?uri)
+                }
+				",
+          "imageQueryPattern":
+            "{ ?inst ?linkType ?fullImage } UNION { ?inst wdt:P163/wdt:P18 ?fullImage }
+            BIND(CONCAT(\"https://commons.wikimedia.org/w/thumb.php?f=\",
+              STRAFTER(STR(?fullImage), \"Special:FilePath/\"), \"&w=200\") AS ?image)
+            ",
+          "linkTypesOfQuery":
+            "SELECT DISTINCT ?link WHERE {
+              ${linkConfigurations}
+              ?claim <http://wikiba.se/ontology#directClaim> ?link .
+            }",
+          "linkTypesStatisticsQuery":
+            "SELECT (${linkId} as ?link) (COUNT(?outObject) AS ?outCount) (COUNT(?inObject) AS ?inCount)
+            WHERE {
+              {
+                {
+                  SELECT DISTINCT ?outObject WHERE {
+                    ${linkConfigurationOut}
+                    FILTER(ISIRI(?outObject))
+                    ?outObject ?someprop ?someobj.
+                  }
+                  LIMIT 101
+                }
+              } UNION {
+                {
+                  SELECT DISTINCT ?inObject WHERE {
+                    ${linkConfigurationIn}
+                    FILTER(ISIRI(?inObject))
+                    ?inObject ?someprop ?someobj.
+                  }
+                  LIMIT 101
+                }
+              }
+            }",
+          "filterRefElementLinkPattern": "?claim <http://wikiba.se/ontology#directClaim> ?link .",
+          "filterTypePattern": "?inst wdt:P31 ?instType. ?instType wdt:P279* ?class",
+          "filterAdditionalRestriction":
+            "FILTER ISIRI(?inst)
+            BIND(STR(?inst) as ?strInst)
+            FILTER EXISTS { ?inst ?someprop ?someobj }",
+          "filterElementInfoPattern":
+            "OPTIONAL { ?inst wdt:P31 ?foundClass }
+            BIND (COALESCE(?foundClass, owl:Thing) as ?class)
+            OPTIONAL { ?inst rdfs:label ?label }"
+      }'>
+</ontodia-sparql-provider>

@@ -1,0 +1,3 @@
+shiroAuthenticationFilter=authcBasic,anon,authc
+enableLocalUsers=true
+securityConfigStorageId=wikidata

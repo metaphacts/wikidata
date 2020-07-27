@@ -1,0 +1,40 @@
+[[!-- to be included in item tabs, i.e. surrounding --]]
+<semantic-tree query='
+PREFIX fed: <http://www.metaphacts.com/ontologies/platform/repository/federation#>
+PREFIX mesh: <http://id.nlm.nih.gov/mesh/vocab#>
+SELECT ?node ?nodeLabel ?parent ?parentLabel ?meshIri WHERE {
+  [[!--for more updated data SERVICE fed:wdqs --]] { 
+    ?? <http://www.wikidata.org/prop/direct-normalized/P486>|<http://www.wikidata.org/prop/direct-normalized/P6680> ?meshIri.
+  }
+  SERVICE fed:mesh{
+    {
+      ?meshIri mesh:broaderDescriptor* ?top.
+     FILTER NOT EXISTS{?top mesh:broaderDescriptor ?noTopParent. }
+      ?node mesh:broaderDescriptor* ?top.
+      ?node rdfs:label ?nodeLabel.
+      OPTIONAL{
+        ?node mesh:broaderDescriptor ?parent.
+        ?parent rdfs:label ?parentLabel.
+      }
+    }UNION{
+      ?node mesh:broaderDescriptor* ?meshIri.
+      ?node rdfs:label ?nodeLabel.
+      FILTER NOT EXISTS{?noChild mesh:broaderDescriptor ?node. }
+      OPTIONAL{
+        ?node mesh:broaderDescriptor ?parent.
+        ?parent rdfs:label ?parentLabel.
+      }
+    }
+
+    FILTER ( EXISTS{?node mesh:broaderDescriptor* ?meshIri } || EXISTS{ ?meshIri  mesh:broaderDescriptor* ?node})
+    FILTER ( EXISTS{?parent mesh:broaderDescriptor* ?meshIri } || EXISTS{ ?meshIri  mesh:broaderDescriptor* ?parent})
+  }
+  ephedra:Prior ephedra:disableJoinReordering true .
+}'
+               tuple-template='{{> nodeTemplate}}'>
+  <template id="nodeTemplate">
+    <span style='{{#ifCond node.value "===" meshIri.value }}background: cyan;{{/ifCond}}'>
+       <a target="_blank" title='Open Mesh Link {{node.value}} in new tab' href='{{node.value}}'>{{#if nodeLabel}}{{nodeLabel.value}}{{else}}{{node.value}}{{/if}}</a><i style='color:grey;margin-left:10px;' class="fa fa-external-link" aria-hidden="true"></i>
+    </span>
+  </template>
+</semantic-tree>

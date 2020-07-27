@@ -1,0 +1,204 @@
+<style>
+  #search-results .griddle-custom-row {
+    justify-content: space-between;
+  }
+  .facet__category-selector-holder, .facet__relation__content__category-image{
+  	display: none;
+  }
+  
+    .page {
+     padding-top: 0px;
+  }
+  
+</style>
+
+[[#> app:FeatureDemonstration title="Chemical Structure Search"]]
+  [[#*inline "motivation"]]
+<p> Chemical Structure Search is used to represent chemical formulas depend on the user's request. </p> 
+    
+  [[/inline]]
+	[[#*inline "solution"]]
+    <p>The user can easily search for a particular chemical formula by drawing it on the board, as well as find similar ones using similarity threshold.
+ </p>
+  [[/inline]]
+  [[#*inline "configuration"]]
+
+<div class="page">
+  <div class='page__body'> 
+    <semantic-search 
+       projection-variable='substance'
+
+       relations='{
+            "<http://www.wikidata.org/prop/direct/P279>": [{
+               "kind": "resource",
+               "queryPattern": "$subject wdt:P31/wdt:P279* ?__value__ ."              
+            }],
+            "<http://www.wikidata.org/prop/direct/P2868>": [{
+               "kind": "resource",
+               "queryPattern": "$subject wdt:P2868* ?__value__ ."              
+           }]         
+        }'
+
+        search-profile='{
+          "categories": [
+           {
+            "iri": "<http://www.wikidata.org/entity/Q43229>",
+            "label": "Organization",
+            "thumbnail":"///upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Organization_icon.svg/36px-Organization_icon.svg.png"
+          },{
+            "iri": "<http://www.w3.org/2002/07/owl#Class>",
+            "label": "Class",
+            "thumbnail": "../images/help/thenounproject/noun_605904.svg"
+          },{
+            "iri": "<http://www.wikidata.org/entity/Q79529>",
+            "label": "Chemical Substance"
+          },{
+            "iri": "<http://www.wikidata.org/entity/Q50377224>",
+            "label": "Pharmacologic Actions"
+          },{
+            "iri": "<http://www.wikidata.org/entity/Q2057971>",
+            "label": "Health Problem"
+          },{
+            "iri": "<http://www.wikidata.org/entity/Q8054>",
+            "label": "Protein"
+          },{
+            "iri": "<http://www.wikidata.org/entity/Q621636>",
+            "label": "Route of Administration"
+          }
+                        
+          ],
+          "relations": [
+            {
+              "hasDomain": "<http://www.wikidata.org/entity/Q79529>",
+              "iri": "<http://www.wikidata.org/prop/direct/P279>",
+              "hasRange": "<http://www.w3.org/2002/07/owl#Class>",
+              "label": "class"
+            },{
+              "hasDomain": "<http://www.wikidata.org/entity/Q79529>",
+              "iri": "<http://www.wikidata.org/prop/direct/P2868>",
+              "hasRange": "<http://www.wikidata.org/entity/Q50377224>",
+              "label": "has role"
+            },{
+              "hasDomain": "<http://www.wikidata.org/entity/Q79529>",
+              "iri": "<http://www.wikidata.org/prop/direct/P178>",
+              "hasRange": "<http://www.wikidata.org/entity/Q43229>",
+              "label": "developer"
+            },{
+              "hasDomain": "<http://www.wikidata.org/entity/Q79529>",
+              "iri": "<http://www.wikidata.org/prop/direct/P2175>",
+              "hasRange": "<http://www.wikidata.org/entity/Q2057971>",
+              "label": "medical condition treated"
+            },{
+              "hasDomain": "<http://www.wikidata.org/entity/Q79529>",
+              "iri": "<http://www.wikidata.org/prop/direct/P636>",
+              "hasRange": "<http://www.wikidata.org/entity/Q621636>",
+              "label": "route of administration"
+            },{
+              "hasDomain": "<http://www.wikidata.org/entity/Q79529>",
+              "iri": "<http://www.wikidata.org/prop/direct/P129>",
+              "hasRange": "<http://www.wikidata.org/entity/Q8054>",
+              "label": "physically interacts with"
+            },{
+              "hasDomain": "<http://www.wikidata.org/entity/Q79529>",
+              "iri": "<http://www.wikidata.org/prop/direct/P769>",
+              "hasRange": "<http://www.wikidata.org/entity/Q79529>",
+              "label": "significant drug interaction"
+            }
+                          
+          ]
+         }'              
+    >
+        <div>
+            <semantic-search-query-chemical-drawing
+              [[#if (urlParam "smilesCode")]]
+              		example-smiles-code='[[urlParam "smilesCode"]]' 
+                  
+              [[else]]
+                 example-smiles-code='CC(CC1=CC2=C(C=C1)OCO2)NC'    
+                 [[!-- 'O[C@@H]1[C@H](O)[C@H](O)[C@H](O)[C@@H](CO)O1' --]]
+              [[/if]]                       
+              domain='<http://www.wikidata.org/entity/Q79529>'
+              projection-bindings='["substance","similarity","smilesCode","id", "inchi"]'
+              query='
+                SELECT ?substance ?similarity ?wikidataSmilesCode ?id ?inchi  WHERE {
+                  OPTIONAL{?substance wdt:P233 ?wikidataSmilesCode.}
+                }
+              '
+              search-queries='{
+                "exact":"
+                 SELECT ?substance ?similarity ?id ?inchi WHERE {
+                  ?substance wdt:P233 ?o.
+                  FILTER(str(?o)=?smilesCode)
+                  OPTIONAL{?substance wdt:P592 ?id}
+                  OPTIONAL{?substance wdt:P235 ?inchi}
+                  BIND(100 as ?similarity)
+                }",
+                "similarity":"
+                  PREFIX mpfed: <http://www.metaphacts.com/ontologies/platform/repository/federation#>
+                  PREFIX mph: <http://www.metaphacts.com/ontology/>
+                  PREFIX wd: <http://www.wikidata.org/entity/>
+                  PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+                  PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+                  PREFIX chem: <http://www.metaphacts.com/ontologies/chem#>
+                  SELECT ?substance ?similarity ?id ?inchi WHERE {
+                    SERVICE mpfed:chemsimilarity {
+                      ?results chem:hasSMILES ?smilesCode .
+                      ?results chem:hasSimilarityThreshold ?similarityThreshold .
+                      ?results chem:hasMoleculeChEMBLID ?id .
+                      ?results chem:hasSimilarity ?similarity .
+                      ?results chem:hasCanonicalSMILES ?smiles .
+                      ?results chem:hasStandardInChIKey ?inchi .
+                    }
+                    ?substance wdt:P592 ?o.
+                    FILTER(str(?o)=?id)
+                  }
+              "}'
+              ></semantic-search-query-chemical-drawing>
+          </div>
+        	<div data-flex-layout="row stretch-stretch">
+          <div data-flex-self="size-1of3" style="flex: 0 0 20px;">
+            <semantic-search-facet id='semantic-search-facet'></semantic-search-facet>
+          </div>
+          <semantic-search-result-holder>
+            <div data-flex-self="md-full">
+                <semantic-search-result>
+                    <semantic-table id='table-result'
+                                    query='SELECT ?substance ?similarity ?wikidataSmilesCode ?id ?inchi  WHERE {} LIMIT 10'
+                                    column-configuration='[
+                                      {
+                                        "variableName": "substance", "displayName": "Substance",
+                                        "cellTemplate": "<semantic-link class=\"text-centered\" target=\"_blank\" iri=\"{{substance.value}}\">{{#if wikidataSmilesCode.value}}<mp-smiles-code-drawer smiles-code=\"{{wikidataSmilesCode.value}}\"> </mp-smiles-code-drawer>{{/if}}<br><mp-label iri=\"{{substance.value}}\"></mp-label></semantic-link>"                
+                                      },
+                                      {"variableName": "inchi", "displayName": "InChIKey"},
+                                      {"variableName": "similarity", "displayName": "Similarity"},  
+                                      {
+                                        "variableName": "id", "displayName": "Chembl Reference", 
+                                        "cellTemplate": "<a target=\"_blank\" href=\"https://www.ebi.ac.uk/chembl/compound/inspect/{{id.value}}\">{{id.value}}</a>" 
+                                      }
+                                    ]'
+
+                                    options='{"showFilter":false, "resultsPerPage":10}'
+                    >
+                    </semantic-table>
+                </semantic-search-result>
+              </div>
+          </semantic-search-result-holder>
+        </div>
+      </semantic-search>
+  </div>
+</div>
+
+[[/inline]]
+	[[#*inline "description"]]
+		<p>Configuration description</p>
+		<p><semantic-link iri="[[resolvePrefix "Help:SemanticMap"]]">Learn More</semantic-link></p>
+	[[/inline]]
+  [[#*inline "features"]]
+    <semantic-link iri='app:Start'>Semantic Search</semantic-link>,     <semantic-link iri='app:Start'>Similarity Search</semantic-link>
+  [[/inline]]
+  [[#*inline "demo"]]
+    <div style='height: 500px'> 
+        [[> configuration]]
+    </div>
+  [[/inline]]
+[[/app:FeatureDemonstration]]

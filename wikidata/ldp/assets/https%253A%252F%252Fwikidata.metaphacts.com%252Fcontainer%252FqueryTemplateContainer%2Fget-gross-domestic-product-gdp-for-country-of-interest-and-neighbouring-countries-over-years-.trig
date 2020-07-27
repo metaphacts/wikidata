@@ -1,0 +1,40 @@
+
+<https://wikidata.metaphacts.com/container/queryTemplateContainer/get-gross-domestic-product-gdp-for-country-of-interest-and-neighbouring-countries-over-years-/context> {
+  <http://metaphacts.com/query/get-gross-domestic-product-gdp-for-country-of-interest-and-neighbouring-countries-over-years-/arg/0>
+    <http://spinrdf.org/spl#optional> false;
+    <http://spinrdf.org/spl#defaultValue> <http://www.wikidata.org/entity/Q183> .
+  
+  <https://wikidata.metaphacts.com/container/queryTemplateContainer/get-gross-domestic-product-gdp-for-country-of-interest-and-neighbouring-countries-over-years->
+    <http://www.w3.org/2000/01/rdf-schema#comment> "Get gross domestic product (gdp) for country of interest and neighbouring countries over years." .
+  
+  <http://metaphacts.com/query/get-gross-domestic-product-gdp-for-country-of-interest-and-neighbouring-countries-over-years-/arg/0>
+    a <http://spinrdf.org/spl#Argument>;
+    <http://www.w3.org/2000/01/rdf-schema#label> "Country of Interest";
+    <http://spinrdf.org/spl#valueType> <http://www.w3.org/2001/XMLSchema#anyURI> .
+  
+  <https://wikidata.metaphacts.com/container/queryTemplateContainer/get-gross-domestic-product-gdp-for-country-of-interest-and-neighbouring-countries-over-years->
+    <http://spinrdf.org/spin#body> <https://wikidata.metaphacts.com/container/queryContainer/Get_gross_domestic_product_(gdp)_for_country_of_interest_and_neighbouring_countries_over_years.> .
+  
+  <http://metaphacts.com/query/get-gross-domestic-product-gdp-for-country-of-interest-and-neighbouring-countries-over-years-/arg/0>
+    <http://spinrdf.org/spl#predicate> <http://metaphacts.com/query/get-gross-domestic-product-gdp-for-country-of-interest-and-neighbouring-countries-over-years-/predicate/countryOfInterest> .
+  
+  <https://wikidata.metaphacts.com/container/queryTemplateContainer/get-gross-domestic-product-gdp-for-country-of-interest-and-neighbouring-countries-over-years->
+    a <http://spinrdf.org/spin#Template>;
+    <http://www.w3.org/2000/01/rdf-schema#label> "Get gross domestic product (gdp) for country of interest and neighbouring countries over years.";
+    a <http://spinrdf.org/spin#SelectTemplate>;
+    <http://spinrdf.org/spin#constraint> <http://metaphacts.com/query/get-gross-domestic-product-gdp-for-country-of-interest-and-neighbouring-countries-over-years-/arg/0> .
+  
+  <http://metaphacts.com/query/get-gross-domestic-product-gdp-for-country-of-interest-and-neighbouring-countries-over-years-/arg/0>
+    <http://www.w3.org/2000/01/rdf-schema#comment> "Full wikidata country IRI (e.g. http://www.wikidata.org/entity/Q183 = Germany) for which the GDP over years will be retrieved including its neighbouring countries  " .
+  
+  <https://wikidata.metaphacts.com/container/queryTemplateContainer/get-gross-domestic-product-gdp-for-country-of-interest-and-neighbouring-countries-over-years->
+    a <http://www.w3.org/ns/prov#Entity>;
+    <http://www.w3.org/ns/prov#wasAttributedTo> <http://www.metaphacts.com/resource/user/querycatalog> ;
+    <http://www.w3.org/ns/prov#generatedAtTime> "2020-02-05T14:57:38.589Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> .
+  
+  <http://www.metaphacts.com/ontologies/platform#queryTemplateContainer> <http://www.w3.org/ns/ldp#contains>
+      <https://wikidata.metaphacts.com/container/queryTemplateContainer/get-gross-domestic-product-gdp-for-country-of-interest-and-neighbouring-countries-over-years-> .
+  
+  <https://wikidata.metaphacts.com/container/queryTemplateContainer/get-gross-domestic-product-gdp-for-country-of-interest-and-neighbouring-countries-over-years->
+    a <http://www.w3.org/ns/ldp#Resource> .
+}

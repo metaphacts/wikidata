@@ -1,0 +1,68 @@
+PREFIX sp: <http://spinrdf.org/sp#>
+PREFIX spin: <http://spinrdf.org/spin#>
+PREFIX spl: <http://spinrdf.org/spl#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX ephedra: <http://www.metaphacts.com/ontologies/platform/ephedra#>
+PREFIX : <http://www.metaphacts.com/ontologies/platform/service/custom#>
+
+<http://www.metaphacts.com/ontologies/platform/service#property-suggester> a <http://www.metaphacts.com/ontologies/platform/ephedra#Service> ;
+	<http://www.openrdf.org/config/sail#sailType> "vismart:WikidataPropertySuggester" ;
+	<http://www.w3.org/2000/01/rdf-schema#label> "A wrapper for the word2vec-based property suggester from Wikidata." ;
+	<http://www.metaphacts.com/ontologies/platform/ephedra#hasInputCardinality> "1" ;
+	<http://www.metaphacts.com/ontologies/platform/ephedra#hasSPARQLPattern> (
+		[
+			sp:subject :_entity ;
+			sp:predicate <http://www.metaphacts.com/ontologies/platform/service/vismart-word2vec#instance_property> ;
+			sp:object :_instanceproperty
+		]
+		[
+			sp:subject :_entity ;
+			sp:predicate <http://www.metaphacts.com/ontologies/platform/service/vismart-word2vec#term> ;
+			sp:object :_term
+		]
+		[
+			sp:subject :_entity ;
+			sp:predicate <http://www.metaphacts.com/ontologies/platform/service/vismart-word2vec#threshold> ;
+			sp:object :_threshold
+		]
+		[
+			sp:subject :_entity ;
+			sp:predicate <http://www.metaphacts.com/ontologies/platform/service/vismart-word2vec#score> ;
+			sp:object :_score
+		]
+	) ;
+	spin:constraint
+		[
+			a spl:Argument ;
+      rdfs:comment "Instance property to select from" ;
+      spl:predicate :_instanceproperty ;
+      spl:valueType rdfs:Resource
+    ] ;
+	spin:constraint
+		[
+			a spl:Argument ;
+	    rdfs:comment "Search term" ;
+	    spl:predicate :_term ;
+	    spl:valueType xsd:string
+	  ] ;
+	spin:constraint
+		[
+			a spl:Argument ;
+		  rdfs:comment "Threshold" ;
+		  spl:predicate :_threshold ;
+		  spl:valueType xsd:double
+		] ;
+	spin:column
+		[
+			a spin:Column ;
+			rdfs:comment "Relevance score" ;
+			spl:predicate :_score ;
+			spl:valueType xsd:double
+		] ;
+	spin:column
+		[
+			a spin:Column ;
+			rdfs:comment "Suggested property id" ;
+			spl:predicate :_entity ;
+			spl:valueType xsd:string
+		] .

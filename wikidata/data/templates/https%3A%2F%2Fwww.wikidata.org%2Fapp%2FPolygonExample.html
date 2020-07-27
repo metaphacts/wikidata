@@ -1,0 +1,58 @@
+<style>
+    .page {
+     padding-top: 0px;
+  }
+</style>
+
+[[#> app:FeatureDemonstration title="Federated queries over Wikidata and OSM"]]
+  [[#*inline "motivation"]]
+   We want to show a map that combines data from multiple sources: 
+<ul><li>Population density in particular regions as described in Wikidata, and</li>
+  <li> coordinates (polygons) of these regions provided by OpenStreetMap (OSM).</li>
+</ul>
+  [[/inline]]
+	[[#*inline "solution"]]
+    <p>OpenStreetMap (OSM) is integrated as a virtual repository in an Ephedra federation. A federated SPARQL query is issued against Wikidata and OSM that queries for particular regions (here: administrative regions in the district of Karlsruhe), their area and population number (coming from Wikidata) and the corresponding coordinates from OSM. The join across the two repositories becomes possible as OSM uses Wikidata IDs </p>
+      
+      <p>The query result is then visualized using the Semantic Map component, which is able to display polygon areas (in WKT format) and to color these polygons. Here the color is used from green to red to show the density of the population. Green color indicates  areas with lower density, red color shows areas with higher density. </p>
+  [[/inline]]
+  [[#*inline "configuration"]]
+  	<semantic-map query='
+      PREFIX osm: <http://www.metaphacts.com/ontologies/osm#>
+      PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+      PREFIX wd: <http://www.wikidata.org/entity/>
+
+      SELECT (?subject as ?link) ?wkt ?color (round(?density) as ?description)
+      WHERE {
+
+        ?subject wdt:P131+ wd:Q8178    .
+        ?subject wdt:P402 ?code .
+        OPTIONAL { ?subject  wdt:P2046 ?area } 
+        OPTIONAL {?subject wdt:P1082 ?population } 
+
+      SERVICE <http://www.metaphacts.com/ontologies/platform/repository/federation#openstreetmap-lookup> {
+              ?results osm:osmId ?code.
+              ?results rdfs:label ?label .
+              ?results osm:polygon ?wkt .
+              ?results osm:wikidataID ?wikidataID .
+            }
+
+        BIND(?population/?area as ?density)
+        BIND(IF(?density<300, "rgba(0,255,0,0.5)", IF(?density<600, "rgba(255,165,0,0.5)", "rgba(255,0,0,0.5)")) as ?color)
+      }
+    '>
+  	</semantic-map>
+  [[/inline]]
+	[[#*inline "description"]]
+		<p>Configuration description</p>
+		<p><semantic-link iri="[[resolvePrefix "Help:SemanticMap"]]">Learn More</semantic-link></p>
+	[[/inline]]
+  [[#*inline "features"]]
+    <semantic-link iri='http://example.com'>SPARQL Federation</semantic-link>, <semantic-link iri='http://example.com'>Ephedra</semantic-link>, <semantic-link iri='http://example.com'>Geographic Map Component</semantic-link>
+  [[/inline]]
+  [[#*inline "demo"]]
+    <div style='height: 500px'> 
+        [[> configuration]]
+    </div>
+  [[/inline]]
+[[/app:FeatureDemonstration]]

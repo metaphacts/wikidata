@@ -1,0 +1,164 @@
+<style>
+    .page {
+     padding-top: 0px;
+  }
+</style>
+
+
+[[#> app:FeatureDemonstration title="Geo Search"]]
+  [[#*inline "motivation"]]
+<p> Geo Search feature is used to interpret a particular location not only with a Map, but also Grid, Table and Carousel Visualization.  </p> 
+    
+  [[/inline]]
+	[[#*inline "solution"]]
+    <p>The user can easily search for a location and visualize it. 
+ </p>
+  [[/inline]]
+  [[#*inline "configuration"]]
+
+
+  
+<semantic-search>
+
+    <semantic-search-query-keyword escape-lucene-syntax="false"
+      domain='<http://www.wikidata.org/entity/Q12140>'
+      query='
+    PREFIX osm: <http://www.metaphacts.com/ontologies/osm#>
+    SELECT ?subject ?wkt ?link ?label WHERE {
+
+      SERVICE <http://www.metaphacts.com/ontologies/platform/repository/federation#openstreetmap> {
+        ?results osm:hasSearchTerm ?__token__ .
+        ?results rdfs:label ?label .
+        ?results osm:polygon ?wkt .
+        ?results osm:wikidataID ?wikidataID .
+      }
+      FILTER(STRSTARTS(STR(?wkt), "POLYGON")||STRSTARTS(STR(?wkt), "POINT"))
+      BIND(COALESCE(IRI(CONCAT("http://www.wikidata.org/entity/", ?wikidataID)), IRI("https://www.openstreetmap.org/")) AS ?subject)
+    }
+      '
+    ></semantic-search-query-keyword>
+      <div data-flex-layout="row stretch-stretch">
+      <semantic-search-result-holder>
+        <div data-flex-self="md-full">
+          <semantic-search-result>
+            <mp-sparql-result-counts id='query-count'
+                                     query="SELECT  * WHERE {}"
+                                     template='{{#if hasLimit}} <bs-alert bs-style="warning">
+                                               Showing {{numberOfResults}} of {{totalNumberOfResults}} matches. <strong>Please, refine your search.</strong> </bs-alert>
+                                               {{else}} found {{numberOfResults}} matches {{/if}}'>
+            </mp-sparql-result-counts>
+          </semantic-search-result>
+          <bs-tabs unmount-on-exit=true id='search-results' animation=false default-active-key=5>
+            <bs-tab event-key="1" title="Grid">
+              <bs-alert bs-style="info"> Only entities with image representation are shown in the Grid! </bs-alert>
+              <semantic-search-result>
+                <semantic-table id='grid-result'
+                                query='
+                                    PREFIX wd: <http://www.wikidata.org/entity/>
+                                    PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+  
+                                    SELECT DISTINCT ?subject ?thumbnail WHERE {
+                                      OPTIONAL {?subject wdt:P18|wdt:P154|wdt:P117 ?image } 
+                                      BIND(
+                                        REPLACE(
+                                          COALESCE(
+                                            STR(?image),
+                                            "//upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/200px-No_image_available.svg.png"
+                                          ),
+                                          "http://", "//"
+                                        ) as ?thumbnail
+                                      ).
+                                    }'
+                                tuple-template='{{>tupleTemplate}}'
+                                options:='{"showFilter":false, "resultsPerPage":16}'
+                >
+                  <template id='tupleTemplate'>
+                    <div class="rs-grid-element text-center panel panel-default">
+                      <div class="panel-body">
+                        <img src="{{thumbnail.value}}" style="height:120px;max-width:150px;" class="img-rounded">
+                      </div>
+                      <div class="panel-footer" style="position: relative">
+                        <semantic-link class="grid-resource-link" uri="{{subject.value}}"></semantic-link>
+                      </div>
+                    </div>
+                  </template>
+                </semantic-table>
+              </semantic-search-result>
+            </bs-tab>
+            <bs-tab event-key="2" title="Table">
+              <semantic-search-result>
+                <semantic-table id='table-result'
+                                query='SELECT * WHERE { }'
+                                options='{"showFilter":false, "resultsPerPage":10'
+                >
+                </semantic-table>
+              </semantic-search-result>
+            </bs-tab>
+            <bs-tab event-key="4" title="Carousel">
+              <semantic-search-result>
+                <semantic-carousel id='carousel-result'
+                                  query='
+                                    PREFIX wd: <http://www.wikidata.org/entity/>
+                                    PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+  
+                                    SELECT DISTINCT ?subject ?thumbnail WHERE {
+                                      ?subject wdt:P18|wdt:P154|wdt:P117 ?image  
+                                      BIND(
+                                        REPLACE(
+                                          COALESCE(
+                                            STR(?image),
+                                            "//upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/200px-No_image_available.svg.png"
+                                          ),
+                                          "http://", "//"
+                                        ) as ?thumbnail
+                                      ).
+                                    }'
+                                    tuple-template='{{> tupleTemplate}}'
+                                    options='{"centerMode":true, "dots":false}'
+                >
+                  <template id='tupleTemplate'>
+                    <div class="text-center panel panel-default" style="border:none;margin-right:20px;font-size:12px;height:300px;width: 100%;">
+                      <div class="panel-body" style="height: 280px;">
+                        <img src="{{thumbnail.value}}" style="max-height:260px; margin: 0 auto;" class="img-rounded">
+                      </div>
+                      <div class="panel-footer" style="position: relative;  border: none;">
+                        <semantic-link class="grid-resource-link" uri="{{subject.value}}"></semantic-link>
+                      </div>
+                    </div>
+                  </template>
+  
+                </semantic-carousel>
+              </semantic-search-result>
+            </bs-tab>
+            
+             <bs-tab event-key="5" title="Map">                     
+               <semantic-search-result>    
+              <semantic-map id='map-result' query='SELECT ?wkt ?link WHERE { BIND(?subject as ?link)}'>
+                </semantic-map>
+               </semantic-search-result>
+            </bs-tab>    
+            
+          </bs-tabs>
+  
+
+        </div>
+      </semantic-search-result-holder>
+    </div>
+  </semantic-search>  
+  
+
+
+[[/inline]]
+	[[#*inline "description"]]
+		<p>Configuration description</p>
+		<p><semantic-link iri="[[resolvePrefix "Help:SemanticMap"]]">Learn More</semantic-link></p>
+	[[/inline]]
+  [[#*inline "features"]]
+    <semantic-link iri='app:Start'>Semantic Keyword Search</semantic-link>
+  [[/inline]]
+  [[#*inline "demo"]]
+    <div style='height: 500px'> 
+        [[> configuration]]
+    </div>
+  [[/inline]]
+[[/app:FeatureDemonstration]]

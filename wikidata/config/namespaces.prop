@@ -1,0 +1,7 @@
+app = https://www.wikidata.org/app/
+bds = http://www.bigdata.com/rdf/search#
+wdt = http://www.wikidata.org/prop/direct/
+wd = http://www.wikidata.org/entity/
+nextprot = http://nextprot.org/rdf#
+wikibase = http://wikiba.se/ontology#
+bd = http://www.bigdata.com/rdf#

@@ -1,0 +1,76 @@
+<bs-navbar data-fluid='true' class='metaphacts-header-navbar' data-fixed-top='true' data-inverse='true'
+  data-role='navigation'>
+  <bs-navbar-header>
+    <bs-navbar-brand>
+      <a href='/'>
+        {{deploymentTitle}}
+      </a>
+    </bs-navbar-brand>
+    <bs-navbar-toggle />
+  </bs-navbar-header>
+  <bs-navbar-collapse>
+    <ul class='nav navbar-nav'>
+      <bs-nav title='Search'>
+        <mp-resource-link-container propagate-link="true" iri='http://www.metaphacts.com/resource/SimpleSearch'>
+          <bs-nav-item><i class='fa fa-search'></i></bs-nav-item>
+        </mp-resource-link-container>
+      </bs-nav>
+      <li>
+        <mp-link url='/sparql' title='Sparql Endpoint'>SPARQL</mp-link>
+      </li>
+      <bs-nav data-pull-right='true'>
+        {{!-- only show assets menu for admins --}}
+        <mp-has-permission permission='pages:view:*'>
+        <bs-nav-dropdown title='Assets' id='assets-bg-nested-dropdown'>
+          <mp-resource-link-container propagate-link="true" iri='http://www.metaphacts.com/resource/assets/'>
+            <bs-menu-item>All Assets</bs-menu-item>
+          </mp-resource-link-container>
+          <bs-menu-item divider='true'></bs-menu-item>
+          <mp-resource-link-container propagate-link="true" iri='http://www.metaphacts.com/resource/assets/NamedGraphs'>
+            <bs-menu-item>Named Graphs</bs-menu-item>
+          </mp-resource-link-container>
+          <mp-resource-link-container propagate-link="true" iri='http://www.metaphacts.com/resource/assets/Vocabularies'>
+            <bs-menu-item>Vocabularies</bs-menu-item>
+          </mp-resource-link-container>
+          <mp-resource-link-container propagate-link="true" iri='http://www.metaphacts.com/resource/assets/Ontologies'>
+            <bs-menu-item>Ontologies</bs-menu-item>
+          </mp-resource-link-container>
+          <mp-resource-link-container propagate-link="true" iri='http://www.metaphacts.com/resource/assets/QueryTemplates'>
+            <bs-menu-item>Query Templates</bs-menu-item>
+          </mp-resource-link-container>
+          <mp-resource-link-container propagate-link="true" iri='http://www.metaphacts.com/resource/assets/Fields'>
+            <bs-menu-item>Fields</bs-menu-item>
+          </mp-resource-link-container>
+          <bs-menu-item divider='true'></bs-menu-item>
+          <mp-resource-link-container propagate-link="true" iri='http://www.metaphacts.com/resource/assets/Diagrams'>
+            <bs-menu-item>Diagrams</bs-menu-item>
+          </mp-resource-link-container>
+        </bs-nav-dropdown>
+        </mp-has-permission>
+        
+        <mp-has-permission permission='pages:view:*'>
+        <bs-nav title='Data Import & Export'>
+          <mp-resource-link-container propagate-link="true" iri='http://www.metaphacts.com/resource/admin/DataImportExport'>
+            <bs-nav-item><i class='fa fa-cloud-upload'></i></bs-nav-item>
+          </mp-resource-link-container>
+        </bs-nav>
+        </mp-has-permission>
+        
+        <mp-has-permission permission='pages:view:*'>
+          <bs-nav title='System Administration'>
+            <mp-resource-link-container propagate-link="true" iri='http://www.metaphacts.com/resource/admin/'>
+              <bs-nav-item><i class='fa fa-cog'></i></bs-nav-item>
+            </mp-resource-link-container>
+          </bs-nav>
+        </mp-has-permission>
+        <bs-nav title='Help'>
+          <mp-resource-link-container propagate-link="true" iri='http://help.metaphacts.com/resource/Start'>
+            <bs-nav-item><i class='fa fa-question-circle'></i></bs-nav-item>
+          </mp-resource-link-container>
+        </bs-nav>
+        <mp-nav-account></mp-nav-account>
+        <mp-user-language-switch></mp-user-language-switch>
+      </bs-nav>
+    </ul>
+  </bs-navbar-collapse>
+</bs-navbar>

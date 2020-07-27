@@ -1,0 +1,74 @@
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix mpqa: <http://www.metaphacts.com/ontologies/qa#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rules: <http://www.metaphacts.com/instances/qaRules#> .
+@prefix wdt: <http://www.wikidata.org/prop/direct/> .
+
+# example of rule that uses inline query, that get all resources that don't
+# have rdfs:label
+rules:NoLabelForTypedEntitiesQuery
+	a sh:NodeShape ;
+  sh:targetSubjectsOf rdf:type ;
+	sh:sparql [
+		a sh:SPARQLConstraint ;
+		sh:message """No rdfs:label for typed entity (query).""" ;
+    sh:severity sh:Error ;
+  	sh:select """
+      PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+      SELECT DISTINCT ?this {
+        FILTER(NOT EXISTS { ?this rdfs:label ?value. })
+      }
+    """
+	] .
+
+# example of rule that uses SPIN Query Template from query catalog
+# rules:DanglingMatchesQueryCatalog
+# 	a sh:NodeShape ;
+#   sh:targetObjectsOf skos:exactMatch ;
+#   sh:deactivated true ; # deactivated by default
+#	  sh:sparql [
+#			a sh:SPARQLConstraint ;
+#			sh:message """Dangling skos:exactMatch.""" ;
+#   	sh:severity sh:Error ;
+#			mpqa:hasSPINQueryTemplate <http://example.com/query-from-catalog> ;
+#		] .
+
+
+
+# example of simple SHACL rule, that looks for typed entities
+# that don't have at least one rdfs:label
+rules:NoLabelForTypedEntities
+	a sh:NodeShape ;
+  sh:targetSubjectsOf rdf:type ;
+  sh:property rules:NoLabelForTypedEntitiesShape .
+
+# all nested shapes should have explicit IRI, please don't use blank nodes
+#rules:NoLabelForTypedEntitiesShape
+#    sh:path rdfs:label ;
+#    sh:minCount 1 ;
+#    sh:message "No rdfs:label for typed entity.".
+
+rules:Check3
+a sh:NodeShape ;
+ sh:targetSubjectsOf wdt:P31 ;
+    sh:sparql [
+        a sh:SPARQLConstraint ;
+        sh:message """Persons withs Date of Birth after Date of Death""" ;
+   sh:severity sh:Error ;
+     sh:select """
+      PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+      PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+      PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+      PREFIX wd: <http://www.wikidata.org/entity/>
+      SELECT ?this WHERE {
+        ?this wdt:P31 ?sub0 .
+        ?sub0 (wdt:P279)* wd:Q5.
+        ?this wdt:P569 ?dob.
+       ?this wdt:P570 ?dod.
+        FILTER (?dob > ?dod).
+      }
+"""
+] .

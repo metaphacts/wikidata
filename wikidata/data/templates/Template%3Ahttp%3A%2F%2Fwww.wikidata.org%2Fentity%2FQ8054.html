@@ -1,0 +1,62 @@
+[[#> "Template:http://wikidata.org/ontology/Item" customTabs=true]]
+  [[#*inline "customTabs"]]
+		[[#if (ask "ASK { ?? wdt:P352 ?UniProtID }")]]
+			<bs-tab event-key="6" title="Proteoforms">
+        <semantic-query query='SELECT * WHERE { ?? wdt:P352 ?UniProtID }' template='{{> template}}'>
+          <template id='template'>
+            <div>
+              <img style="width: 100%" src="http://wlab.ethz.ch/protter/create?up={{bindings.0.UniProtID.value}}&tm=auto&mc=lightsalmon&lc=blue&tml=numcount&numbers&legend&n:signal%20peptide,fc:red,bc:red=UP.SIGNAL&n:disulfide%20bonds,s:box,fc:greenyellow,bc:greenyellow=UP.DISULFID&n:variants,s:diamond,fc:orange,bc:orange=UP.VARIANT&n:PTMs,s:box,fc:forestgreen,bc:forestgreen=UP.CARBOHYD,UP.MOD_RES&format=svg"><br/>
+              <a href="http://wlab.ethz.ch/protter/#up={{bindings.0.UniProtID.value}}&tm=auto&mc=lightsalmon&lc=blue&tml=numcount&numbers&legend&n:signal peptide,fc:red,bc:red=UP.SIGNAL&n:disulfide bonds,s:box,fc:greenyellow,bc:greenyellow=UP.DISULFID&n:variants,s:diamond,fc:orange,bc:orange=UP.VARIANT&n:PTMs,s:box,fc:forestgreen,bc:forestgreen=UP.CARBOHYD,UP.MOD_RES&format=svg" target="_blank">Open visualization in Protter</a>
+            </div>
+          </template>
+        </semantic-query>
+    	</bs-tab>
+		[[/if]]
+		<bs-tab event-key="7" title="Expressions">
+      <div>
+        <semantic-query query='SELECT * WHERE { ?? wdt:P352 ?UniProtID }' template='{{> template}}'>
+          <template id='template'>
+            <p>Tissue expression from <a href="https://www.nextprot.org/entry/NX_{{bindings.0.UniProtID.value}}/expression" target="_blank">neXtProt</a></p>
+          </template>
+        </semantic-query>
+        <semantic-table query='SELECT * WHERE {
+  ?? <http://www.wikidata.org/prop/direct-normalized/P352> ?uniprot
+
+  SERVICE <https://api.nextprot.org/sparql>  {
+  ?nextprot skos:exactMatch ?uniprot .
+
+   ?nextprot nextprot:isoform / nextprot:expressionProfile ?expression .
+   ?expression rdfs:comment ?comment ; nextprot:term/rdfs:label ?term ; nextprot:evidence ?evidence .
+   ?evidence nextprot:expressionLevel  ?expressionLevel ; nextprot:quality ?quality ; nextprot:evidenceCode ?evidenceCode
+
+  }
+}' column-configuration='[
+	{"variableName":"term", "displayName":"Term"},
+  {"variableName":"evidence", "displayName":"Evidence"},
+  {"variableName":"expressionLevel", "displayName":"Expression level"},
+  {"variableName":"evidenceCode", "displayName":"Evidence code"},
+  {"variableName":"quality", "displayName":"Quality"}
+]' options='{"resultsPerPage":10}'></semantic-table>
+      </div>
+    </bs-tab>
+    [[#if (ask "ASK { ?? wdt:P638 ?PDBID }")]]
+      <bs-tab event-key="8" title="Protein Viewer">
+        <semantic-query query='SELECT * WHERE { ?? wdt:P638 ?PDBID }' template='{{> template}}'>
+          <template id='template'>
+              {{#if bindings.0.PDBID}}
+                <div style='position: relative;'>
+                  <mp-protein-viewer url="https://files.rcsb.org/view/{{bindings.0.PDBID.value}}.pdb" style="height: 500px;"></mp-protein-viewer>
+                  <mp-overlay-dialog title="Protein Viewer" type="modal" bs-size="large">
+                    <mp-overlay-dialog-trigger><i class="fa fa-arrows-alt"></i></mp-overlay-dialog-trigger>
+                    <mp-overlay-dialog-content>
+                      <div><mp-protein-viewer url="https://files.rcsb.org/view/{{bindings.0.PDBID.value}}.pdb" style="height:60vh"></mp-protein-viewer></div>
+                    </mp-overlay-dialog-content>
+                  </mp-overlay-dialog>
+                </div>
+              {{/if}}
+          </template>
+        </semantic-query>
+      </bs-tab>
+    [[/if]]
+  [[/inline]]
+[[/Template:http://wikidata.org/ontology/Item]]

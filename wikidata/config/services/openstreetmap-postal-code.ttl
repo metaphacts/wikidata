@@ -1,0 +1,109 @@
+PREFIX sp: <http://spinrdf.org/sp#>
+PREFIX spin: <http://spinrdf.org/spin#>
+PREFIX spl: <http://spinrdf.org/spl#>
+PREFIX osm: <http://www.metaphacts.com/ontologies/osm#>
+PREFIX geo: <http://www.opengis.net/ont/geosparql#>
+PREFIX ephedra: <http://www.metaphacts.com/ontologies/platform/ephedra#>
+PREFIX : <http://www.metaphacts.com/ontologies/platform/service/custom#>
+
+<http://www.metaphacts.com/ontologies/platform/service#openstreetmap-postal-code> a ephedra:Service ;
+    <http://www.openrdf.org/config/sail#sailType> "metaphacts:RESTService" ;
+    <http://www.w3.org/2000/01/rdf-schema#label> "A wrapper for the OpenStreetMap service, for postal code based search." ;
+    ephedra:hasInputCardinality "1" ;
+    ephedra:hasSPARQLPattern (
+        [
+            sp:subject :_results ;
+            sp:predicate osm:hasSearchTerm ;
+            sp:object :_postalcode
+        ]
+        [
+            sp:subject :_results ;
+            sp:predicate osm:polygonText ;
+            sp:object :_polygon_text
+        ]
+        [
+            sp:subject :_results ;
+            sp:predicate osm:format ;
+            sp:object :_format
+        ]
+        [
+            sp:subject :_results ;
+            sp:predicate osm:extratags ;
+            sp:object :_extratags
+        ]
+        [
+            sp:subject :_results ;
+            sp:predicate rdfs:label ;
+            sp:object :_display_name
+        ]
+        [
+            sp:subject :_results ;
+            sp:predicate osm:polygon ;
+            sp:object :_geotext
+        ]
+        [
+            sp:subject :_results ;
+            sp:predicate osm:wikidataID ;
+            sp:object :_wikidataID
+        ]
+    ) ;
+    spin:constraint
+    [
+        a spl:Argument ;
+        rdfs:comment "postalcode" ;
+        spl:predicate :_postalcode ;
+        spl:valueType xsd:string
+    ] ;
+    spin:constraint
+    [
+        a spl:Argument ;
+        rdfs:comment "polygon text flag" ;
+        spl:predicate :_polygon_text ;
+        spl:valueType xsd:integer
+    ] ;
+    spin:constraint
+    [
+        a spl:Argument ;
+        rdfs:comment "format" ;
+        spl:predicate :_format ;
+        spl:valueType xsd:string
+    ] ;
+    spin:constraint
+    [
+        a spl:Argument ;
+        rdfs:comment "extra tags flag" ;
+        spl:predicate :_extratags ;
+        spl:valueType xsd:integer
+    ] ;
+    spin:column
+    [
+        a spin:Column ;
+        rdfs:comment "results" ;
+        spl:predicate :_results ;
+        spl:valueType rdfs:Resource;
+        ephedra:jsonPath "$"
+    ] ;
+    spin:column
+    [
+        a spin:Column ;
+        rdfs:comment "display name" ;
+        spl:predicate :_display_name ;
+        spl:valueType xsd:string;
+        ephedra:jsonPath "$.display_name"
+    ] ;
+    spin:column
+    [
+        a spin:Column ;
+        rdfs:comment "geotext" ;
+        spl:predicate :_geotext ;
+        ephedra:jsonPath "$.geotext" ;
+        spl:valueType geo:wktLiteral
+    ] ;
+    spin:column
+    [
+        a spin:Column ;
+        rdfs:comment "wikidataID" ;
+        spl:predicate :_wikidataID ;
+        ephedra:jsonPath "$.extratags.wikidata" ;
+        spl:valueType xsd:string
+    ] .

@@ -1,0 +1,41 @@
+
+<div class="page">
+  <div class="page__body">
+    
+    	<h2>Outgoing Statements</h2>
+        <semantic-table
+               query='
+                 SELECT ?property ?object WHERE {
+                   ?? ?property ?object .
+                   ?direct  <http://wikiba.se/ontology#directClaim> ?property .
+                 } LIMIT 1000'
+              column-configuration='[
+                {"variableName":"property", "displayName":"Property"},
+                {"variableName":"object", "displayName":"Object"}
+              ]'
+              options='{
+                "resultsPerPage":10
+              }'>
+        </semantic-table>
+
+        <h2>Incoming Statements</h2>
+				<semantic-table
+              query='
+                SELECT ?property ?subject WHERE {
+                  ?subject ?property ?? .
+                  ?direct <http://wikiba.se/ontology#directClaim> ?property .
+                } LIMIT 1000
+              '
+              column-configuration='[
+                {"variableName":"property", "displayName":"Property"},
+                {"variableName":"subject", "displayName":"Subject"}
+              ]' options='{
+                "resultsPerPage":10
+              }'>
+        </semantic-table>
+
+        <br>
+        <br>
+        <i>Please note that the tables above are limted to 1000 statements. </i>
+  </div>
+</div>

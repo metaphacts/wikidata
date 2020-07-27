@@ -1,0 +1,53 @@
+[[!-- property suggestion query for connections menu to suggest property based on linguistics similarity
+--]]
+property-suggestion-query='
+  PREFIX ns: <http://www.metaphacts.com/ontologies/platform/service/vismart-word2vec#>
+  PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+  PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+  SELECT ?id ?score WHERE {
+    ?id ns:instance_property ?property.
+    ?id ns:term ?term.
+    ?id ns:threshold "0.1"^^xsd:double.
+    ?id ns:score ?score.
+  }'
+
+[[!-- combine blazegraph path search (effecient, but limited in terms of constraints/path direction) and
+simple triple patterns match
+--]]
+find-relationship-query='
+  PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+  PREFIX gas: <http://www.bigdata.com/rdf/gas#>
+  PREFIX hint: <http://www.bigdata.com/queryHints#>
+  PREFIX wd: <http://www.wikidata.org/entity/>
+
+  CONSTRUCT {
+    ?predecessor ?linkType ?out . ?in ?p1 ?o . ?target ?p2 ?o . ?s ?p1 ?in . ?s ?p2 ?target
+  }
+  WHERE {
+    hint:Query hint:optimizer "None" .
+    {
+      { SELECT ?predecessor ?out {
+          SERVICE gas:service {
+            gas:program gas:gasClass "com.bigdata.rdf.graph.analytics.BFS" .
+            gas:program gas:in ?in .            # one or more times,specifies the initial frontier.
+            gas:program gas:target ?target .    # only retain verticesalong paths to these target vertices.
+            gas:program gas:out ?out .          # exactly once - will be bound to the visited vertices.
+            gas:program gas:out1 ?depth .       # exactly once - will be bound to the depth of the visited vertices.
+            gas:program gas:out2 ?predecessor . # exactly once - will be bound to the predecessor.
+            gas:program gas:maxIterations 4 .   # optional limit on breadth first expansion.
+            gas:program gas:maxVisited 20000 .  # optional limit on the #of visited vertices.
+          }
+          FILTER(BOUND(?predecessor))
+      } }
+      ?predecessor ?linkType ?out .
+    }
+    UNION
+    {
+      ?s ?p1 ?in . ?s ?p2 ?target
+    }
+    UNION
+    {
+      ?in ?p1 ?o . ?target ?p2 ?o FILTER (isIRI(?o))
+    }
+  }'
+

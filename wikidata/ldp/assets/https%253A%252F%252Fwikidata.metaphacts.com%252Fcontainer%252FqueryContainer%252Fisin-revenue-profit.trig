@@ -1,0 +1,27 @@
+<https://wikidata.metaphacts.com/container/queryContainer/isin-revenue-profit/context> {
+  <https://wikidata.metaphacts.com/container/queryContainer/isin-revenue-profit> a <http://spinrdf.org/sp#Query>,
+      <http://spinrdf.org/sp#Select>;
+    <http://www.w3.org/2000/01/rdf-schema#label> " ISIN Revenue Profit";
+    <http://spinrdf.org/sp#text> """
+
+PREFIX up:<http://purl.uniprot.org/core/>
+PREFIX taxon:<http://purl.uniprot.org/taxonomy/>
+PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#>
+PREFIX wd: <http://www.wikidata.org/entity/>
+PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+SELECT ?s ?isin ?revenue ?profit
+WHERE
+{
+?s wdt:P946 ?isin ; wdt:P2139 ?revenue; wdt:P2295 ?profit
+}
+LIMIT 10""";
+    a <http://www.w3.org/ns/prov#Entity>;
+    <http://www.w3.org/ns/prov#wasAttributedTo> <http://www.metaphacts.com/resource/user/admin>;
+    <http://www.w3.org/ns/prov#generatedAtTime> "2019-05-30T15:32:14.221Z"^^<http://www.w3.org/2001/XMLSchema#dateTime> .
+
+  <http://www.metaphacts.com/ontologies/platform#queryContainer> <http://www.w3.org/ns/ldp#contains>
+      <https://wikidata.metaphacts.com/container/queryContainer/isin-revenue-profit> .
+
+  <https://wikidata.metaphacts.com/container/queryContainer/isin-revenue-profit> a <http://www.w3.org/ns/ldp#Resource> .
+}

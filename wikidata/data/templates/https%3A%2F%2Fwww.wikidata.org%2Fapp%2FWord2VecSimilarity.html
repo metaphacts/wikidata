@@ -1,0 +1,167 @@
+<style>
+  .Select {
+  	width: 650px;
+     display: block;
+  margin-left: auto;
+  margin-right: auto;
+    margin-bottom: 50px;
+  }
+  #p1 {
+  	margin-left:320px;
+    width: 650px;
+  }
+  
+  #p {
+  text-align: justify;
+  }
+  
+
+    .page {
+     padding-top: 0px;
+  }
+</style>
+
+[[#> app:FeatureDemonstration title="Word2vec Similarity"]]
+  [[#*inline "motivation"]]
+<p> We want to search for entities similar to a given entity, where the similarity is provided by an ML-based model.
+ </p> 
+    
+  [[/inline]]
+	[[#*inline "solution"]]
+    <p>We combine the explicit data from Wikidata with an implicit model based on word embeddings. Specifically, we use the <a href="https://en.wikipedia.org/wiki/Word2vec">Word2vec</a> model used to represent similar instances based on a textual description. Here, the Word2vec model is trained based on the English Wikipedia abstracts of the corresponding Wikidata entities. The model provided by the <a href="https://tools.wmflabs.org/wembedder/most-similar/" target="_blank">wembedder most-similar service</a> is integrated as virtual repository via our Ephedra federation layer and can accessed a SERVICE endpoint. </p>
+<p>In the search form, users can first search for some entity. Upon selection, the search for similar entities is triggered.
+ </p>
+  [[/inline]]
+  [[#*inline "configuration"]]
+
+<div class="page">
+  <div class='page__body'>
+    <p id="p1">Find similar instances</p>
+  <semantic-search>
+    <semantic-search-query-entities 
+            template='{{> suggestion}}'
+            placeholder='Search for something e.g. "Karlsruhe" or "Siemens"'             
+            multi='false'
+            escape-lucene-syntax='false'
+            tokenize-lucene-query='false'
+            search-query='
+            PREFIX lookup: <http://www.metaphacts.com/ontologies/platform/repository/lookup#>
+             SELECT distinct ?resource (?name AS ?label) ?description WHERE {
+               SERVICE Repository:lookup  {
+                  ?resource lookup:token ?__token__ .
+                  ?resource lookup:limit 10 .
+                }
+             } 
+             ORDER BY DESC(?Score) LIMIT 10'     
+            query='PREFIX word2vec: <http://www.metaphacts.com/ontologies/word2vec#>
+									 PREFIX wd: <http://www.wikidata.org/entity/>
+										SELECT DISTINCT ?subject ?similarity WHERE {
+                      BIND(STRAFTER(STR(?resource), STR(wd:)) AS ?qName)
+                      SERVICE SILENT <http://www.metaphacts.com/ontologies/platform/repository/federation#most-similar> {
+                        ?res word2vec:search ?qName .
+                        ?res word2vec:item ?newQName ;
+                             word2vec:similarity ?similarity .
+                      }
+                      FILTER (BOUND(?newQName))
+                      BIND(URI(CONCAT(STR(<http://www.wikidata.org/entity/>), STR(?newQName))) AS ?subject)
+                   }'
+            default-query='PREFIX wd: <http://www.wikidata.org/entity/>
+                           SELECT DISTINCT  ?resource ?label ?description  WHERE {
+                             VALUES(?resource) {
+                               (wd:Q2) (wd:Q5598) (wd:Q183)
+                             }
+                             ?resource rdfs:label ?label ;
+                                       <http://schema.org/description> ?description .
+                             
+                             FILTER(LANG(?label) = "en")
+                             FILTER(LANG(?description) = "en")
+                           }'
+             >
+          <template id='suggestion'>
+            <span title='{{resource.value}}'>
+              <mp-resource-thumbnail iri='{{resource.value}}' style="height: 40px;"></mp-resource-thumbnail>    {{label.value}} ({{description.value}})
+            </span>
+          </template>
+    </semantic-search-query-entities>
+    <style>
+  #search-results .griddle-custom-row {
+    justify-content: space-between; 
+  }
+</style>
+
+<div data-flex-layout="row stretch-stretch">
+  
+
+	<semantic-search-result-holder>
+    <div data-flex-self="md-full">
+      <bs-tabs unmount-on-exit=true id='search-results' animation=false>
+        <bs-tab event-key="1" title="Grid">
+          <semantic-search-result>
+            <semantic-table id="results-grid"
+            	query='
+              	SELECT DISTINCT (?subject as ?item) WHERE {
+                } ORDER BY DESC(?similarity)
+              '
+              tuple-template='{{> app:ItemCard}}'
+              options='{"showFilter":false, "resultsPerPage":16}'
+              no-result-template='No similar items found. Try another instance...'
+            >
+            </semantic-table>
+          </semantic-search-result>
+        </bs-tab>
+        <bs-tab event-key="2" title="Table">
+          <semantic-search-result>
+            <semantic-table id="results-table"
+            	query='SELECT DISTINCT ?subject WHERE { }'
+              layout='{
+              	"options": {"showFilter":false, "resultsPerPage":10}
+              }'
+              no-result-template='No similar items found. Try another instance...'
+            >
+            </semantic-table>
+          </semantic-search-result>
+        </bs-tab>
+        [[#if customTabs]]
+        	[[> customTabs]]
+        [[/if]]
+      </bs-tabs>
+
+      <bs-panel>
+        <semantic-search-result>
+          <mp-sparql-download id="csv-download" query="SELECT * WHERE { }"
+          	header="text/csv"
+            filename="csv-result.csv"
+          >
+            <button class="btn btn-default">Download CSV</button>
+          </mp-sparql-download>
+        </semantic-search-result>
+        <semantic-search-result>
+          <mp-sparql-download id="json-download" query="SELECT * WHERE { }"
+          	header="application/sparql-results+json"
+            filename="json-result.json"
+          >
+            <button class="btn btn-default">Download JSON</button>
+          </mp-sparql-download>
+        </semantic-search-result>
+      </bs-panel>
+    </div>
+  </semantic-search-result-holder>
+</div>
+  </semantic-search>
+  </div>
+</div>
+
+[[/inline]]
+	[[#*inline "description"]]
+		<p>Configuration description</p>
+		<p><semantic-link iri="[[resolvePrefix "Help:SemanticSearch"]]">Learn More</semantic-link></p>
+	[[/inline]]
+  [[#*inline "features"]]
+    <semantic-link iri='app:Start'>Similarity Search</semantic-link>
+  [[/inline]]
+  [[#*inline "demo"]]
+    <div style='height: 500px'> 
+        [[> configuration]]
+    </div>
+  [[/inline]]
+[[/app:FeatureDemonstration]]

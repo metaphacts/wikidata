@@ -1,0 +1,18 @@
+@prefix fedx: <http://rdf4j.org/config/federation#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix rep: <http://www.openrdf.org/config/repository#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+[] a rep:Repository;
+  rep:repositoryID "fedx-transparent-federation";
+  rep:repositoryImpl [
+      fedx:member [
+          fedx:repositoryName "default";
+          fedx:store "ResolvableRepository"
+        ], [
+          fedx:repositoryName "mesh-sparql";
+          fedx:store "ResolvableRepository"
+        ];
+      rep:repositoryType "metaphactory:FedXRepository"
+    ];
+  rdfs:label "FedX Federation" .

@@ -1,0 +1,216 @@
+
+<div style='height: calc(100vh - 60px)'>
+  <mp-workspace-layout horizontal-collapsed-size=0>
+    <mp-workspace-row>
+      <mp-workspace-item id='selector' default-size=300>
+        <div class='grid-demo' style='flex: 1'>
+        
+          	
+            <div>
+              <semantic-table
+                        query='
+            PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+            PREFIX wd: <http://www.wikidata.org/entity/>
+            PREFIX p: <http://www.wikidata.org/prop/>
+            PREFIX ps: <http://www.wikidata.org/prop/statement/>
+            PREFIX pq: <http://www.wikidata.org/prop/qualifier/>
+            SELECT * WHERE {
+              wd:Q83741704 wdt:P527 ?covidCountry .
+              ?covidCountry wdt:P17 ?country .
+              
+              ?covidCountry p:P1603 ?casesStmt .
+              ?casesStmt ps:P1603 ?cases .
+              ?casesStmt pq:P585 ?dateTime .
+
+              FILTER NOT EXISTS {
+                ?covidCountry p:P1603/pq:P585 ?dateTime1 .
+                FILTER(?dateTime1 > ?dateTime)
+              }
+            } ORDER BY DESC(?cases)'
+                        column-configuration='[
+                            {"variableName": "country",
+                              "displayName": "Country",
+                              "cellTemplate": "{{> countrySelector country=country.value covidCountry=covidCountry.value}}"
+                             },
+                             {"variableName": "cases",
+                              "displayName": "Recent number of cases",
+                              "cellTemplate": "{{> casesTemplate cases=cases.value}}"
+                             }
+                         ]'
+                              >
+                <template id='countrySelector'>
+                  <div class='event-link'>
+                    <mp-event-trigger id='event-trigger' type='Component.TemplateUpdate' data='{"iri": "{{covidCountry}}", "country": "{{country}}"}' targets='["event-target"]'>
+                      <a><mp-label iri='{{country}}'></mp-label></a>
+                    </mp-event-trigger>
+                  </div>
+                </template>
+                <template id='casesTemplate'>
+                  <span>{{cases}}</span>
+                </template>
+              </semantic-table>
+            </div>
+        
+        
+        </div>
+      </mp-workspace-item>
+      <mp-workspace-item id='contentArea' undocked=true>
+        <div style='flex: 1 1 0px; overflow-y: auto; padding: 20px;'>
+        
+         <div>
+          <mp-event-target-template-render id='event-target' template='{{> contentTemplate}}'>
+            <template id='contentTemplate'>
+              <div>
+                {{#if iri}}
+                <div class='media' style='margin-bottom: 15px'>
+                  <div class='media-left'>
+                  <semantic-query 
+                    query='
+                      SELECT ?image WHERE {                    
+                        <{{iri}}> wdt:P1846 ?image .
+                      }
+                    ' 
+                    template='{{> template}}'
+                  >
+                    <template id='template'>
+                      <div>
+                      {{#each bindings}}
+                        <mp-overlay-dialog>
+                          <mp-overlay-dialog-trigger>
+                            <a><img src='{{image.value}}' style='max-width: 100px; max-height: 100px' /></a>
+                          </mp-overlay-dialog-trigger>
+                          <mp-overlay-dialog-content>
+                            <img src='{{image.value}}' style='max-width: 100%; max-height: 100%' />
+                          </mp-overlay-dialog-content>
+                        </mp-overlay-dialog>
+                      {{/each}}
+                      </div>
+                    </template>
+                  </semantic-query>
+                 </div>
+                 <div class='media-body'>
+                  <h2 class='media-heading'><mp-label iri='{{iri}}'></mp-label></h2>
+                   <semantic-query query='
+                    PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+                    PREFIX wd: <http://www.wikidata.org/entity/>
+                    PREFIX p: <http://www.wikidata.org/prop/>
+                    PREFIX ps: <http://www.wikidata.org/prop/statement/>
+                    PREFIX pq: <http://www.wikidata.org/prop/qualifier/>
+                    SELECT ?cases ?deaths (xsd:date(?dateTime) as ?date) WHERE {
+                      <{{iri}}> p:P1603 ?casesStmt .
+                      ?casesStmt ps:P1603 ?cases .
+                      ?casesStmt pq:P585 ?dateTime .
+
+                      OPTIONAL {
+                        <{{iri}}> p:P1120 ?deathsStmt .
+                        ?deathsStmt ps:P1120 ?deaths .
+                        ?deathsStmt pq:P585 ?dateTime .
+                      }
+                    } ORDER BY DESC(?dateTime) LIMIT 1'
+                  	template='{{> template}}'>
+                    <template id='template'>
+                    	<dl class='dl-horizontal'>
+                      	{{#each bindings}}
+                        	<dt>Date</dt>
+                          <dd><i class='fa fa-calendar'></i> {{date.value}}</dd>
+                          <dt>Recent cases number</dt>
+                          <dd>{{cases.value}}</dd>
+                          <dt>Recent deaths number</dt>
+                          <dd>{{#if deaths}}{{deaths.value}}{{else}}0{{/if}}</dd>
+                      	{{/each}}
+                    	</dl>
+                    </template>
+                	</semantic-query>
+                 </div>
+                </div>
+
+                <p>Cases in <mp-label iri='{{country}}'></mp-label></p>
+                 <semantic-chart
+               type='line'
+               query='
+          PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+          PREFIX wd: <http://www.wikidata.org/entity/>
+          PREFIX p: <http://www.wikidata.org/prop/>
+          PREFIX ps: <http://www.wikidata.org/prop/statement/>
+          PREFIX pq: <http://www.wikidata.org/prop/qualifier/>
+          SELECT (xsd:date(?dateTime) as ?date) ?cases ?deaths WHERE {
+            <{{iri}}> p:P1603 ?casesStmt .
+            ?casesStmt ps:P1603 ?cases .
+            ?casesStmt pq:P585 ?dateTime .
+            
+            OPTIONAL {
+              <{{iri}}> p:P1120 ?deathsStmt .
+							?deathsStmt ps:P1120 ?deaths .
+    					?deathsStmt pq:P585 ?dateTime .
+            }
+          } ORDER BY ASC(?date)
+        ' 
+               sets='[
+                    {"dataSetName": "Cases", "category": "date", "value": "cases"},
+                    {"dataSetName": "Deaths", "category": "date", "value": "deaths"}
+                  ]'
+        >
+                  </semantic-chart>
+                {{else}}
+                	<p>Please select a country from the list</p>
+                {{/if}}
+              </div>
+            </template>
+          </mp-event-target-template-render>
+        </div>
+        
+        </div>
+      </mp-workspace-item>
+    </mp-workspace-row>
+  </mp-workspace-layout>
+</div>
+      
+
+
+
+<!--
+
+<div>
+  
+  <semantic-table query="
+  PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+  PREFIX wd: <http://www.wikidata.org/entity/>
+  PREFIX p: <http://www.wikidata.org/prop/>
+  PREFIX ps: <http://www.wikidata.org/prop/statement/>
+  PREFIX pq: <http://www.wikidata.org/prop/qualifier/>
+  SELECT ?date ?cases WHERE {
+    wd:Q83889294 p:P1603 ?casesStmt .
+    ?casesStmt ps:P1603 ?cases .
+    ?casesStmt pq:P585 ?date .
+  } ORDER BY ASC(?date)"
+  column-configuration='[
+    {"variableName": "date", "displayName": "Date"}, 
+    {"variableName": "cases", "displayName": "Cases"}
+  ]'
+></semantic-table>
+
+ 
+
+<semantic-timeline query='
+  PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+  PREFIX wd: <http://www.wikidata.org/entity/>
+  PREFIX p: <http://www.wikidata.org/prop/>
+  PREFIX ps: <http://www.wikidata.org/prop/statement/>
+  PREFIX pq: <http://www.wikidata.org/prop/qualifier/>
+  SELECT (?date as ?start) (?date as ?end) (str(?cases) as ?subject) WHERE {
+    wd:Q83889294 p:P1603 ?casesStmt .
+    ?casesStmt ps:P1603 ?cases .
+    ?casesStmt pq:P585 ?date .
+  } ORDER BY ASC(?date)
+    ' tuple-template="{{> template}}" tuple-template-height="42">
+            <template id="template">
+              <div>
+                <b>{{subject.value}}</b>
+                <div>{{start.value}}</div>
+              </div>
+            </template>>
+          </semantic-timeline>
+
+</div>
+
+-->

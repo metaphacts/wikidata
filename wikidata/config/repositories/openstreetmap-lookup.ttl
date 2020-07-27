@@ -1,0 +1,11 @@
+[] a <http://www.openrdf.org/config/repository#Repository> ;
+    <http://www.openrdf.org/config/repository#repositoryID> "openstreetmap-lookup" ;
+    <http://www.w3.org/2000/01/rdf-schema#label> "Repository to test the generic service wrapper applied to OpenStreetMap." ;
+    <http://www.openrdf.org/config/repository#repositoryImpl> _:node1b9j1riotx2 .
+
+_:node1b9j1riotx2 <http://www.openrdf.org/config/repository#repositoryType> "openrdf:SailRepository" ;
+                                     <http://www.openrdf.org/config/repository/sail#sailImpl> _:node1b9j1riotx3 .
+
+_:node1b9j1riotx3 <http://www.openrdf.org/config/sail#sailType> "metaphacts:RESTService" ;
+                                    <http://www.metaphacts.com/ontologies/platform/ephedra#serviceURL> "http://open.mapquestapi.com/nominatim/v1/reverse.php" ;
+                                    <http://www.metaphacts.com/ontologies/platform/ephedra#implementsService> <http://www.metaphacts.com/ontologies/platform/service#openstreetmap-lookup> .

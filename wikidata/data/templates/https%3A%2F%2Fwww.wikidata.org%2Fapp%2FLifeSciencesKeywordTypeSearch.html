@@ -1,0 +1,50 @@
+<ol class="page-breadcrumb">
+    <li>
+      <semantic-link title="Start" iri='[[resolvePrefix "app:Start"]]'>Start</semantic-link>
+    </li>
+    <li>
+      <semantic-link title="Start" iri='[[resolvePrefix "app:LifeSciences"]]'>Life Sciences</semantic-link>
+    </li>
+    <li class="active">Life sciences keyword-type Search</li>
+</ol>
+
+<div class="page">
+  <div class='page__body'>
+
+    <semantic-search limit=1000 disable-optimizer=false
+        [[>app:LifeScienceSearchConfig]]>
+     <semantic-search-query-keyword-type
+        query='
+          PREFIX lookup: <http://www.metaphacts.com/ontologies/platform/repository/lookup#>
+          SELECT ?subject WHERE {
+            ?subject wdt:P31 ?__domain__ .
+            FILTER(?__tokenPattern__)
+          }
+        '
+        count-query='
+          PREFIX lookup: <http://www.metaphacts.com/ontologies/platform/repository/lookup#>
+          SELECT (COUNT(*) as ?count) WHERE {
+              ?subject wdt:P31 ?__domain__ .
+              FILTER(?__tokenPattern__)
+          }
+        '
+        count-query-mode='queryPerCategory'
+        token-pattern='
+              SERVICE Repository:lookup {
+                  ?subject lookup:token ?__token__  .
+                  ?subject lookup:limit 20 .
+                  # in wikidata lookup implementation next pattern will not give real benefit
+                  # other lookup implementations will make more use of type filtering directive
+                  ?subject lookup:type ?__domain__ .
+               }
+        '
+        >
+      </semantic-search-query-keyword-type>
+
+    [[> app:StructuredSearchResultsTemplate]]
+
+    </semantic-search>
+  </div>
+</div>
+
+

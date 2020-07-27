@@ -1,0 +1,101 @@
+<style>
+  #search-results .griddle-custom-row {
+    justify-content: space-between; 
+  }
+</style>
+
+<div data-flex-layout="row stretch-stretch">
+  <div data-flex-self="size-1of3" style="flex: 0 0 20px;">
+    <semantic-search-facet id='semantic-search-facet'></semantic-search-facet>
+  </div>
+
+	<semantic-search-result-holder>
+    <div data-flex-self="md-full">
+      <semantic-search-facet-breadcrumbs></semantic-search-facet-breadcrumbs>
+      <semantic-search-result>
+        <mp-sparql-result-counts id="result-counts"
+        	query="SELECT DISTINCT * {}" 
+          template='{{#if hasLimit}} <bs-alert bs-style="warning"> Showing <span class="num-results">{{numberOfResults}}</span> of {{totalNumberOfResults}} matches. <strong>Please, refine your search.</strong> </bs-alert> {{else}} <span>found <span class="num-results">{{numberOfResults}}</span> matches</span> {{/if}}'>
+        </mp-sparql-result-counts>
+      </semantic-search-result>
+
+      <bs-tabs unmount-on-exit=true id='search-results' animation=false>
+        <bs-tab event-key="1" title="Grid">
+          <semantic-search-result>
+            <semantic-table id="results-grid"
+            	query='
+              	SELECT DISTINCT (?subject as ?item) WHERE {
+                	BIND(xsd:integer(STRAFTER(STR(?subject), STR(wd:Q))) as ?q)
+                } ORDER BY ASC(?q)
+              '
+              tuple-template='{{> app:ItemCard}}'
+              options='{"showFilter":false, "resultsPerPage":16}'
+            >
+            </semantic-table>
+          </semantic-search-result>
+        </bs-tab>
+        <bs-tab event-key="2" title="Table">
+          <semantic-search-result-context multi=true>
+              <semantic-search-result>
+				  <semantic-search-table-result>
+                    <semantic-table id="results-table"
+                        query='SELECT DISTINCT ?subject WHERE { FILTER(?__contextRelationPattern__) }'
+                      layout='{
+                        "options": {"showFilter":false, "resultsPerPage":10}
+                      }'
+                    >
+                    </semantic-table>
+                  </semantic-search-table-result>>
+                </semantic-search-result>
+          </semantic-search-result-context>
+        </bs-tab>
+        <bs-tab event-key="3" title="Chart">
+          <semantic-search-result-context ranges='["http://www.wikidata.org/entity/Q215627", "http://www.wikidata.org/entity/Q43229", "http://www.wikidata.org/entity/Q17334923", "http://www.w3.org/2002/07/owl#Class"]'>
+            <semantic-search-result>
+              <semantic-chart id="results-chart"
+              	query='
+                	SELECT ?object (COUNT(?subject) as ?count) WHERE {
+                  	OPTIONAL { ?subject ?__contextRelation__ ?object_temp }
+                    	BIND(IF(BOUND(?object_temp), ?object_temp, "none") as ?object)
+                    } GROUP BY ?object ORDER BY DESC(?count)
+                '
+                provider='chartjs'
+                type='bar'
+                types='["line", "bar", "radar", "pie", "donut"]'
+                sets='[{
+                	"category": "object",
+                  "value": "count"
+                }]'>
+              </semantic-chart>
+            </semantic-search-result>
+          </semantic-search-result-context>
+        </bs-tab>
+        [[#if customTabs]]
+        	[[> customTabs]]
+        [[/if]]
+      </bs-tabs>
+
+      <bs-panel>
+        <semantic-search-result>
+          <mp-sparql-download id="csv-download" query="SELECT * WHERE { }"
+          	header="text/csv"
+            filename="csv-result.csv"
+          >
+            <button class="btn btn-default">Download CSV</button>
+          </mp-sparql-download>
+        </semantic-search-result>
+        <semantic-search-result>
+          <mp-sparql-download id="json-download" query="SELECT * WHERE { }"
+          	header="application/sparql-results+json"
+            filename="json-result.json"
+          >
+            <button class="btn btn-default">Download JSON</button>
+          </mp-sparql-download>
+          <semantic-search-action-use-result-in-extended-search>
+            <button class="btn btn-danger" style="margin-right:10px">Use in Search</button>
+          </semantic-search-action-use-result-in-extended-search>
+        </semantic-search-result>
+      </bs-panel>
+    </div>
+  </semantic-search-result-holder>
+</div>

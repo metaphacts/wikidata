@@ -1,0 +1,6 @@
+disabled = false
+repository = default
+iri = https://wikidata.metaphacts.com/container/queryTemplateContainer/get-gross-domestic-product-gdp-for-country-of-interest-and-neighbouring-countries-over-years-
+responseformat = text/csv
+aclPermission = qaas:execute:tableau-anonymous:gdp
+publisher = http://www.metaphacts.com/resource/user/admin

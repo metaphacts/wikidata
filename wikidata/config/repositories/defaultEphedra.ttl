@@ -1,0 +1,38 @@
+@prefix ephedra: <http://www.metaphacts.com/ontologies/platform/ephedra#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix rep: <http://www.openrdf.org/config/repository#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+[] a rep:Repository;
+  rep:repositoryID "defaultEphedra";
+  rep:repositoryImpl [
+      rep:repositoryType "metaphacts:EphedraRepository";
+      ephedra:defaultMember "proxyToDefault";
+      ephedra:serviceMember [
+          ephedra:delegateRepositoryID "chemsimilarity";
+          ephedra:serviceReference <http://www.metaphacts.com/ontologies/platform/repository/federation#chemsimilarity>
+        ], [
+          ephedra:delegateRepositoryID "openstreetmap";
+          ephedra:serviceReference <http://www.metaphacts.com/ontologies/platform/repository/federation#openstreetmap>
+        ], [
+          ephedra:delegateRepositoryID "assets";
+          ephedra:serviceReference <http://www.metaphacts.com/ontologies/platform/repository/federation#assets>
+        ], [
+          ephedra:delegateRepositoryID "mesh-sparql";
+          ephedra:serviceReference <http://www.metaphacts.com/ontologies/platform/repository/federation#mesh>
+        ], [
+          ephedra:delegateRepositoryID "openstreetmap-postal-code";
+          ephedra:serviceReference <http://www.metaphacts.com/ontologies/platform/repository/federation#openstreetmap-postal-code>
+        ], [
+          ephedra:delegateRepositoryID "most-similar";
+          ephedra:serviceReference <http://www.metaphacts.com/ontologies/platform/repository/federation#most-similar>
+        ], [
+          ephedra:delegateRepositoryID "openstreetmap-lookup";
+          ephedra:serviceReference <http://www.metaphacts.com/ontologies/platform/repository/federation#openstreetmap-lookup>
+        ], [
+          ephedra:delegateRepositoryID "linked-data";
+          ephedra:serviceReference <http://www.metaphacts.com/ontologies/platform/repository/federation#linked-data>
+        ];
+     ];
+     ephedra:writable false;
+  rdfs:label "Local Ephedra federation." .

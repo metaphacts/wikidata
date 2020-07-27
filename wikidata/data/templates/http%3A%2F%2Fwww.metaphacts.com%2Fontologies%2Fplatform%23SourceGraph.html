@@ -1,0 +1,25 @@
+[[#>Platform:SourceGraphBase customQuery=true customParameters=true]]
+  [[#*inline "query"]]
+    CONSTRUCT {
+      ?? ?property_out ?o . ?s ?property_in ?? .
+    }
+    WHERE {
+      {
+        {
+          SELECT ?property_out ?o WHERE {
+            ?? ?p_out ?o  . ?property_out  <http://wikiba.se/ontology#directClaim> ?p_out .
+          } ORDER BY ?o LIMIT 50
+        }
+      } UNION {
+        {
+          SELECT ?s ?property_in WHERE {
+            ?s ?p_in ??  . ?property_in  <http://wikiba.se/ontology#directClaim> ?p_in .
+          } ORDER BY ?s LIMIT 50
+        }
+      }
+  } LIMIT 50
+  [[/inline]]
+  [[#*inline "parameters"]]
+    hide-predicates='["<http://www.wikidata.org/prop/direct/P154>","<http://www.wikidata.org/prop/direct/P18>"]'
+  [[/inline]]
+[[/Platform]]

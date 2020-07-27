@@ -1,0 +1,15 @@
+@prefix rep: <http://www.openrdf.org/config/repository#> .
+@prefix sail: <http://www.openrdf.org/config/sail#> .
+@prefix sr: <http://www.openrdf.org/config/repository/sail#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix mph: <http://www.metaphacts.com/ontologies/platform/repository#> .
+
+[] a rep:Repository ;
+	rep:repositoryID "tests" ;
+	rdfs:label "testsrepository for platform." ;
+	rep:repositoryImpl _:node1cdp4f4pux11 .
+
+_:node1cdp4f4pux11 rep:repositoryType "openrdf:SailRepository" ;
+	sr:sailImpl _:node1cdp4f4pux12 .
+
+_:node1cdp4f4pux12 sail:sailType "openrdf:NativeStore" .

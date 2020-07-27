@@ -1,0 +1,23 @@
+[[#*inline "OntodiaCanvasTemplatesDeclaration"]]
+    node-templates='{"http://www.wikidata.org/entity/external": "{{> external-links-template}}"}'
+[[/inline]]
+
+[[#*inline "OntodiaCanvasTemplates"]]
+<template id="external-links-template">
+    <div class="panel panel-primary" style="margin: 0">
+        <div class="panel-heading">
+            <h4 class="text-nowrap" style="margin: 0"><i class="fa fa-database" aria-hidden="true" style='font-size: 16px; margin-left: 5px; margin-right: 10px;'></i>{{propsAsList.[0].property.values.[0].value}}{{props.["http://www.w3.org/2004/02/skos/core#prefLabel"].values}}</h4>
+        </div>
+
+        <div class="panel-body">
+            <span class="text-nowrap">
+                <a href="{{iri}}">{{iri}}</a>
+            </span>
+        </div>
+    </div>
+</template>
+[[/inline]]
+
+[[#*inline "OntodiaClassAndLinksCustomization"]]
+
+[[/inline]]

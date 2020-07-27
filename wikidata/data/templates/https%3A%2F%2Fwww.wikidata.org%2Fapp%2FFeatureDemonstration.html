@@ -1,0 +1,67 @@
+<style>
+  .feature-description-header {
+  }
+  .feature-description-how-to-button {
+    margin-top: 15px;
+  }
+  .feature-description__demo {
+    margin-top: 15px;
+  }
+  
+  
+  .modal-dialog {
+  width:1000px;
+  }  
+</style>
+
+
+<div class="page">
+  <div class="page__header">
+    <div class='page__header-thumbnail'></div>
+    <div class='page__header-body'>
+      <h1 style="margin-top: 0;">[[title]]</h1>
+      
+      <p>
+        <b>Features</b>: [[> features]] 
+      </p>
+    </div>
+  </div>
+  <div class="page__body">
+    <div class='feature-description-header'>
+      <h4>Motivation</h4>
+      <mp-text-truncate lines=2 expand='<span>...<a>read more</a></span>' collapse='<span>(<a>show less</a>)</span>'>
+        [[> motivation]]
+      </mp-text-truncate>
+      <h4>Solution</h4>
+      <mp-text-truncate lines=2 expand='<span>...<a>read more</a></span>' collapse='<span>(<a>show less</a>)</span>'>
+        [[> solution]]
+      </mp-text-truncate>
+      <div data-flex-layout='row center-center'>
+        <mp-overlay-dialog title="How To Make It Work" type="modal">
+          <mp-overlay-dialog-trigger>
+            <button class="btn btn-primary feature-description-how-to-button">See how it works</button>
+          </mp-overlay-dialog-trigger>
+          <mp-overlay-dialog-content>
+            <div class="container-fluid">
+                  <div style="margin-top: -20px; width: 1000px;">
+                    <div style="margin-top: 20px; margin-left: 30px;">
+                    	[[> description]]
+                    </div>
+                    <mp-code-block mode='text/html' show-copy-button=false>
+                      <![CDATA[
+                        [[> configuration]]
+                      ]]>
+                    </mp-code-block>                     
+                  </div>             
+            </div>
+          </mp-overlay-dialog-content>
+        </mp-overlay-dialog>
+      </div>
+    </div>
+    
+    <div class="clearfix"></div>
+    <div class="feature-description__demo">
+      [[> demo]]
+    </div>
+  </div>
+</div>

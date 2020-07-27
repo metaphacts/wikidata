@@ -1,0 +1,82 @@
+<div class="page">
+  <div class='page__body'>
+    <h2>Hierarchy of Identifiers</h2>
+    <semantic-tree config='{
+                  "query":"
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+    PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+    Prefix wd: <http://www.wikidata.org/entity/>
+    SELECT  ?parent ?node WHERE {
+       {
+       SELECT (?p as ?node) (?type as ?parent) {
+         ?p wdt:P31/wdt:P279* wd:Q19847637 .
+         ?p wdt:P31 ?type .
+         ?type  wdt:P279* wd:Q18616576 .   
+         filter (?type!=wd:Q19847637)
+         filter (?type!=wd:Q18616576)
+        }
+      }
+      UNION 
+      {
+        SELECT DISTINCT (?type as ?node) (?supertype as ?parent) {
+         ?p wdt:P31/wdt:P279* wd:Q19847637 .
+         ?p wdt:P31 ?type .
+         ?type wdt:P279* wd:Q18616576 .   
+          OPTIONAL { ?type  wdt:P279 ?supertype }
+         filter (?supertype!=wd:Q19847637)
+         filter (?supertype!=wd:Q18616576)                          
+         filter (?type!=wd:Q19847637)
+         filter (?type!=wd:Q18616576)                         
+        }
+      }
+    } ORDER BY ?node
+     ", "collapsed": true}'></semantic-tree>
+    <h2>Links to external databases</h2>
+<mp-code-example>
+<semantic-table query="      
+PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+PREFIX wd:  <http://www.wikidata.org/entity/>
+PREFIX p:   <http://www.wikidata.org/prop/>
+PREFIX pq:  <http://www.wikidata.org/prop/qualifier/> 
+
+SELECT DISTINCT ?type ?property ?database ?sparqlEndpoint
+WHERE {
+  ?property wdt:P31/wdt:P279* wd:Q19847637 ;
+            wdt:P1629 ?database ;
+            p:P2302/pq:P2308 ?type . 
+  
+  OPTIONAL { ?database wdt:P5305 ?sparqlEndpoint }
+}
+"></semantic-table>
+ </mp-code-example>
+<!--    <h2>Links to Life Science Databases</h2>
+    <semantic-table config='{
+                  "query":"
+    PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+    PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+    Prefix wd: <http://www.wikidata.org/entity/>
+    SELECT DISTINCT * WHERE {
+      { ?link wdt:P31 <http://www.wikidata.org/entity/Q19833835> }
+      UNION
+      { ?link wdt:P31 <http://www.wikidata.org/entity/Q19887775> }
+
+      ?link wdt:P31 <http://www.wikidata.org/entity/Q19847637>.
+
+      OPTIONAL { ?link wdt:P1629 ?database 
+        OPTIONAL { ?database wdt:P275 ?license }
+        OPTIONAL { ?database wdt:P856 ?website }
+      }
+    }
+    ORDER BY DESC(?license)  DESC(?website)  DESC(?database) ",
+                       "layout":{
+                         "tupleTemplate": null,
+                         "options":{
+                            "showFilter":false
+                         }
+                        }
+                }'></semantic-table>
+  -->
+    </div> 
+</div>

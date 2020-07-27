@@ -1,0 +1,118 @@
+<div class='page__body--borderless'>
+	<h2>Virtual Museum</h2>
+  <semantic-search
+    categories='{
+    	"<http://www.w3.org/2001/XMLSchema#dateTime>": [
+         {
+           "kind": "date-range",
+           "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+           "queryPattern": "{
+              $subject ?__relation__ ?date .
+              FILTER(?date <= ?__dateEndValue__) .
+              FILTER(?date >= ?__dateBeginValue__) .
+           }"
+         }
+      ]
+    }'
+    search-profile='{
+      "categories": [{
+        "iri": "<http://www.wikidata.org/entity/Q488383>",
+        "label": "Object"
+      }, {
+        "iri": "<http://www.w3.org/2002/07/owl#Class>",
+        "label": "Class",
+        "thumbnail": "../images/help/thenounproject/noun_605904.svg"
+      }],
+      "relations": [{
+          "hasDomain": "<http://www.wikidata.org/entity/Q488383>",
+          "iri": "<http://www.wikidata.org/prop/direct/P31>",
+          "hasRange": "<http://www.w3.org/2002/07/owl#Class>",
+          "label": "instance of"
+        },
+        {
+          "hasDomain": "<http://www.wikidata.org/entity/Q488383>",
+          "iri": "<http://www.wikidata.org/prop/direct/P186>",
+          "hasRange": "<http://www.wikidata.org/entity/Q488383>",
+          "label": "material used"
+        }]
+    }'>
+
+    
+  <semantic-search-form-query
+     query-template='{
+       "queryString": "SELECT ?subject WHERE { 
+                        ?subject wdt:P195 ?collection 
+                      }",
+       "arguments": {
+         "collection": {"type": "xsd:anyURI"}
+       }
+     }'
+     fields='[
+       {
+         "id": "collection",
+         "label": "Collection",
+         "xsdDatatype": "xsd:anyURI",
+            "valueSetPattern": "
+SELECT  $value $label  WHERE {
+ ?value wdt:P31/wdt:P279* wd:Q33506; rdfs:label ?label
+  FILTER( EXISTS {?s wdt:P195 ?value } )
+  FILTER( LANG(?label)=\"en\") 
+}
+            "             
+               
+             
+       }
+     ]'>
+       <semantic-form-select-input  placeholder='Please select a museum' for="collection"></semantic-form-select-input>
+       <button type='button' name='submit' className='btn btn-default'>Search</button>
+  </semantic-search-form-query>   
+    
+
+      <div data-flex-layout='row stretch-stretch'>
+        <div data-flex-self='size-1of3' style='flex: 0 0 20px;'>
+          <semantic-search-facet id='facet'></semantic-search-facet>
+        </div>
+
+        <semantic-search-result-holder>
+          <div data-flex-self='md-full'>
+          <semantic-search-facet-breadcrumbs></semantic-search-facet-breadcrumbs>
+
+          <semantic-search-result>
+            <mp-sparql-result-counts id='result-counts'
+              query='SELECT DISTINCT * {}' 
+              template='{{#if hasLimit}} <bs-alert bs-style="warning"> Showing <span class="num-results">{{numberOfResults}}</span> of {{totalNumberOfResults}} matches. <strong>Please, refine your search.</strong> </bs-alert> {{else}} <span>found <span class="num-results">{{numberOfResults}}</span> matches</span> {{/if}}'>
+            </mp-sparql-result-counts>
+          </semantic-search-result>
+
+					<semantic-search-result>
+					  <semantic-table id='results-table'
+					    query='
+					      PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+					      SELECT DISTINCT ?subject ?image WHERE {
+					        OPTIONAL { ?subject wdt:P18 ?image. }
+					      } ORDER BY DESC(?image)
+					    '
+					    number-of-displayed-rows=21
+					    tuple-template='{{> tupleTemplate}}'
+					  >
+            	<template id='tupleTemplate'>
+            	  <div style="height: 250px; width: 250px; margin: 10px;" class="panel panel-default">         
+            	    <div class="panel-heading" style="overflow: hidden; text-overflow: ellipsis;">
+            	      <semantic-link uri="{{subject.value}}"/>
+            	    </div>
+            	    <div class="panel-body">
+            	      <img 
+            	         class="img-responsive img-thumbnail"
+            	         style="max-height:130px;display:block;margin-left:auto;margin-right:auto;"
+            	         src="{{image.value}}"
+            	        />
+            	    </div>
+            	  </div>      
+            	</template>
+          	</semantic-table>
+        	</semantic-search-result>
+    		</div>
+  		</semantic-search-result-holder>
+		</div>
+	</semantic-search>
+</div>
