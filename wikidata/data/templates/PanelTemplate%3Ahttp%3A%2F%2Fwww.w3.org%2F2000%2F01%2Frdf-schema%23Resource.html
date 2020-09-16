@@ -1,0 +1,208 @@
+<style>
+  .knowledge-panel__header {
+    background: #fff;
+    border-bottom: 1px solid #f1f1ec;
+    display: flex;
+    align-items: center;
+  }
+
+	.knowledge-panel__thumbnail {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 0 0 56px;
+    height: 56px;
+    width: 56px;
+  }
+  
+  .knowledge-panel__thumbnail:empty {
+    display: none;
+  }
+  
+  .knowledge-panel__thumbnail img {
+    max-height: 100%;
+    max-width: 100%;
+  }
+
+  .knowledge-panel__title {
+    font-size: 18px;
+    line-height: 22px;
+    margin: 0 65px 0 14px;
+    padding: 17px 25px 17px 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    position: relative;
+  }
+  
+  .knowledge-panel__link {
+    position: absolute;
+    top: 50%;
+    right: 0;
+    margin-top: -11px;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s;
+  }
+  
+  .knowledge-panel:hover .knowledge-panel__link {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .knowledge-panel__content {
+    background: #fff;
+    padding: 20px;
+  }
+
+  .knowledge-panel__table {
+    overflow: auto;
+  }
+
+  .knowledge-panel__table .form-control {
+    height: 32px;
+  }
+
+  .knowledge-panel__table .griddle-filter .filter-container {
+    margin-bottom: 6px;
+  }
+
+  .knowledge-panel__table table thead {
+    border-bottom: 0 none;
+  }
+
+  .knowledge-panel__table thead > tr > th {
+    background: transparent;
+    border-bottom: 0 none;
+    padding-bottom: 2px !important;
+  }
+  
+  .knowledge-panel__table thead > tr > th:first-child {
+    padding-left: 0 !important;
+  }
+
+  .knowledge-panel__table table {
+    font-size: 14px;
+  }
+
+  .knowledge-panel__table table > tbody > tr > td {
+    border-top: 0 none;
+  }
+  
+  .knowledge-panel__table table > tbody > tr > td:first-child {
+    padding-left: 0 !important;
+  }
+
+  .knowledge-panel__table tr {
+    border-bottom: 0 none;
+  }
+
+  .knowledge-panel__uri {
+    display: flex;
+    align-items: center;
+  }
+
+  .knowledge-pane__uri-copy-button {
+    flex: 0 0 auto;
+    opacity: 0;
+    visibility: visible;
+    transition: opacity 0.3s;
+  }
+
+  .knowledge-panel__uri:hover .knowledge-panel__uri-copy-button {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .knowledge-panel__uri-text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+</style>
+
+<div class='knowledge-panel'>
+  <div class='knowledge-panel__header'>
+    <div class='knowledge-panel__thumbnail'>
+      <mp-resource-thumbnail
+      	iri='[[this]]'
+      >
+      </mp-resource-thumbnail>
+    </div>
+    <mp-popover>
+      <mp-popover-trigger placement='bottom' trigger='["hover"]'>
+        <div class='knowledge-panel__title'>
+          <mp-label iri='[[this]]'></mp-label>
+          <semantic-link iri='[[this]]' class='knowledge-panel__link'>
+            <i class='fa fa-link'></i>
+          </semantic-link>
+        </div>
+      </mp-popover-trigger>
+      <mp-popover-content>
+        <mp-label iri='[[this]]'></mp-label>
+      </mp-popover-content>
+    </mp-popover>
+  </div>
+  <div class='knowledge-panel__content'>
+  <div class='knowledge-panel__uri'>
+    <div title='[[this]]' class='knowledge-panel__uri-text'>
+      <b>URI:</b> [[this]]
+    </div>
+    <mp-copy-to-clipboard text='[[this]]'>
+      <button class='btn btn-link btn-xs knowledge-panel__uri-copy-button'>
+        <i class='fa fa-clipboard'></i>
+      </button>
+    </mp-copy-to-clipboard>
+  </div>
+  <semantic-query query="SELECT DISTINCT ?type WHERE { <[[this]]> wdt:P31 ?type }"
+  	template='{{> template}}'>
+    <template id='template'>
+      <b>Type</b>:
+      {{#each bindings}}
+        {{#if (isIri type)}}
+          <semantic-link uri='{{type.value}}'></semantic-link>
+        {{else}}
+          {{type.value}}
+        {{/if}}
+        {{#unless @last}},&nbsp;{{/unless}}
+      {{/each}}
+    </template>
+  </semantic-query>
+  <br /><br />
+
+  [[!-- filter ?p not in is naive way of filtering out existing metadata on types, labels and thumbnails, regardless of the configuration in the settings --]]
+
+  <div class='knowledge-panel__table'>
+    <semantic-table
+    	query='SELECT DISTINCT * WHERE {
+        <[[this]]> ?p ?o .
+        FILTER (?p NOT IN (rdf:type, rdfs:label, skos:prefLabel, wdt:P31))
+        FILTER EXISTS {?claim <http://wikiba.se/ontology#directClaim> ?p .}
+      } ORDER BY ASC (?p) LIMIT 100'
+     	options='{
+        "groupingOptions": {
+          "groupedBy": ["p"],
+          "showOnlyAggregatedValue": true
+        },
+        "showTableHeading": false
+      }'
+      column-configuration='[
+      {
+      	"displayName":"Property",
+        "variableName": "p",
+        "cellTemplate": "{{> propertyLabelTemplate property=p.value}}"
+      },
+      {
+      	"displayName":"Object",
+        "variableName": "o",
+        "aggregation": "concat"
+      }
+    ]'
+    >
+      <template id='propertyLabelTemplate'>
+      	<mp-label iri='{{property}}'></mp-label>
+      </template>
+    </semantic-table>
+    </div>
+  </div>
+</div>
