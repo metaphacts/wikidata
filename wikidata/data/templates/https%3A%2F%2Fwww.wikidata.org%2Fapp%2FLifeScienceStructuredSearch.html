@@ -25,11 +25,8 @@
              } ORDER BY DESC(?scorer) ASC(?q) LIMIT 30
          ",
          "suggestionTupleTemplate": "<span title=\"{{label.value}}\">{{label.value}} ({{description.value}})</span>",
-         "noSuggestionsTemplate": "<div class=\"suggestion-no-matches\">no matches found</div>",
-         "escapeLuceneSyntax": false,
-         "tokenizeLuceneQuery": false
-                     
-       }'                   
+         "noSuggestionsTemplate": "<div class=\"suggestion-no-matches\">no matches found</div>"
+       }'
       >
       </semantic-search-query-builder>
       [[> app:LifeScienceResultsTemplate]]

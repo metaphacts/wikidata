@@ -42,8 +42,6 @@
             template='{{> suggestion}}'
             placeholder='Search for something e.g. "Karlsruhe" or "Siemens"'             
             multi='false'
-            escape-lucene-syntax='false'
-            tokenize-lucene-query='false'
             search-query='
             PREFIX lookup: <http://www.metaphacts.com/ontologies/platform/repository/lookup#>
              SELECT distinct ?resource (?name AS ?label) ?description WHERE {

@@ -431,10 +431,7 @@ img[src="///upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Organization_icon.
              } ORDER BY DESC(?score) ASC(?q)  LIMIT 30
          ",
          "suggestionTupleTemplate": "<span title=\"{{label.value}}\">{{label.value}} ({{description.value}})</span>",
-         "noSuggestionsTemplate": "<div class=\"suggestion-no-matches\">no matches found</div>",
-         "escapeLuceneSyntax": false,
-         "tokenizeLuceneQuery": false
-                           
+         "noSuggestionsTemplate": "<div class=\"suggestion-no-matches\">no matches found</div>"
        }'
       
        tree-selector-categories='{
@@ -460,9 +457,7 @@ img[src="///upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Organization_icon.
                  FILTER(EXISTS { ?subject ?__relation__ ?item . }) .
                  BIND( false as ?hasChildren)
               } ORDER BY DESC(?score)  LIMIT 30
-            ",
-          "escapeLuceneSyntax": false,
-          "tokenizeLuceneQuery": false
+            "
          }
        }' 
                                     
