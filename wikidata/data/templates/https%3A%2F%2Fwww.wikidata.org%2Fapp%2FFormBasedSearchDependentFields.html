@@ -1,0 +1,160 @@
+<style>
+  .page {
+     padding-top: 0px;
+  }
+  
+</style>
+
+
+[[#> app:FeatureDemonstration title="Form based search with dependent fields"]]
+  [[#*inline "motivation"]]
+<p>Form based search can be configured with dependencies on form elements (i.e. the user may only use cities for the selected country).</p> 
+    
+  [[/inline]]
+	[[#*inline "solution"]]
+<p>The <code>semantic-search</code> component is configured with a form-based search input. In the form there are <code>field-dependencies</code> defined for <i>country</i> and <i>city</i>.</p>
+  [[/inline]]
+  [[#*inline "configuration"]]
+
+<div class="page">
+  <div class='page__body'>
+
+    <semantic-search>
+      <semantic-search-form-query
+        query-template='{
+          "queryString": "
+            SELECT ?subject WHERE {
+              ?subject ?property ?city .
+            }
+          ",
+          "arguments": {
+            "city": {"type": "xsd:anyURI"},
+            "country": {"type": "xsd:anyURI"},
+            "property": {"type": "xsd:anyURI"}
+          }
+        }'
+        fields='[
+                {
+                  "id": "country",
+                  "label": "Country",
+                  "xsdDatatype": "xsd:anyURI",
+                  "minOccurs": "1",
+                  "maxOccurs": "1",
+                  "valueSetPattern": "
+                    SELECT ?value WHERE {
+                      ?value wdt:P31 <http://www.wikidata.org/entity/Q6256> .
+                    }
+                  "
+                },
+                {
+                  "id": "city",
+                  "label": "City",
+                  "xsdDatatype": "xsd:anyURI",
+                  "minOccurs": "1",
+                  "autosuggestionPattern": "
+                    PREFIX lookup: <http://www.metaphacts.com/ontologies/platform/repository/lookup#>
+                    SELECT ?value (?name AS ?label) WHERE {
+                       SERVICE Repository:lookup {
+                          ?value lookup:token ?__token__ ;
+                              lookup:limit 30 ;
+                       }
+                        FILTER EXISTS { ?value wdt:P31/wdt:P279* <http://www.wikidata.org/entity/Q1549591> .  }
+                    }
+                  "
+                },
+                {
+                  "id": "property",
+                  "label": "Property of interest",
+                  "xsdDatatype": "xsd:anyURI",
+                  "minOccurs": "1",
+                  "maxOccurs": "1",
+                  "valueSetPattern": "
+                    SELECT ?value ?label WHERE {
+                      VALUES (?value ?label) { 
+                         ( wdt:P19 \"Place of Birth\" )
+                         ( wdt:P20 \"Place of Death\" )
+                         ( wdt:P159 \"Headquarters Location\" )
+                      }
+                    }
+                  "
+                }
+            ]'
+           field-dependencies='[
+                {
+                  "field": "city",
+                  "dependencies": {
+                    "country": "selectedCountry"
+                  },
+                  "autosuggestionPattern": "
+                    PREFIX ex: <http://example.com/resource/> 
+                    PREFIX lookup: <http://www.metaphacts.com/ontologies/platform/repository/lookup#>
+                    SELECT (?city as ?value) (?name AS ?label) WHERE {
+                       SERVICE Repository:lookup {
+                          ?city lookup:token ?__token__ ;
+                              lookup:limit 30 ;
+                       }
+                       FILTER EXISTS { ?city <http://www.wikidata.org/prop/direct/P17> ?selectedCountry . ?city wdt:P31/wdt:P279* <http://www.wikidata.org/entity/Q1549591> .  }
+                    }
+
+                  ",
+                  "valueSetPattern": "
+                    PREFIX ex: <http://example.com/resource/> 
+                    PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+                    SELECT (?city AS ?value) ?label WHERE {
+                      ?city <http://www.wikidata.org/prop/direct/P17> ?selectedCountry .
+                      ?city wdt:P31/wdt:P279* <http://www.wikidata.org/entity/Q1549591> ;
+                        rdfs:label ?label .
+                        FILTER(LANG(?label) = \"en\")
+                    } LIMIT 30
+                  "
+                }
+            ]'   >
+          <semantic-form-select-input for='country'></semantic-form-select-input>
+          <semantic-form-autocomplete-input for='city'></semantic-form-autocomplete-input>  
+          <semantic-form-select-input for='property'></semantic-form-select-input>
+
+          <button type='button' name='submit' class='btn btn-default'>Search</button>
+      </semantic-search-form-query>
+
+      <div data-flex-layout="row stretch-stretch">
+      <semantic-search-result-holder>
+        <div data-flex-self="md-full">
+        <semantic-search-result>
+          <semantic-search-result>
+              <semantic-table id="results-grid"
+                              query='
+                  SELECT DISTINCT (?subject as ?item) WHERE {
+                      BIND(xsd:integer(STRAFTER(STR(?subject), STR(wd:Q))) as ?q)
+                  } ORDER BY ASC(?q)
+                '
+                              tuple-template='{{> app:ItemCard}}'
+                              options='{"showFilter":false}'
+                              no-result-template="No results matching your search"
+              >
+              </semantic-table>
+            </semantic-search-result>
+        </semantic-search-result>
+        </div>
+      </semantic-search-result-holder>
+      <mp-knowledge-panel-frame></mp-knowledge-panel-frame>
+      </div>
+    </semantic-search>
+    
+  </div>
+</div>
+
+[[/inline]]
+	[[#*inline "description"]]
+		<p>Configuration description</p>
+		<p><semantic-link iri="[[resolvePrefix "Help:FormBasedSearch"]]">Learn More</semantic-link></p>
+	[[/inline]]
+  [[#*inline "features"]]
+    <semantic-link iri='app:Start'>Semantic Search</semantic-link>,     <semantic-link iri='app:Start'>Dependencies of form elements</semantic-link>
+  [[/inline]]
+  [[#*inline "demo"]]
+    <div style='height: 500px'> 
+        [[> configuration]]
+    </div>
+  [[/inline]]
+[[/app:FeatureDemonstration]]
+
