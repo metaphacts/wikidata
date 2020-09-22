@@ -101,7 +101,7 @@
                 } ORDER BY DESC(?similarity)
               '
               tuple-template='{{> app:ItemCard}}'
-              options='{"showFilter":false, "resultsPerPage":16}'
+              options='{"showFilter":false}'
               no-result-template='No similar items found. Try another instance...'
             >
             </semantic-table>
@@ -110,10 +110,8 @@
         <bs-tab event-key="2" title="Table">
           <semantic-search-result>
             <semantic-table id="results-table"
-            	query='SELECT DISTINCT ?subject WHERE { }'
-              layout='{
-              	"options": {"showFilter":false, "resultsPerPage":10}
-              }'
+              query='SELECT DISTINCT ?subject WHERE { }'
+              options='{"showFilter":false}'
               no-result-template='No similar items found. Try another instance...'
             >
             </semantic-table>

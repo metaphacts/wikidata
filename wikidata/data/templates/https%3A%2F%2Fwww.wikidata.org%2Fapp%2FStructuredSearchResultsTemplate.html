@@ -29,7 +29,7 @@
               } ORDER BY ASC(?q)
             '
                           tuple-template='{{> app:ItemCard}}'
-                          options='{"showFilter":false, "resultsPerPage":16}'
+                          options='{"showFilter":false}'
           >
           </semantic-table>
         </semantic-search-result>
@@ -40,9 +40,7 @@
                 <semantic-search-table-result>
                   <semantic-table id="results-table"
                                   query='SELECT DISTINCT ?subject WHERE { FILTER(?__contextRelationPattern__) }'
-                                  layout='{
-                      "options": {"showFilter":false, "resultsPerPage":10}
-                    }'
+                                  options='{"showFilter":false}'
                                   column-configuration='[{
                         "variableName": "subject",
                         "displayName": "Subject",
