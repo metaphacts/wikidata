@@ -1,11 +1,20 @@
 <bs-navbar data-fluid='true' class='metaphacts-header-navbar' data-fixed-top='true' data-inverse='true'
   data-role='navigation'>
-  <bs-navbar-header>
-    <bs-navbar-brand>
-      <a href='/'>
-        {{deploymentTitle}}
-      </a>
-    </bs-navbar-brand>
+  <bs-navbar-header class='navbar-logo-name'>
+    <div class='navbar-logo'>
+      <bs-navbar-brand>
+        <a href='/'>
+          <img src="/images/logo.svg" alt="metaphacts" />
+        </a>
+      </bs-navbar-brand>
+    </div>
+    <div class='navbar-name'>
+      <bs-navbar-brand>
+        <a href='/'>
+          {{deploymentTitle}}
+        </a>
+      </bs-navbar-brand>
+    </div>
     <bs-navbar-toggle />
   </bs-navbar-header>
   <bs-navbar-collapse>
