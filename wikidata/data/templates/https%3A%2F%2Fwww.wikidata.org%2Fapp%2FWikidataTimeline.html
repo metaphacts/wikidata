@@ -3,19 +3,27 @@
      padding-top: 0px;
   }
 </style>
-
-[[#> app:FeatureDemonstration title="Timeline of Space Probes"]]
+<ol class="page-breadcrumb">
+    <li>
+      <semantic-link title="Start" uri='[[resolvePrefix "app:Start"]]'>Start</semantic-link>
+    </li>
+    <li>
+      <semantic-link title="Examples" uri='[[resolvePrefix "app:Examples"]]'>Examples</semantic-link>
+    </li>
+    <li class="active">Timeline of Space Probes</li>
+</ol>
+[[#> app:FeatureDemonstration-demosystem title="Timeline of Space Probes"]]
   [[#*inline "motivation"]]
 <p> A timeline is a chart that depicts how a set of resources are used over time. </p> 
     
   [[/inline]]
 [[#*inline "solution"]]
-    <p> In this example, the idea is to represent Space Probes along a scrollable horizontal timeline. </p>
+    <p> In this example, we represent Space Probes along a scrollable horizontal timeline. </p>
   [[/inline]]
   [[#*inline "configuration"]]
 
 <div class="page">
-  <div class='page__body'>
+  <div class='page__body' style="margin-top: 40px;">
 
     <semantic-timeline query='PREFIX bd: <http://www.bigdata.com/rdf#>
       SELECT ?item ?itemLabel ?start ?end (SAMPLE(?image) AS ?image)

@@ -1,5 +1,25 @@
-<div class='page__body--borderless'>
-	<h2>Virtual Museum</h2>
+<ol class="page-breadcrumb">
+    <li>
+      <semantic-link title="Start" uri='[[resolvePrefix "app:Start"]]'>Start</semantic-link>
+    </li>
+    <li>
+      <semantic-link title="Examples" uri='[[resolvePrefix "app:Examples"]]'>Examples</semantic-link>
+    </li>
+    <li class="active">Virtual Museum</li>
+</ol>
+
+[[#> app:FeatureDemonstration-demosystem title="Virtual Museum"]]
+  [[#*inline "motivation"]]
+<p> Often there is a need to allow end users to execute pre-defined information requests based on SPARQL query templates.</p> 
+    
+  [[/inline]]
+	[[#*inline "solution"]]
+    <p>Using form-based search, users can define their searches using pre-defined input values. This examples allows you to explore the collections available at various museums described in the Wikidata dataset. 
+ </p>
+  [[/inline]]
+  [[#*inline "configuration"]]
+
+ <div class='page__body' style="margin-top: 40px;">
   <semantic-search
     categories='{
     	"<http://www.w3.org/2001/XMLSchema#dateTime>": [
@@ -37,6 +57,7 @@
         }]
     }'>
 
+	
     
   <semantic-search-form-query
      query-template='{
@@ -64,9 +85,10 @@ SELECT  $value $label  WHERE {
        }
      ]'>
        <semantic-form-select-input  placeholder='Please select a museum' for="collection"></semantic-form-select-input>
-       <button type='button' name='submit' className='btn btn-default'>Search</button>
+       <button type='button'style="margin-left:20px" name='submit' className='btn btn-default'>Search</button>
   </semantic-search-form-query>   
     
+      
 
       <div data-flex-layout='row stretch-stretch'>
         <div data-flex-self='size-1of3' style='flex: 0 0 20px;'>
@@ -116,3 +138,18 @@ SELECT  $value $label  WHERE {
 		</div>
 	</semantic-search>
 </div>
+
+[[/inline]]
+	[[#*inline "description"]]
+		<p>Configuration description</p>
+		<p><semantic-link iri="[[resolvePrefix "Help:SemanticMap"]]">Learn More</semantic-link></p>
+	[[/inline]]
+  [[#*inline  "features"]]
+    <semantic-link iri='app:Start'>Semantic Search</semantic-link>,     <semantic-link iri='app:Start'>Similarity Search</semantic-link>
+  [[/inline]]
+  [[#*inline "demo"]]
+    <div style='height: 500px'> 
+        [[> configuration]]
+    </div>
+  [[/inline]]
+[[/app:FeatureDemonstration]]

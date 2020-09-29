@@ -1,21 +1,50 @@
+
 <style>
     .page {
-     padding-top: 0px;
+     padding-top: 50px;
+  }
+  .page__header {
+  background-color: #FFFFFF;
+  }
+  .list-box {
+    display: grid;
+  	grid-template-columns: 1fr 1fr 1fr;
+    justify-content: space-around;  
+  	margin-top: 50px;
+		grid-gap: 40px;
+  }
+  .list h3{
+	font-weight:bold;    
+ 	padding-bottom: 10px;
+  }
+  
+  .btn-link {
+	  padding:0;
+    margin:0;
+    padding-bottom: 10px;
   }
 </style>
+
+<ol class="page-breadcrumb">
+    <li>
+      <semantic-link title="Start" uri='[[resolvePrefix "app:Start"]]'>Start</semantic-link>
+    </li>
+    <li class="active">Example Collection</li>
+</ol>
 
 
 <div class="page">
   <div class="page__header">
     <div class='page__header-thumbnail'></div>
     <div class='page__header-body'>
-      <h1 style="margin-top: 0;">Example Gallery</h1>
+      <h1 style="margin-top: 0; font-weight:bold;">Example Collection</h1>
+      <h3>Interacting with Knowledge Graph Data</h3>
 
     </div>
   </div>
   <div class="page__body">
 
-              <h3></h3>
+ <!--             <h3></h3>
           	<semantic-carousel
   		query="
         SELECT ?subject ?thumbnail ?label WHERE {                    
@@ -24,9 +53,9 @@
             (app:GeoSPARQL '/images/help/map-widget.png' 'Geographic Map Component')
           }
         }"
-  			tuple-template='    <div class="text-center panel panel-default" style="border:none;margin-right:20px;font-size:12px;height:300px;width: 100%;">
-      <div class="panel-body" style="height: 280px;">
-        <img src="{{thumbnail.value}}" style="max-height:260px; margin: 0 auto;" class="img-rounded">
+  			tuple-template='    <div class="text-center panel panel-default" style="border:none;margin-right:20px;font-size:12px;height:330px;width: 100%;">
+      <div class="panel-body" style="height: 310px;">
+        <img src="{{thumbnail.value}}" style="max-height:300px; margin: 0 auto;" class="img-rounded">
       </div>
       <div class="panel-footer" style="position: relative;  border: none;">
         <semantic-link title="{{label.value}}" class="grid-resource-link" uri="{{subject.value}}">{{label.value}}</semantic>
@@ -35,45 +64,54 @@
                                
         options='{ "centerMode": false }'
                                
-						></semantic-carousel>
+						></semantic-carousel>-->
     
-
-<h2>Search</h2>
-<ul>
-  <li><semantic-link iri='[[resolvePrefix "app:LifeSciencesKeywordTypeSearch"]]'>Keyword-type Search in the Life Sciences</semantic-link></li>
-  <li><semantic-link iri='[[resolvePrefix "app:ChemicalDrawing"]]'>Chemical Structure Search</semantic-link></li>  
-  <li><semantic-link iri='[[resolvePrefix "app:GeoSearch"]]'>Geographical Search</semantic-link></li>  
-  <li><semantic-link iri='[[resolvePrefix "app:VirtualCollection"]]'>Search example for virtual collection of a museum</semantic-link></li>
-  <li><semantic-link iri='[[resolvePrefix "app:ShortestPathExample"]]'>Form-based search to find shortest path between two nodes</semantic-link></li>
-  <li><semantic-link iri='[[resolvePrefix "app:FormBasedSearchDependentFields"]]'>Form-based search with dependent fields</semantic-link></li>
- 
+<h4 style="line-height: 1.5;"> Here you'll find a collection of examples showing how metaphactory components can be combined to serve particular information needs and support users in interacting with Knowledge Graph data. The examples are demontrated on the Wikidata dataset and showcase key features for "search" and "visualization", as well as "federation" with additional datasets, machine learning algorithms and similarity search functionalities. <h4> 
+<div class="list-box">    
+ <div class="list card">    
+   <h3 style="margin-top: 20px;">Search</h3>
+<ul style="list-style-type:none; padding: 0;margin: 0;">
+  <li><semantic-link  class="btn btn-link" iri='[[resolvePrefix "app:LifeSciencesKeywordTypeSearch"]]'>Keyword Search featuring Type-based Disambiguation in the Life Sciences</semantic-link></li>
+  <li><semantic-link  class="btn btn-link" iri='[[resolvePrefix "app:LifeScienceStructuredSearch"]]'>Structured Search in the Life Sciences</semantic-link></li>  
+  <li><semantic-link  class="btn btn-link" iri='[[resolvePrefix "app:StructuredSearchGeneral"]]'>Structured Search (Interactive query construction)</semantic-link></li>
+  <li><semantic-link  class="btn btn-link" iri='[[resolvePrefix "app:ChemicalDrawing"]]'>Chemical Structure Search</semantic-link></li>  
+  <li><semantic-link  class="btn btn-link" iri='[[resolvePrefix "app:GeoSearch"]]'>Geographical Search</semantic-link></li>  
+  <li><semantic-link  class="btn btn-link" iri='[[resolvePrefix "app:VirtualCollection"]]'>Search example for virtual collection of a museum</semantic-link></li>
+  <li><semantic-link  class="btn btn-link" iri='[[resolvePrefix "app:ShortestPathExample"]]'>Form-based search to find shortest path between two nodes</semantic-link></li>
+  <li><semantic-link  class="btn btn-link" iri='[[resolvePrefix "app:FormBasedSearchDependentFields"]]'>Form-based search with dependent fields</semantic-link></li>
 </ul>    
-    
-<h2>Data Visualization</h2>
-<ul>
-  <li><semantic-link iri='[[resolvePrefix "app:WikidataTimeline"]]'>Timeline of Space Probes</semantic-link></li>
-  <li><semantic-link iri='[[resolvePrefix "app:GeoSPARQL"]]'>Spatial Queries &amp; Map Component</semantic-link></li>
-  <li><semantic-link iri='[[resolvePrefix "Assets:Diagrams"]]'>Ontodia Diagrams</semantic-link></li>  
+</div>
+  
+  <div class="list" style="margin-left: 40px; margin-right:40px">
+<h3 style="margin-top: 20px";>Federation</h3>
+<ul style="list-style-type:none; padding: 0;margin: 0;">
+  <li><semantic-link  class="btn btn-link" iri='[[resolvePrefix "app:Word2VecSimilarity"]]'>Federated Queries over Wikidata and a Word2vec (Similarity Search)</semantic-link></li>  
+  <li><semantic-link  class="btn btn-link" iri='[[resolvePrefix "app:PolygonExample"]]'>Federated Queries over OpenStreetMap and Wikidata</semantic-link></li>
+  <li><semantic-link  class="btn btn-link" iri='[[resolvePrefix "app:PolygonExamplePiran"]]'>Federated Queries over OpenStreetMap and Wikidata (Piran)</semantic-link></li>
+  <li><semantic-link  class="btn btn-link" iri='[[resolvePrefix "app:PolygonExampleMonaLisa"]]'>Federated Query using OpenStreetMap Geo Search (Mona Lisa)</semantic-link></li>  
+  <li><semantic-link  class="btn btn-link" iri='[[resolvePrefix "wd:Q21114990"]]'>Federation in the Life Sciences: AKT1 Protein</semantic-link></li>  
+  <li><semantic-link  class="btn btn-link" iri='[[resolvePrefix "wd:Q23831639"]]'>Linked Data Traversal: Peter Haase / DBLP</semantic-link></li> 
+  <li><a href="https://wikidata.metaphacts.com/resource/?diagram=https%3A%2F%2Fwikidata.metaphacts.com%2Fcontainer%2FontodiaDiagramContainer%2FWikidata_federation_architecture&uri=http%3A%2F%2Fwww.metaphacts.com%2Fresource%2Fassets%2FOntodiaView" class="btn btn-link">Wikidata Federation Architecture</a></li>
 </ul>
-   
-
-
-<h2>Federation</h2>
-<ul>
-  <li><semantic-link iri='[[resolvePrefix "app:Word2VecSimilarity"]]'>Federated Queries over Wikidata and a Word2vec (Similarity search)</semantic-link></li>  
-  <li><semantic-link iri='[[resolvePrefix "app:PolygonExample"]]'>Federated Queries over OpenStreetMap and Wikidata</semantic-link></li>
-  <li><semantic-link iri='[[resolvePrefix "app:PolygonExamplePiran"]]'>Federated Queries over OpenStreetMap and Wikidata (Piran)</semantic-link></li>
-  <li><semantic-link iri='[[resolvePrefix "app:PolygonExampleMonaLisa"]]'>Federated Query using OpenStreetMap Geo Search (Mona Lisa)</semantic-link></li>  
-  <li><semantic-link iri='[[resolvePrefix "wd:Q21114990"]]'>Federation in the Life Sciences: AKT1 Protein</semantic-link></li>  
-  <li><semantic-link iri='[[resolvePrefix "wd:Q23831639"]]'>Linked Data Traversal: Peter Haase / DBLP</semantic-link></li> 
-  <li><a href="https://wikidata.metaphacts.com/resource/?diagram=https%3A%2F%2Fwikidata.metaphacts.com%2Fcontainer%2FontodiaDiagramContainer%2FWikidata_federation_architecture&uri=http%3A%2F%2Fwww.metaphacts.com%2Fresource%2Fassets%2FOntodiaView">Wikidata Federation Architecture</a></li>
+  </div>
+  
+  <div class="list" style="margin-left: 40px; margin-right:40px">
+<h3 style="margin-top: 20px;">Data Visualization</h3>
+<ul style="list-style-type:none; padding: 0;margin: 0;">
+  <li><semantic-link  class="btn btn-link" iri='[[resolvePrefix "app:WikidataTimeline"]]'>Timeline of Space Probes</semantic-link></li>
+  <li><semantic-link  class="btn btn-link" iri='[[resolvePrefix "app:GeoSPARQL"]]'>Spatial Queries &amp; Map Component</semantic-link></li>
+  <li><semantic-link  class="btn btn-link" iri='[[resolvePrefix "Assets:Diagrams"]]'>Ontodia Diagrams</semantic-link></li>  
 </ul>
-    
+</div>  
 
-<h2>Event System</h2>
-<ul>
-  <li><semantic-link iri='[[resolvePrefix "app:EventTree"]]'>Property Explorer</semantic-link></li>   
+
+    
+<div class="list" style="margin-right: 40px;">
+<h3 style="margin-top: 20px";>Event System</h3>
+<ul style="list-style-type:none; padding: 0;margin: 0;">
+  <li><semantic-link  class="btn btn-link" iri='[[resolvePrefix "app:EventTree"]]'>Property Explorer</semantic-link></li>   
 </ul>      
-
+</div>
+  <div>
   </div>
 </div>

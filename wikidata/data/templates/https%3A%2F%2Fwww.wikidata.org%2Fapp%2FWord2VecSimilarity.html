@@ -1,5 +1,5 @@
 <style>
-  .Select {
+  .Select2 {
   	width: 650px;
      display: block;
   margin-left: auto;
@@ -7,7 +7,7 @@
     margin-bottom: 50px;
   }
   #p1 {
-  	margin-left:320px;
+  [[!--	margin-left:320px;--]]
     width: 650px;
   }
   
@@ -16,12 +16,20 @@
   }
   
 
-    .page {
-     padding-top: 0px;
-  }
 </style>
 
-[[#> app:FeatureDemonstration title="Word2vec Similarity"]]
+<ol class="page-breadcrumb">
+    <li>
+      <semantic-link title="Start" uri='[[resolvePrefix "app:Start"]]'>Start</semantic-link>
+    </li>
+    <li>
+      <semantic-link title="Examples" uri='[[resolvePrefix "app:Examples"]]'>Examples</semantic-link>
+    </li>
+    <li class="active">Federated Queries over Wikidata and a Word2vec</li>
+</ol>
+
+
+[[#> app:FeatureDemonstration-demosystem title="Federated Queries over Wikidata and a Word2vec (Similarity Search)"]]
   [[#*inline "motivation"]]
 <p> We want to search for entities similar to a given entity, where the similarity is provided by an ML-based model.
  </p> 
@@ -34,10 +42,12 @@
   [[/inline]]
   [[#*inline "configuration"]]
 
-<div class="page">
-  <div class='page__body'>
-    <p id="p1">Find similar instances</p>
+<div>
+  <div class='page__body' style="margin-top: 40px;">
+    <div class="Select2">
+            <p id="p1">Find similar instances</p>
   <semantic-search>
+
     <semantic-search-query-entities 
             template='{{> suggestion}}'
             placeholder='Search for something e.g. "Karlsruhe" or "Siemens"'             
@@ -144,8 +154,10 @@
   </semantic-search-result-holder>
 </div>
   </semantic-search>
-  </div>
-</div>
+    </div>
+ 	 </div>
+	</div>
+
 
 [[/inline]]
 	[[#*inline "description"]]

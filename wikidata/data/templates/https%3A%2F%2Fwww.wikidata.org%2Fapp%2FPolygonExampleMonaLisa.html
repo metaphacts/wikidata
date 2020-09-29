@@ -3,8 +3,16 @@
      padding-top: 0px;
   }
 </style>
-
-[[#> app:FeatureDemonstration title="Federated queries over Wikidata and OSM - Mona Lisa"]]
+<ol class="page-breadcrumb">
+    <li>
+      <semantic-link title="Start" uri='[[resolvePrefix "app:Start"]]'>Start</semantic-link>
+    </li>
+    <li>
+      <semantic-link title="Examples" uri='[[resolvePrefix "app:Examples"]]'>Examples</semantic-link>
+    </li>
+    <li class="active">Federated queries over using OpenStreetMap Geo Search</li>
+</ol>
+[[#> app:FeatureDemonstration-demosystem title="Federated queries over using OpenStreetMap Geo Search"]]
   [[#*inline "motivation"]]
   <p>Our simple example use case will deal with museum artifacts and their storage locations. We will retrieve this data from the knowledge graph, combine it using Ephedra with information about geographical borders of these locations from the OpenStreetMap API, and show it as regions on a map.</p>
   [[/inline]]
@@ -18,7 +26,8 @@ Furthermore, the borders of the museum location district (that make it possible 
 The result of this query is applied in the metaphactory platform to display the location district ("1st arrondissement of Paris") on a map using retrieved polygons described in the WKT format:</p>
   [[/inline]]
   [[#*inline "configuration"]]
-	<semantic-map id='map-result' 
+  <div class='page__body' style="margin-top: 40px;">
+<semantic-map id='map-result' 
 		query='
 			PREFIX wd: <http://www.wikidata.org/entity/> 
 			PREFIX osm: <http://www.metaphacts.com/ontologies/osm#> 
@@ -39,6 +48,7 @@ The result of this query is applied in the metaphactory platform to display the 
 			} LIMIT 1'
 		fix-zoom-level=12 > 
 	</semantic-map> 
+  </div>
   [[/inline]]
 	[[#*inline "description"]]
 		<p>Configuration description</p>

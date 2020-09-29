@@ -32,7 +32,16 @@
      padding-top: 0px;
   }
 </style>
-[[#> app:FeatureDemonstration title="Visualization of the shortest path between two taxa"]]
+<ol class="page-breadcrumb">
+    <li>
+      <semantic-link title="Start" uri='[[resolvePrefix "app:Start"]]'>Start</semantic-link>
+    </li>
+    <li>
+      <semantic-link title="Examples" uri='[[resolvePrefix "app:Examples"]]'>Examples</semantic-link>
+    </li>
+    <li class="active">Visualization of the shortest path between two nodes</li>
+</ol>
+[[#> app:FeatureDemonstration-demosystem title="Visualization of the shortest path between two nodes"]]
   [[#*inline "motivation"]]
 		We want to show how two taxa are related in a taxonomic structure by finding and visualizing the shortest path between them.
     
@@ -42,6 +51,7 @@
   [[/inline]]
   [[#*inline "configuration"]]
 
+<div class='page__body' style="margin-top: 40px;">
 <semantic-search>
   <!-- 1. search definition -->
   <semantic-search-form-query
@@ -151,6 +161,8 @@
     </semantic-search-result>
   </semantic-search-result-holder>
 </semantic-search>
+</div>
+
 [[/inline]]
 	[[#*inline "description"]]
 		<p>Configuration description</p>

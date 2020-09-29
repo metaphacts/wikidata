@@ -1,0 +1,54 @@
+<style>
+  .feature-description-header {
+  }
+  .feature-description-how-to-button {
+    margin-top: 15px;
+  }
+  .feature-description__demo {
+    margin-top: 15px;
+  }
+  .page__header {
+    background-color: #FFFFFF;
+    padding: 0;
+    padding-top: 75px;
+  }
+  .h1 {
+    font-weight:bold;
+  }
+  .modal-dialog {
+    width:1000px;
+  }  
+</style>
+
+
+<div >
+  <div class="page__header">
+    <div class='page__header-body'>
+          <div class='page__header-thumbnail'></div>
+      <h1 style="margin-top: 0;font-weight:bold;">[[title]]</h1>
+      
+      <p>
+       [[!-- <b>Features</b>: [[> features]] --]]
+      </p>
+    </div>
+  </div>
+  <div class="page__body">
+    <div class='feature-description-header'>
+      <h4>Motivation</h4>
+      <mp-text-truncate lines=2 expand='<span>...<a>read more</a></span>' collapse='<span>(<a>show less</a>)</span>'>
+        [[> motivation]]
+      </mp-text-truncate>
+      <br>
+      <h4>Solution</h4>
+      <mp-text-truncate lines=2 expand='<span>...<a>read more</a></span>' collapse='<span>(<a>show less</a>)</span>'>
+        [[> solution]]
+      </mp-text-truncate>
+      
+    </div>
+    
+    <div class="clearfix"></div>
+    <div class="feature-description__demo">
+      [[> demo]]
+    </div>
+  </div>
+</div>

@@ -13,13 +13,38 @@ img[src="///upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Organization_icon.
   
 </style>
 
+<ol class="page-breadcrumb">
+    <li>
+      <semantic-link title="Start" uri='[[resolvePrefix "app:Start"]]'>Start</semantic-link>
+    </li>
+    <li>
+      <semantic-link title="Examples" uri='[[resolvePrefix "app:Examples"]]'>Examples</semantic-link>
+    </li>
+    <li class="active">Structured Search</li>
+</ol>
+
+[[#> app:FeatureDemonstration-demosystem title="Structured Search"]]
+  [[#*inline "motivation"]]
+<p> End users often need to express complex information needs that reflect many relations and dependencies in the data.</p> 
+    
+  [[/inline]]
+	[[#*inline "solution"]]
+    <p>Using structured search in metaphactory, end users can define their information needs incremetally. This component makes use of fundamental categories and relations in the data and provides an interactive and intuitive user experience for building complex queries. This example allows you to search for objects, people, places and organizations from the Wikidata dataset along their relations.
+ </p>
+  [[/inline]]
+  [[#*inline "configuration"]]
+
+
+
+
 [[>app:StructuredSearchGeneralGuidedTourSteps]]
 <mp-event-proxy id='guided-tour-run' on-event-type='Component.Loaded' on-event-source='semantic-search'
   proxy-event-type='GuidedTour.RunIfNotSeen' proxy-targets='["guided-tour-search"]'>
 </mp-event-proxy>
 
-<div class="page">
-  <div class='page__body'>
+<div >
+  <div class='page__body' style="margin-top: 40px;">
+
     <semantic-search id='semantic-search'
                      categories='{
         "<http://www.w3.org/2002/07/owl#Class>": [
@@ -576,3 +601,18 @@ img[src="///upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Organization_icon.
     </semantic-search>
   </div>
 </div>
+
+[[/inline]]
+	[[#*inline "description"]]
+		<p>Configuration description</p>
+		<p><semantic-link iri="[[resolvePrefix "Help:SemanticMap"]]">Learn More</semantic-link></p>
+	[[/inline]]
+  [[#*inline  "features"]]
+    <semantic-link iri='app:Start'>Semantic Search</semantic-link>,     <semantic-link iri='app:Start'>Similarity Search</semantic-link>
+  [[/inline]]
+  [[#*inline "demo"]]
+    <div style='height: 500px'> 
+        [[> configuration]]
+    </div>
+  [[/inline]]
+[[/app:FeatureDemonstration]]

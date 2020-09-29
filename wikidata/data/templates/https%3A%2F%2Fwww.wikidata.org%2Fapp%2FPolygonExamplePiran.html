@@ -3,8 +3,16 @@
      padding-top: 0px;
   }
 </style>
-
-[[#> app:FeatureDemonstration title="Federated queries over Wikidata and OSM"]]
+<ol class="page-breadcrumb">
+    <li>
+      <semantic-link title="Start" uri='[[resolvePrefix "app:Start"]]'>Start</semantic-link>
+    </li>
+    <li>
+      <semantic-link title="Examples" uri='[[resolvePrefix "app:Examples"]]'>Examples</semantic-link>
+    </li>
+    <li class="active">Federated queries over OpenStreetMap and Wikidata (Piran)</li>
+</ol>
+[[#> app:FeatureDemonstration-demosystem title="Federated queries over OpenStreetMap and Wikidata (Piran)"]]
   [[#*inline "motivation"]]
    We want to show a map that combines data from multiple sources: 
 <ul><li>Entities located within in particular administrative entity, </li>
@@ -17,6 +25,7 @@
       <p>The query result is then visualized using the Semantic Map component, which is able to display polygon areas as well as point coordinates (in WKT format)  </p>
   [[/inline]]
   [[#*inline "configuration"]]
+<div class='page__body' style="margin-top: 40px;">
 <semantic-map query='
 PREFIX osm: <http://www.metaphacts.com/ontologies/osm#>
 PREFIX wdt: <http://www.wikidata.org/prop/direct/>
@@ -39,6 +48,7 @@ SELECT (?subject as ?link) ?wkt WHERE {
   BIND(COALESCE(?wkt_osm, ?wkt_wikidata) as ?wkt)
 }
 '></semantic-map>
+  </div>
   [[/inline]]
 	[[#*inline "description"]]
 		<p>Configuration description</p>

@@ -4,10 +4,19 @@
   }
 </style>
 
+<ol class="page-breadcrumb">
+    <li>
+      <semantic-link title="Start" uri='[[resolvePrefix "app:Start"]]'>Start</semantic-link>
+    </li>
+    <li>
+      <semantic-link title="Examples" uri='[[resolvePrefix "app:Examples"]]'>Examples</semantic-link>
+    </li>
+    <li class="active">Geographical Search</li>
+</ol>
 
-[[#> app:FeatureDemonstration title="Geo Search"]]
+[[#> app:FeatureDemonstration-demosystem title="Geographical Search"]]
   [[#*inline "motivation"]]
-<p> Geo Search feature is used to interpret a particular location not only with a Map, but also Grid, Table and Carousel Visualization.  </p> 
+<p>The Geographical Search feature is used to interpret a particular location not only with a Map, but also Grid, Table and Carousel Visualization.  </p> 
     
   [[/inline]]
 	[[#*inline "solution"]]
@@ -17,7 +26,7 @@
   [[#*inline "configuration"]]
 
 
-  
+  <div class='page__body' style="margin-top: 40px;">  
 <semantic-search>
 
     <semantic-search-query-keyword 
@@ -145,7 +154,7 @@
       </semantic-search-result-holder>
     </div>
   </semantic-search>  
-  
+</div>
 
 
 [[/inline]]

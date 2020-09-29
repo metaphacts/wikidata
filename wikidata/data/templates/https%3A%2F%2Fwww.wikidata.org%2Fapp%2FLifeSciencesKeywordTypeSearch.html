@@ -1,15 +1,25 @@
 <ol class="page-breadcrumb">
     <li>
-      <semantic-link title="Start" iri='[[resolvePrefix "app:Start"]]'>Start</semantic-link>
+      <semantic-link title="Start" uri='[[resolvePrefix "app:Start"]]'>Start</semantic-link>
     </li>
     <li>
-      <semantic-link title="Start" iri='[[resolvePrefix "app:LifeSciences"]]'>Life Sciences</semantic-link>
+      <semantic-link title="Examples" uri='[[resolvePrefix "app:Examples"]]'>Examples</semantic-link>
     </li>
-    <li class="active">Life sciences keyword-type Search</li>
+    <li class="active">Keyword Search featuring Type-based Disambiguation</li>
 </ol>
+[[#> app:FeatureDemonstration-demosystem title="Keyword Search featuring Type-based Disambiguation"]]
+  [[#*inline "motivation"]]
+<p>Providing context to keyword search results is a user requirement encountered often. Context is especially important when end users need to combine various dimension to address hybrid information needs, but where the complexity of the underlying query should be abstracted through an intuitive and user-friendly interface.  </p> 
+    
+  [[/inline]]
+	[[#*inline "solution"]]
+    <p>The paradigm for type-based disambiguation in keyword searches empowers end users by allowing them to combine their keyword queries with type-based filtering. In this example, you can explore the main Life Sciences concepts described in the Wikidata dataset.
+ </p>
+  [[/inline]]
+  [[#*inline "configuration"]]
 
-<div class="page">
-  <div class='page__body'>
+<div >
+  <div class='page__body' style="margin-top: 40px;">
 
     <semantic-search limit=1000 disable-optimizer=false
         [[>app:LifeScienceTypeSearchConfig]]>
@@ -46,5 +56,19 @@
     </semantic-search>
   </div>
 </div>
+[[/inline]]
+	[[#*inline "description"]]
+		<p>Configuration description</p>
+		<p><semantic-link iri="[[resolvePrefix "Help:SemanticMap"]]">Learn More</semantic-link></p>
+	[[/inline]]
+  [[#*inline  "features"]]
+    <semantic-link iri='app:Start'>Semantic Search</semantic-link>,     <semantic-link iri='app:Start'>Similarity Search</semantic-link>
+  [[/inline]]
+  [[#*inline "demo"]]
+    <div style='height: 500px'> 
+        [[> configuration]]
+    </div>
+  [[/inline]]
+[[/app:FeatureDemonstration]]
 
 

@@ -3,8 +3,16 @@
      padding-top: 0px;
   }
 </style>
-
-[[#> app:FeatureDemonstration title="Federated queries over Wikidata and OSM"]]
+<ol class="page-breadcrumb">
+    <li>
+      <semantic-link title="Start" uri='[[resolvePrefix "app:Start"]]'>Start</semantic-link>
+    </li>
+    <li>
+      <semantic-link title="Examples" uri='[[resolvePrefix "app:Examples"]]'>Examples</semantic-link>
+    </li>
+    <li class="active">Federated queries over OpenStreetMap and Wikidata</li>
+</ol>
+[[#> app:FeatureDemonstration-demosystem title="Federated queries over OpenStreetMap and Wikidata"]]
   [[#*inline "motivation"]]
    We want to show a map that combines data from multiple sources: 
 <ul><li>Population density in particular regions as described in Wikidata, and</li>
@@ -17,7 +25,8 @@
       <p>The query result is then visualized using the Semantic Map component, which is able to display polygon areas (in WKT format) and to color these polygons. Here the color is used from green to red to show the density of the population. Green color indicates  areas with lower density, red color shows areas with higher density. </p>
   [[/inline]]
   [[#*inline "configuration"]]
-  	<semantic-map query='
+<div class='page__body' style="margin-top: 40px;">  
+<semantic-map query='
       PREFIX osm: <http://www.metaphacts.com/ontologies/osm#>
       PREFIX wdt: <http://www.wikidata.org/prop/direct/>
       PREFIX wd: <http://www.wikidata.org/entity/>
@@ -42,6 +51,7 @@
       }
     '>
   	</semantic-map>
+  </div>
   [[/inline]]
 	[[#*inline "description"]]
 		<p>Configuration description</p>
