@@ -25,8 +25,7 @@
           <semantic-table id="results-grid"
                           query='
               SELECT DISTINCT (?subject as ?item) WHERE {
-                  BIND(xsd:integer(STRAFTER(STR(?subject), STR(wd:Q))) as ?q)
-              } ORDER BY ASC(?q)
+              }
             '
                           tuple-template='{{> app:ItemCard}}'
                           options='{"showFilter":false}'
@@ -40,7 +39,10 @@
                 <semantic-search-table-result>
                   <semantic-table id="results-table"
                                   query='SELECT DISTINCT ?subject WHERE { FILTER(?__contextRelationPattern__) }'
-                                  options='{"showFilter":false}'
+                                  options='{"showFilter":false,
+                                    "enableGrouping": false,
+                                    "groupingOptions": {"groupedBy": ["subject"], "showOnlyAggregatedValue": true, "defaultAggregation":"concat"}
+                                  }'
                                   column-configuration='[{
                         "variableName": "subject",
                         "displayName": "Subject",
