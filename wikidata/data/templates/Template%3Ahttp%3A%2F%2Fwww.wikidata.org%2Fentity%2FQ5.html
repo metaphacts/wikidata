@@ -6,7 +6,7 @@
 		<mp-code-example>
 			  <semantic-table 
 			 query="
-				PREFIX dblp: <https://dblp.org/rdf/schema-2017-04-18#>
+				PREFIX dblp: <https://dblp.org/rdf/schema-2020-07-01#>
 				SELECT ?title ?year ?conference WHERE {
 				  
 				   BIND ('[[singleValueFromSelect "SELECT ?dblpUrlRdf WHERE {?? wdt:P2456 ?dblp . ?property  <http://wikiba.se/ontology#directClaim> wdt:P2456 ; wdt:P1630 ?url_template .BIND(REPLACE(?url_template, '\\$1', ?dblp) AS ?url) .  BIND (CONCAT(STR(?url), '.rdf') AS ?dblpUrlRdf) . } "]]' AS ?ldDocument) .
@@ -23,7 +23,8 @@
 					  ?publication dblp:publishedInBook ?conference
 				  }
 				}"
-			  column-configuration='[
+			options='{ "sorting": {"year": "desc"} }'
+			column-configuration='[
 				  {"variableName": "title", "displayName": "Title"},
 				  {"variableName": "year", "displayName": "Year"},
 				  {"variableName": "conference", "displayName": "Conference"}
@@ -39,6 +40,7 @@
 			<bs-tab event-key="7" title='Co-Authors'>
 			  <semantic-table 
 			 query="
+				PREFIX dblp: <https://dblp.org/rdf/schema-2020-07-01#>
 				SELECT ?name ?coAuthor WHERE {
 				  
 				   BIND ('[[singleValueFromSelect "SELECT ?dblpUrlRdf WHERE {?? wdt:P2456 ?dblp . ?property  <http://wikiba.se/ontology#directClaim> wdt:P2456 ; wdt:P1630 ?url_template .BIND(REPLACE(?url_template, '\\$1', ?dblp) AS ?url) .  BIND (CONCAT(STR(?url), '.rdf') AS ?dblpUrlRdf) . } "]]' AS ?ldDocument) .
@@ -46,10 +48,10 @@
 					
 				  SERVICE <http://www.metaphacts.com/ontologies/platform/repository/federation#linked-data> {
 					?subj <http://www.metaphacts.com/ontologies/ld#document> ?ldDocument .
-					?subj <http://www.metaphacts.com/ontologies/ld#follow> <https://dblp.org/rdf/schema-2017-04-18#coCreatorWith> .
+					?subj <http://www.metaphacts.com/ontologies/ld#follow> dblp:coCreatorWith .
 					?subj <http://www.metaphacts.com/ontologies/ld#followSilent> true . 
-					  ?subj <https://dblp.org/rdf/schema-2017-04-18#coCreatorWith> ?coAuthor .
-							?coAuthor <https://dblp.org/rdf/schema-2017-04-18#primaryFullPersonName> ?name .
+					  ?subj dblp:coCreatorWith ?coAuthor .
+							?coAuthor dblp:primaryFullCreatorName ?name .
 				  }
 				}"
 			  column-configuration='[
