@@ -1,0 +1,95 @@
+<style>
+    .page {
+     padding-top: 0px;
+  }
+</style>
+<ol class="page-breadcrumb">
+    <li>
+      <semantic-link title="Start" uri='[[resolvePrefix "app:Start"]]'>Start</semantic-link>
+    </li>
+    <li>
+      <semantic-link title="Examples" uri='[[resolvePrefix "app:Examples"]]'>Examples</semantic-link>
+    </li>
+    <li class="active">Combine two data-sources in a single hierarchical search result</li>
+</ol>
+[[#> app:FeatureDemonstration-demosystem title="Use a semantic-lazy-tree to search for medical entities "]]
+  [[#*inline "motivation"]]
+		We want to visualize search results for Wikidata medical entities hierarchically organized according to their Medical Subject Headings (MeSH) topical hierarchy descriptors.
+  [[/inline]]
+	[[#*inline "solution"]]
+    <p>We use our search framework with a semantic-lazy-tree result to find relevant Wikidata entities and retrieve their MeSH topic. Its position in the MeSH hierarchy is dynamically retrieved.</p>
+     <p>
+     		Results are displayed in their topical hierarchy and each result displays the MeSH topic descriptor with the Wikidata article name in brackets behind it.
+      </p>
+      <p>This demonstrates:</p>
+      <ul>
+        <li>How knowledge graphs can be enriched through linking knowledge across data-silos, i.e. Wikidata and MeSH are different data sources, stored in different physical databases and owned and operated by different entities.  </li>
+        <li>How these two linked knowledge graphs can be traversed (queried) and joined at runtime using the platform's <semantic-link iri="[[resolvePrefix "Help:Federation"]]">federation capabilities</semantic-link>.</li>
+        <li>How the platform's front-end components like the <semantic-link iri="[[resolvePrefix "Help:SemanticLazyTree"]]">semantic lazy tree</semantic-link> can be instantiated just through configuration to let end-users interrogate with the data, i.e. without writing SPARQL queries. </li>
+      </ul>
+  [[/inline]]
+  [[#*inline "configuration"]]
+  <div class="page__body">
+                <mp-code-example>
+<![CDATA[
+
+
+		<semantic-lazy-tree 
+      roots-query='SELECT DISTINCT ?item ?label WHERE { }'
+      children-query='SELECT DISTINCT ?item ?label WHERE { }'
+      parents-query='
+      PREFIX fed: <http://www.metaphacts.com/ontologies/platform/repository/federation#>
+      PREFIX mesh: <http://id.nlm.nih.gov/mesh/vocab#>
+      prefix ephedra: <http://www.metaphacts.com/ontologies/platform/ephedra#>
+      SELECT ?item ?parent (CONCAT(?meshLabel, " (", ?wdLabel, ")") as ?parentLabel) WHERE {
+          { ?item <http://www.wikidata.org/prop/direct-normalized/P486>|<http://www.wikidata.org/prop/direct-normalized/P6680> ?meshCat. 
+          }
+          SERVICE fed:mesh
+          {
+            ?meshCat mesh:broaderDescriptor ?parentMeshCat .
+            OPTIONAL { ?parentMeshCat rdfs:label ?meshLabel }
+          }
+          ?parent <http://www.wikidata.org/prop/direct-normalized/P486>|<http://www.wikidata.org/prop/direct-normalized/P6680> ?parentMeshCat ;
+                  rdfs:label ?wdLabel .
+          FILTER langMatches(lang(?wdLabel), "en") 
+          ephedra:Prior ephedra:disableJoinReordering true .
+      }
+      '
+      search-query='
+PREFIX lookup: <http://www.metaphacts.com/ontologies/platform/repository/lookup#>
+PREFIX Repository: <http://www.metaphacts.com/ontologies/repository#>
+PREFIX fed: <http://www.metaphacts.com/ontologies/platform/repository/federation#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX ephedra: <http://www.metaphacts.com/ontologies/platform/ephedra#>
+SELECT DISTINCT ?item (concat(?meshLabel, " (", ?name, ")") as ?label) ("false"^^xsd:boolean AS ?hasChildren) WHERE {
+  SERVICE Repository:lookup {
+    ?item lookup:token ?__token__.
+  }
+  ?item (<http://www.wikidata.org/prop/direct-normalized/P486>|<http://www.wikidata.org/prop/direct-normalized/P6680>) ?meshCat .
+  SERVICE fed:mesh { ?meshCat rdfs:label ?meshLabel. }
+  ephedra:Prior ephedra:disableJoinReordering "true"^^xsd:boolean.
+}
+order by desc(?score)
+LIMIT 10
+      '
+      tokenize-lucene-query=false
+      placeholder='Search, for example, for "Ebola" or "Covid"'>
+</semantic-lazy-tree>
+]]>
+        </mp-code-example>
+  </div>
+[[/inline]]
+	[[#*inline "description"]]
+		<p>Configuration description</p>
+		<p><semantic-link iri="[[resolvePrefix "Help:SemanticLazyTree"]]">Learn More</semantic-link></p>
+	[[/inline]]
+  [[#*inline "features"]]
+    <semantic-link iri='app:Start'>Form Based Search</semantic-link>
+  [[/inline]]
+  [[#*inline "demo"]]
+    <div style='height: 500px'> 
+        [[> configuration]]
+    </div>
+  [[/inline]]
+[[/app:FeatureDemonstration]]
