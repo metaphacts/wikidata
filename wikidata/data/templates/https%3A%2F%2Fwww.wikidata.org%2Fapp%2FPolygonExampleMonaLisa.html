@@ -34,12 +34,13 @@ The result of this query is applied in the metaphactory platform to display the 
 			PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
 			PREFIX wdt: <http://www.wikidata.org/prop/direct/> 
 			SELECT ?label ?wkt WHERE { 
-
-  			wd:Q12418 wdt:P276/wdt:P361* ?museum . 
-  			?museum wdt:P131 ?geolocation . 
-  			?geolocation rdfs:label ?label . 
-  			FILTER (LANG(?label) = "en")
-
+			
+			SERVICE Repository:default { 
+				wd:Q12418 wdt:P276/wdt:P361* ?museum . 
+				?museum wdt:P131 ?geolocation . 
+				?geolocation rdfs:label ?label . 
+				FILTER (LANG(?label) = "en")
+			} 
   			SERVICE <http://www.metaphacts.com/ontologies/platform/repository/federation#openstreetmap> { 
     			?result osm:hasSearchTerm ?label . 
     			?result osm:polygon ?wkt . 
