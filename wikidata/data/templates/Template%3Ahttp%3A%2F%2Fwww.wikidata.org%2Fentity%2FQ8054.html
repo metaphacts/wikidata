@@ -5,7 +5,7 @@
         <semantic-query query='SELECT * WHERE { ?? wdt:P352 ?UniProtID }' template='{{> template}}'>
           <template id='template'>
             <div>
-              <img style="width: 100%" src="http://wlab.ethz.ch/protter/create?up={{bindings.0.UniProtID.value}}&tm=auto&mc=lightsalmon&lc=blue&tml=numcount&numbers&legend&n:signal%20peptide,fc:red,bc:red=UP.SIGNAL&n:disulfide%20bonds,s:box,fc:greenyellow,bc:greenyellow=UP.DISULFID&n:variants,s:diamond,fc:orange,bc:orange=UP.VARIANT&n:PTMs,s:box,fc:forestgreen,bc:forestgreen=UP.CARBOHYD,UP.MOD_RES&format=svg"><br/>
+              <img style="width: 100%" src="https://wlab.ethz.ch/protter/create?up={{bindings.0.UniProtID.value}}&tm=auto&mc=lightsalmon&lc=blue&tml=numcount&numbers&legend&n:signal%20peptide,fc:red,bc:red=UP.SIGNAL&n:disulfide%20bonds,s:box,fc:greenyellow,bc:greenyellow=UP.DISULFID&n:variants,s:diamond,fc:orange,bc:orange=UP.VARIANT&n:PTMs,s:box,fc:forestgreen,bc:forestgreen=UP.CARBOHYD,UP.MOD_RES&format=svg"><br/>
               <a href="http://wlab.ethz.ch/protter/#up={{bindings.0.UniProtID.value}}&tm=auto&mc=lightsalmon&lc=blue&tml=numcount&numbers&legend&n:signal peptide,fc:red,bc:red=UP.SIGNAL&n:disulfide bonds,s:box,fc:greenyellow,bc:greenyellow=UP.DISULFID&n:variants,s:diamond,fc:orange,bc:orange=UP.VARIANT&n:PTMs,s:box,fc:forestgreen,bc:forestgreen=UP.CARBOHYD,UP.MOD_RES&format=svg" target="_blank">Open visualization in Protter</a>
             </div>
           </template>
@@ -45,11 +45,11 @@
           <template id='template'>
               {{#if bindings.0.PDBID}}
                 <div style='position: relative;'>
-                  <mp-protein-viewer url="https://files.rcsb.org/view/{{bindings.0.PDBID.value}}.pdb" style="height: 500px;"></mp-protein-viewer>
+                  <mp-protein-viewer url="/proxy/rcsb-pdb/{{bindings.0.PDBID.value}}.pdb" style="height: 500px;"></mp-protein-viewer>
                   <mp-overlay-dialog title="Protein Viewer" type="modal" bs-size="large">
                     <mp-overlay-dialog-trigger><i class="fa fa-arrows-alt"></i></mp-overlay-dialog-trigger>
                     <mp-overlay-dialog-content>
-                      <div><mp-protein-viewer url="https://files.rcsb.org/view/{{bindings.0.PDBID.value}}.pdb" style="height:60vh"></mp-protein-viewer></div>
+                      <div><mp-protein-viewer url="/proxy/rcsb-pdb/{{bindings.0.PDBID.value}}.pdb" style="height:60vh"></mp-protein-viewer></div>
                     </mp-overlay-dialog-content>
                   </mp-overlay-dialog>
                 </div>
