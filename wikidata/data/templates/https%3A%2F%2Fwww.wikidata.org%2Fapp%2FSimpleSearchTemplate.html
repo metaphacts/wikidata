@@ -1,10 +1,13 @@
     <semantic-simple-search
       query='
            PREFIX lookup: <http://www.metaphacts.com/ontologies/platform/repository/lookup#>
-           SELECT DISTINCT ?resource (?name AS ?label) ?description WHERE {
+           SELECT DISTINCT ?resource ?label ?description WHERE {
              
              SERVICE Repository:lookup {
                   ?resource lookup:token ?__token__ .
+                  ?resource lookup:name ?label ;
+                     lookup:score ?score ;
+                     lookup:description ?description .
              }
              [[#if constraints]] [[constraints]] [[/if]]
            } 

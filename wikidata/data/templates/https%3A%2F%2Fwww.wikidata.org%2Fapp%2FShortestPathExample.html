@@ -95,10 +95,11 @@
           "type": "sparql",
           "query": "PREFIX wd: <http://www.wikidata.org/entity/>
                 PREFIX lookup: <http://www.metaphacts.com/ontologies/platform/repository/lookup#>
-          		SELECT ?resource (?name AS ?label) WHERE {
+          		SELECT ?resource ?label WHERE {
                   SERVICE Repository:lookup  {
                         ?resource lookup:token ?__token__ .
                         ?resource lookup:type wd:Q16521 .
+                        ?resource lookup:name ?label .
                       }
                 }
              ORDER BY DESC(?score)",
@@ -118,10 +119,11 @@
           "type": "sparql",
           "query": "PREFIX wd: <http://www.wikidata.org/entity/>
                 PREFIX lookup: <http://www.metaphacts.com/ontologies/platform/repository/lookup#>
-          		SELECT ?resource (?name AS ?label) WHERE {
+          		SELECT ?resource ?label WHERE {
                 SERVICE Repository:lookup  {
                         ?resource lookup:token ?__token__ .
                         ?resource lookup:type wd:Q16521 .
+                        ?resource lookup:name ?label .
                       }
                 }
              ORDER BY DESC(?score)",

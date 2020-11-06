@@ -208,10 +208,13 @@
             <semantic-simple-search
               query='
                 PREFIX lookup: <http://www.metaphacts.com/ontologies/platform/repository/lookup#>
-                SELECT ?resource (?name AS ?label) ?description WHERE {
+                SELECT ?resource ?label ?description WHERE {
                   SERVICE Repository:lookup {
                       ?resource lookup:token ?__token__  .
                       ?resource lookup:limit 10 .
+                      ?resource lookup:name ?label ;
+                         lookup:score ?score ;
+                         lookup:description ?description .
                   }
                 } ORDER BY DESC(?score)
               '

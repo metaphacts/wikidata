@@ -54,13 +54,16 @@
             multi='false'
             search-query='
             PREFIX lookup: <http://www.metaphacts.com/ontologies/platform/repository/lookup#>
-             SELECT distinct ?resource (?name AS ?label) ?description WHERE {
+             SELECT distinct ?resource ?label ?description WHERE {
                SERVICE Repository:lookup  {
                   ?resource lookup:token ?__token__ .
                   ?resource lookup:limit 10 .
+                  ?resource lookup:name ?label ;
+                         lookup:score ?score ;
+                         lookup:description ?description .
                 }
              } 
-             ORDER BY DESC(?Score) LIMIT 10'     
+             ORDER BY DESC(?score) LIMIT 10'     
             query='PREFIX word2vec: <http://www.metaphacts.com/ontologies/word2vec#>
 									 PREFIX wd: <http://www.wikidata.org/entity/>
 										SELECT DISTINCT ?subject ?similarity WHERE {

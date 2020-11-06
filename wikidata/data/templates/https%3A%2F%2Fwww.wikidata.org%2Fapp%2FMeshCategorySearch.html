@@ -64,7 +64,9 @@ PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX ephedra: <http://www.metaphacts.com/ontologies/platform/ephedra#>
 SELECT DISTINCT ?item (concat(?meshLabel, " (", ?name, ")") as ?label) ("false"^^xsd:boolean AS ?hasChildren) WHERE {
   SERVICE Repository:lookup {
-    ?item lookup:token ?__token__.
+    ?item lookup:token ?__token__ ;
+       lookup:label ?name .
+    
   }
   ?item (<http://www.wikidata.org/prop/direct-normalized/P486>|<http://www.wikidata.org/prop/direct-normalized/P6680>) ?meshCat .
   SERVICE fed:mesh { ?meshCat rdfs:label ?meshLabel. }

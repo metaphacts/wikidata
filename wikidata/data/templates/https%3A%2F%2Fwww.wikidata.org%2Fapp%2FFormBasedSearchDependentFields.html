@@ -62,9 +62,10 @@
                   "minOccurs": "1",
                   "autosuggestionPattern": "
                     PREFIX lookup: <http://www.metaphacts.com/ontologies/platform/repository/lookup#>
-                    SELECT ?value (?name AS ?label) WHERE {
+                    SELECT ?value ?label WHERE {
                        SERVICE Repository:lookup {
                           ?value lookup:token ?__token__ ;
+                              lookup:name ?label ;
                               lookup:limit 30 ;
                        }
                         FILTER EXISTS { ?value wdt:P31/wdt:P279* <http://www.wikidata.org/entity/Q1549591> .  }
@@ -97,9 +98,10 @@
                   "autosuggestionPattern": "
                     PREFIX ex: <http://example.com/resource/> 
                     PREFIX lookup: <http://www.metaphacts.com/ontologies/platform/repository/lookup#>
-                    SELECT (?city as ?value) (?name AS ?label) WHERE {
+                    SELECT (?city as ?value) ?label WHERE {
                        SERVICE Repository:lookup {
                           ?city lookup:token ?__token__ ;
+                              lookup:name ?label ;
                               lookup:limit 30 ;
                        }
                        FILTER EXISTS { ?city <http://www.wikidata.org/prop/direct/P17> ?selectedCountry . ?city wdt:P31/wdt:P279* <http://www.wikidata.org/entity/Q1549591> .  }
