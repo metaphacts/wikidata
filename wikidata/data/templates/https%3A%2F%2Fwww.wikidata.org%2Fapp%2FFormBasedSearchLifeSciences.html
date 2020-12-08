@@ -1,0 +1,133 @@
+<ol class="page-breadcrumb">
+    <li>
+      <semantic-link title="Start" uri='[[resolvePrefix "app:Start"]]'>Start</semantic-link>
+    </li>
+    <li>
+      <semantic-link title="Examples" uri='[[resolvePrefix "app:Examples"]]'>Examples</semantic-link>
+    </li>
+    <li class="active">Form based search in the Life Schiences</li>
+</ol>
+[[#> app:FeatureDemonstration-demosystem title="Form-based Search in the Life Sciences"]]
+  [[#*inline "motivation"]]
+
+<p>It is a common case that some of the most frequent complex searches that can be performed with Structured Search have to be converted to something simpler and quicker in terms of its user flow. For example, we have a doctor in mind who wants to find a medication that is used for treating some disease, but at the same time has to avoid interactions with the other drugs taken by the patient.   </p> 
+      [[/inline]]
+	[[#*inline "solution"]]
+    <p>For such regularly occuring, but rather sophisticated searches we advise to set up a Form-based search which takes the complexity out of search formulation process and provides quick answers to frequently asked questions with clear information needs. In this particular example you first specify a disease that you need to treat as a doctor and then type in the medicine which your patient is already taking, interactions with which you'd like to avoid. As a result you receive a list of drugs to treat the selected disease excluding those drugs that interact with the medicine that is already being taken by your patient. 
+ </p>
+<p>The input test values for fields are:
+<ul>
+  <li>Disease: <b>insomnia</b></li>
+  <li>Medicine: <b>ciprofloxacin</b></li>
+</ul>
+The results of the search <u>must not</u> include 1 drug that cures <b>insomnia</b>, but has interaction with <b>ciprofloxacin</b>: <b>ramelteon</b>.
+</p>
+  [[/inline]]
+  [[#*inline "configuration"]]
+  <div class='page__body'>
+    <semantic-search id='midecine-check'>
+      <semantic-search-form-query
+        query-template='{
+          "queryString": " PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+            SELECT ?subject  WHERE {
+
+              ?subject wdt:P2175 ?disease .
+              FILTER NOT EXISTS {
+                ?medicine wdt:P769 ?subject .
+              }
+              FILTER NOT EXISTS {
+                ?subject wdt:P769 ?medicine.
+              }
+            }
+          ",
+          "arguments": {
+            "disease": {"type": "xsd:anyURI"},
+            "medicine": {"type": "xsd:anyURI"}
+          }
+        }'
+        fields='[
+          {
+              "id": "disease",
+              "label": "Disease",
+              "xsdDatatype": "xsd:anyURI",
+              "maxOccurs": "1",
+              "autosuggestionPattern": "
+                PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+                PREFIX wd: <http://www.wikidata.org/entity/>
+                PREFIX lookup: <http://www.metaphacts.com/ontologies/platform/repository/lookup#>
+                SELECT ?value ?label WHERE {
+                  SERVICE Repository:lookup {
+                    ?value lookup:token ?__token__ .
+                    ?value lookup:name ?label .
+                    ?value wdt:P279/wdt:P31* wd:Q12136 .                   
+                  }
+              }"
+            },
+            {
+              "id": "medicine",
+              "label": "Avoid interaction with (medicine)",
+              "xsdDatatype": "xsd:anyURI",
+              "maxOccurs": "1",
+              "autosuggestionPattern": "
+                PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+                PREFIX wd: <http://www.wikidata.org/entity/>
+                PREFIX lookup: <http://www.metaphacts.com/ontologies/platform/repository/lookup#>
+                SELECT ?value ?label WHERE {
+                  SERVICE Repository:lookup {
+                    ?value lookup:token ?__token__ .
+                    ?value lookup:name ?label .
+                    ?value wdt:P31 wd:Q12140 .
+                  }       
+                } "
+            }
+        ]'>
+          <semantic-form-autocomplete-input placeholder="Start typing a disease here (e.g insomnia)" for='disease'></semantic-form-autocomplete-input>
+          <semantic-form-autocomplete-input placeholder="Start typing a drug here (e.g. ciprofloxacin)" for='medicine'></semantic-form-autocomplete-input>
+          <button type='button' name='submit' class='btn btn-secondary'>Search</button>
+        <semantic-form-errors></semantic-form-errors>
+      </semantic-search-form-query>
+      <div data-flex-layout="row stretch-stretch">
+      <semantic-search-result-holder>
+                    <div data-flex-self="md-full">
+        <semantic-search-result> 
+          <semantic-table id='table'  query='PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+                PREFIX wd: <http://www.wikidata.org/entity/> SELECT ?subject WHERE{ 
+          }' 
+            noResultTemplate='no results found'
+            column-configuration='[
+              {"variableName": "subject",
+              "displayName": "Medicine",
+              "cellTemplate": "{{> template iri=subject.value}}"}
+            ]'
+                        ><template id='template'>
+                          <mp-knowledge-panel-trigger
+                                                      iri='{{iri}}'
+                                                      >
+                          </mp-knowledge-panel-trigger>
+                        </template>
+          </semantic-table>
+
+        </semantic-search-result>
+        </div>
+      </semantic-search-result-holder>
+    <mp-knowledge-panel-frame></mp-knowledge-panel-frame>
+</dic>
+
+
+    </semantic-search>
+    [[/inline]]
+	[[#*inline "description"]]
+		<p>Configuration description</p>
+		<p><semantic-link iri="[[resolvePrefix "Help:FormBasedSearch"]]">Learn More</semantic-link></p>
+	[[/inline]]
+  [[#*inline "features"]]
+    <semantic-link iri='app:Start'>Form Based Search</semantic-link>
+  [[/inline]]
+  [[#*inline "demo"]]
+    <div style='height: 500px'> 
+        [[> configuration]]
+    </div>
+  [[/inline]]
+[[/app:FeatureDemonstration]]
+    
+
