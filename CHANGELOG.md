@@ -5,6 +5,15 @@ All notable changes to the Wikidata app are summarized in this file.
 Note: when updating to a newer release of metaphactory, make sure to select a matching version of the Wikidata app.
 
 
+## 2020-04-15 (Release 4.1.0)
+
+Wikidata app compatible with the major metaphactory 4.1.x release
+
+* fix chemical drawing example
+* fix ontodia relationship finder example
+* fix cross product due to multi-lingual labels in event tree example
+
+
 ## 2020-02-23 (Release 4.0.0)
 
 Wikidata app compatible with the major metaphactory 4.0.x release
