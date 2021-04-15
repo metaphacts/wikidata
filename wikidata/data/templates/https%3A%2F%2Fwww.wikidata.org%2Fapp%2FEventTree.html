@@ -67,7 +67,9 @@ PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX wdt: <http://www.wikidata.org/prop/direct/>
 PREFIX wd: <http://www.wikidata.org/entity/>
 SELECT * {
-         ?Property wdt:P31/wdt:P279*<{{iri}}> ; rdfs:label ?Label . OPTIONAL {?Property <http://schema.org/description> ?Description. }
+         ?Property wdt:P31/wdt:P279*<{{iri}}> ; rdfs:label ?Label . 
+         FILTER (LANG(?Label) = "en")
+         OPTIONAL {?Property <http://schema.org/description> ?Description.  FILTER (LANG(?Description) = "en")}
 
                     }
                   ' 
