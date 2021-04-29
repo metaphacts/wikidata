@@ -1,0 +1,255 @@
+<ol class="page-breadcrumb">
+    <li>
+      <semantic-link title="Start" uri='[[resolvePrefix "app:Start"]]'>Start</semantic-link>
+    </li>
+    <li>
+      <semantic-link title="Examples" uri='[[resolvePrefix "app:Examples"]]'>Examples</semantic-link>
+    </li>
+    <li class="active">Constant Search in the Life Sciences</li>
+</ol>
+[[#> app:FeatureDemonstration-demosystem title="Constant Search in the Life Sciences"]]
+  [[#*inline "motivation"]]
+<p>In a situation where a user has a recurring information need but where the results can vary as new data is published (e.g., "give me all current patients in the hospital"), a dedicated dashboard with pre-defined search parameters is best-suited for allowing the user to interact with the data and get the results they need without having to provide their query each time.  </p> 
+    
+  [[/inline]]
+	[[#*inline "solution"]]
+    <p> Constant Search can be utilized to facilitate such recurring user needs and deliver results for a pre-defined search. Constant Search can be augmented by integrating facets and it supports various results visualization options: charts, tables, grids and (in this example) maps. This particular search was configured to show all people that died from Alzheimer's disease around the world together with their life spans. 
+ </p>
+  [[/inline]]
+  [[#*inline "configuration"]]
+
+<div class="page">
+
+<div class='page__body' style="margin-top: 40px;">
+
+
+<semantic-search categories='{
+                    "<http://www.w3.org/2001/XMLSchema#Decimal>": [{
+                      "kind": "numeric-range",
+                      "queryPattern": "{
+                        $subject ?__relation__ ?literal .
+                        FILTER(?literal >= ?__numericRangeBeginValue__) .
+                        FILTER(?literal <= ?__numericRangeEndValue__) .
+                      }"
+                    }],
+                    "<http://metaphacts-platform.com/Age>": [{
+                      "kind": "numeric-range",
+                      "queryPattern": "{
+                        ?subject <http://www.wikidata.org/prop/direct/P569> ?birthDate .
+                        ?subject <http://www.wikidata.org/prop/direct/P570> ?deathDate . 
+                        bind(xsd:integer(year(?deathDate)-year(?birthDate)) as ?literal)
+                        BIND(COALESCE(?__numericRangeBeginValue__, 0) as ?start)
+                        BIND(COALESCE(?__numericRangeEndValue__, 150) as ?finish)
+                        BIND(?literal as ?numericRangeBeginValue)
+                        BIND(?literal as ?numericRangeEndValue)
+                        FILTER (?start <= ?literal)
+                        FILTER (?finish >= ?literal)
+                      }"
+                    }],
+                    "<http://www.w3.org/2001/XMLSchema#date>": [{
+                       "kind": "date-range",
+                       "datatype": "http://www.w3.org/2001/XMLSchema#date",
+                       "queryPattern": "
+                         {
+                           $subject ?__relation__ ?date .
+                           FILTER(?date <= ?__dateEndValue__) .
+                           FILTER(?date >= ?__dateBeginValue__) .
+                         }"
+                      }], 
+                      "<http://www.w3.org/2000/01/rdf-schema#Literal>": [{
+                       "kind": "literal",
+                       "queryPattern": "{
+                       $subject ?__relation__ ?__literal__ .
+                       }"
+                     }]
+                 }'         
+  relations = '{
+                 "<http://www.metaphacts.com/ontology/sample/country>": [
+                   {
+                     "kind": "resource",
+                     "queryPattern": "
+                     {
+                       ?subject <http://www.wikidata.org/prop/direct/P20> ?city .
+                       ?city <http://www.wikidata.org/prop/direct/P17> ?__value__ .
+                      
+                     }
+                     "
+                   }
+                 ]
+               }'
+  search-profile='{ 
+                    "categories": [{
+                                     "iri": "<http://www.wikidata.org/entity/Q5>",
+                                     "label": "Person",
+                                     "thumbnail": "../images/help/thenounproject/noun_1113333.svg"
+                                   },
+                                   {
+                                     "iri": "<http://metaphacts-platform.com/Age>",
+                                     "label": "Age"
+                                   },
+                                   {
+                                     "iri": "<http://www.wikidata.org/entity/Q6256>",
+                                     "label": "Country",
+                                     "thumbnail": "../images/help/thenounproject/noun_1285331.svg"
+                                   },
+                                   {
+                                     "iri": "<http://www.w3.org/2001/XMLSchema#Decimal>",
+                                     "label": "Age",
+                                     "thumbnail": "../images/help/thenounproject/noun_739855.svg"
+                                   },
+                                   {
+                                     "iri": "<http://www.w3.org/2001/XMLSchema#date>",
+                                     "label": "Time",
+                                     "thumbnail": "../images/help/thenounproject/noun_873049.svg"
+                                   },
+                                   {
+                                     "iri": "<http://www.w3.org/2000/01/rdf-schema#Literal>",
+                                     "label": "Life Span",
+                                     "thumbnail": "../images/help/thenounproject/noun_873049.svg"
+                                   }
+                                ],
+                    "relations": [
+                                  
+                                  {
+                                    "iri": "<http://www.metaphacts.com/ontology/sample/country>",
+                                    "label": "country",
+                                    "hasDomain": "<http://www.wikidata.org/entity/Q5>",
+                                    "hasRange": "<http://www.wikidata.org/entity/Q6256>"
+                                  },
+                                  {
+                                    "iri": "<http://www.metaphacts.com/ontology/sample/life_span>",
+                                    "label": "life span",
+                                    "hasDomain": "<http://www.wikidata.org/entity/Q5>",
+                                    "hasRange": "<http://metaphacts-platform.com/Age>"
+                                  }
+                                 
+                              
+                                 ]
+                  }'
+  [[>app:LifeScienceTypeSearchConfig]]>
+
+   <semantic-search-query-constant 
+      domain='<http://www.wikidata.org/entity/Q5>'
+      query='
+        PREFIX wd: <http://www.wikidata.org/entity/>
+        PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+
+        SELECT ?subject WHERE { 
+          ?subject wdt:P509 wd:Q11081 . 
+        }
+      '
+    ></semantic-search-query-constant>
+    <div data-flex-layout="row stretch-stretch">
+    <div data-flex-self="size-1of3" style="flex: 0 0 20px;">
+      <semantic-search-facet></semantic-search-facet>
+    </div>
+    <semantic-search-result-holder>
+      <div data-flex-self="md-full">
+        <semantic-search-facet-breadcrumbs>
+
+        </semantic-search-facet-breadcrumbs>
+
+        <semantic-search-result>
+
+        </semantic-search-result>
+        <bs-tabs unmount-on-exit=true id='search-results' animation=false>
+           <bs-tab event-key="1" title="Map">
+           
+            <semantic-search-result>
+                             
+                <semantic-map id='map-result'
+                  query='
+                    SELECT DISTINCT ?subject ?label ?wkt ?city ?age ?countryLabel WHERE {
+                      ?subject <http://www.wikidata.org/prop/direct/P20> ?city .
+                      ?subject rdfs:label ?label . filter(lang(?label) = "en").
+                      ?city <http://www.wikidata.org/prop/direct/P625> ?wkt .
+                      ?city <http://www.wikidata.org/prop/direct/P17> ?country .
+                      ?country rdfs:label ?countryLabel . filter(lang(?countryLabel) = "en").
+                      ?subject <http://www.wikidata.org/prop/direct/P569> ?birthDate .
+                      ?subject <http://www.wikidata.org/prop/direct/P570> ?deathDate . 
+                      bind( year(?deathDate)-year(?birthDate) as ?age )
+                    
+                    } 
+                  '
+                   tuple-template='<a href="https://wikidata.metaphacts.com/resource/?uri={{subject.value}}" target="_blank">{{label.value}} ({{countryLabel.value}})</a><br><b>Age: {{age.value}}</b>'
+                 ></semantic-map>
+            </semantic-search-result>
+          </bs-tab>
+          <bs-tab event-key="2" title="Table">
+            <semantic-search-result>
+              <semantic-table id='table-result'
+                              query='SELECT DISTINCT ?subject ?age ?country WHERE { 
+                                ?subject <http://www.wikidata.org/prop/direct/P20> ?city .
+                                ?city <http://www.wikidata.org/prop/direct/P17> ?country .
+                                ?subject <http://www.wikidata.org/prop/direct/P569> ?birthDate .
+                                ?subject <http://www.wikidata.org/prop/direct/P570> ?deathDate . 
+                                bind( year(?deathDate)-year(?birthDate) as ?age )
+                              }'
+                              column-configuration='[
+                               {"variableName": "subject", "displayName": "Person", "cellTemplate": "{{> template iri=subject.value}}"}, 
+                               {"variableName": "age", "displayName": "Age"},  
+                              {"variableName": "country", "displayName": "Country"} 
+                             ]'
+                              options='{"showFilter":false}'
+              >
+              <template id='template'>
+                  <mp-knowledge-panel-trigger
+                    iri='{{iri}}'
+                    target='knowledge-panel-1'
+                  >
+                  </mp-knowledge-panel-trigger>
+                </template>
+              </semantic-table>
+            </semantic-search-result>
+          </bs-tab>
+        
+        </bs-tabs>
+
+        <bs-panel>
+          <semantic-search-result>
+            <mp-sparql-download id='csv-download'
+                                query="SELECT * WHERE { }"
+                                header="text/csv"
+                                filename="csv-result.csv">
+              <button class="btn btn-secondary">Download CSV</button>
+            </mp-sparql-download>
+          </semantic-search-result>
+          <semantic-search-result>
+            <mp-sparql-download id='json-download'
+                                query="SELECT * WHERE { }"
+                                header="application/sparql-results+json"
+                                filename="json-result.json"
+                                >
+              <button class="btn btn-secondary">Download JSON</button>
+            </mp-sparql-download>
+          </semantic-search-result>
+        </bs-panel>
+      </div>
+    </semantic-search-result-holder>
+    <mp-knowledge-panel-frame id='knowledge-panel-1'></mp-knowledge-panel-frame>
+  </div>
+
+  
+</semantic-search>
+
+
+
+  </div>
+
+</div>    
+[[/inline]]
+	[[#*inline "description"]]
+		<p>Configuration description</p>
+		<p><semantic-link iri="[[resolvePrefix "Help:SemanticMap"]]">Learn More</semantic-link></p>
+	[[/inline]]
+  [[#*inline  "features"]]
+    <semantic-link iri='app:Start'>Semantic Search</semantic-link>,     <semantic-link iri='app:Start'>Similarity Search</semantic-link>
+  [[/inline]]
+  [[#*inline "demo"]]
+    <div style='height: 500px'> 
+        [[> configuration]]
+    </div>
+  [[/inline]]
+[[/app:FeatureDemonstration]]
+ 
+ 
