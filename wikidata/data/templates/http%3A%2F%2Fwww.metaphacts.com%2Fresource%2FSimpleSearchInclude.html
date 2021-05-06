@@ -1,0 +1,114 @@
+  [[!--
+    To include this page within you application, you can optionally pass in the following parameters:
+
+    searchPattern="?subject rdfs:label|skos:prefLabel ?label . ?label bds:search ?__token__ ;"
+		searchPlaceholder="Type to search for X"
+    searchLimit="100"
+  ---]]
+	<style>
+      table.table {
+        min-width: 100%;
+      }
+
+      tr.standard-row {
+        border: none!important;
+      }
+
+      .table > tbody + tbody {
+        border: none!important;
+      }
+
+      .table > tbody + tbody > tr {
+        border: none!important;
+      }
+
+      .res-label {
+        float: left;
+      }
+
+      .res-comment {
+        clear: left;
+        margin-top: 10px;
+        margin-bottom: 10px;
+      }
+
+      .res-img-thumbnail {
+        display: inline;
+        float: left;
+        max-width: 50px;
+        max-height: 50px;
+        margin-right: 10px;
+        margin-bottom: 5px;
+      }
+
+      input#semantic-search-text-input {
+        margin-top: 10vh!important;
+        width: 50vw;
+        margin: 0 auto;
+        text-align: center;
+      }
+    </style>
+    <semantic-search limit=[[#if searchLimit]][[searchLimit]][[else]]10[[/if]]>
+        <semantic-search-query-keyword
+          [[#if searchPlaceholder]]placeholder='[[searchPlaceholder]]'[[/if]]
+          domain='<http://www.w3.org/2000/01/rdf-schema#Resource>'
+          query='
+      #backwards compatibility
+      [[#if searchPattern]]
+        SELECT ?subject WHERE {
+           [[searchPattern]]
+        } ORDER BY DESC(?score) ?length
+      [[else]]
+  PREFIX lookup: <http://www.metaphacts.com/ontologies/platform/repository/lookup#>
+  SELECT ?subject ?description WHERE {
+    SERVICE Repository:lookup {
+       ?subject lookup:token ?__token__ .
+       ?subject lookup:description ?description .
+       ?subject lookup:score ?score .
+       ?subject lookup:limit [[#if searchLimit]][[searchLimit]][[else]]10[[/if]] .
+    }
+  }
+      [[/if]]'
+        ></semantic-search-query-keyword>
+  <div data-flex-layout="row stretch-stretch">
+    <semantic-search-result-holder>
+      <div data-flex-self="md-full" class='text-left'>
+        <semantic-search-result>
+          <semantic-table id='grid-result'
+                    query='SELECT DISTINCT ?subject ?description ?score WHERE {
+                            } GROUP BY ?subject ?description ?score ORDER BY DESC(?score) LIMIT [[#if searchLimit]][[searchLimit]][[else]]10[[/if]]'
+
+                    number-of-displayed-rows='10'
+                    column-configuration='[
+                        {"variableName":"subject", "displayName":"Result", "cellTemplate":"{{> subjectCellTemplate }}"}
+                   ]'
+                    options='{"showTableHeading": false, "showFilter":false}'
+                    no-result-template='<div style="text-align: center;">No results. Please refine your keyword.</div>'>
+            <template id="subjectCellTemplate">
+                 <mp-panel>
+                  <mp-panel-body>
+                    <div>
+                      <div>
+                        <mp-resource-thumbnail iri="{{subject.value}}" class="res-img-thumbnail"></mp-resource-thumbnail>
+                        <div class="res-label">
+                          <h4><semantic-link uri="{{subject.value}}"></semantic-link></h4>
+                        </div>
+                      </div>
+
+                    </div>
+                  </mp-panel-body>
+                  <mp-panel-footer>
+                    <div>
+                      <div><b>URI: </b><i>{{subject.value}}</i></div>
+                      <div class="res-comment">{{description.value}}</div>
+                      <div><b>Types: </b><semantic-query style='display:inline;' query='SELECT ?type WHERE { <{{subject.value}}> wdt:P31 ?type}' no-result-template='-'></semantic-query></div>
+                    </div>
+                  </mp-panel-footer>
+                </mp-panel>
+            </template>
+					</semantic-table>
+				</semantic-search-result>
+      </div>
+    </semantic-search-result-holder>
+  </div>
+</semantic-search>
