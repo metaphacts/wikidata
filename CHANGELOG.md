@@ -5,6 +5,13 @@ All notable changes to the Wikidata app are summarized in this file.
 Note: when updating to a newer release of metaphactory, make sure to select a matching version of the Wikidata app.
 
 
+## unreleased (Release 4.2.0)
+
+Wikidata app compatible with the major metaphactory 4.2.x release
+
+* Update life science keyword type search example with new features
+
+
 ## 2020-04-15 (Release 4.1.0)
 
 Wikidata app compatible with the major metaphactory 4.1.x release

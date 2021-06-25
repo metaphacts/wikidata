@@ -21,23 +21,15 @@
 <div >
   <div class='page__body' style="margin-top: 40px;">
 
-    <semantic-search limit=1000 disable-optimizer=false
+    <semantic-search limit=1000
         [[>app:LifeScienceTypeSearchConfig]]>
      <semantic-search-query-keyword-type
-        query='
-          PREFIX lookup: <http://www.metaphacts.com/ontologies/platform/repository/lookup#>
-          SELECT ?subject WHERE {
-            ?subject wdt:P31 ?__domain__ .
-            FILTER(?__tokenPattern__)
-          }
-        '
-        count-query='
-          PREFIX lookup: <http://www.metaphacts.com/ontologies/platform/repository/lookup#>
-          SELECT (COUNT(*) as ?count) WHERE {
+        default-query='SELECT ?subject WHERE {
               ?subject wdt:P31 ?__domain__ .
-              FILTER(?__tokenPattern__)
-          }
-        '
+          }'
+        default-count-query='SELECT (COUNT(*) as ?count) WHERE {
+            ?subject wdt:P31 ?__domain__
+          }'
         count-query-mode='queryPerCategory'
         token-pattern='
               SERVICE Repository:lookup {
@@ -48,6 +40,7 @@
                   ?subject lookup:type ?__domain__ .
                }
         '
+        inline-suggest='true'
         >
       </semantic-search-query-keyword-type>
 
