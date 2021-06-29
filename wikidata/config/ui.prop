@@ -4,3 +4,4 @@ templateIncludeQuery = SELECT ?type WHERE { { BIND (IF(strstarts(str(??)\\, "htt
 preferredLabels = <http://www.w3.org/2000/01/rdf-schema#label>,^<http://wikiba.se/ontology#directClaim>/<http://www.w3.org/2000/01/rdf-schema#label>
 preferredLanguages = en,de,ru
 preferredTypes = <http://www.wikidata.org/prop/direct/P31>
+showClipboard = true

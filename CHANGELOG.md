@@ -10,6 +10,7 @@ Note: when updating to a newer release of metaphactory, make sure to select a ma
 Wikidata app compatible with the major metaphactory 4.2.x release
 
 * Update life science keyword type search example with new features
+* Activate global clipboard
 
 
 ## 2020-04-15 (Release 4.1.0)
