@@ -33,10 +33,12 @@ PREFIX wd: <http://www.wikidata.org/entity/>
 
 SELECT (?subject as ?link) ?wkt WHERE {
 
-  ?subject wdt:P131* wd:Q565170 ;
-           wdt:P625 ?wkt_wikidata
-      
-  OPTIONAL { ?subject wdt:P402 ?code .
+  SERVICE Repository:default {
+    ?subject wdt:P131* wd:Q565170 ;
+            wdt:P625 ?wkt_wikidata
+  }
+  OPTIONAL { 
+    ?subject wdt:P402 ?code .
     SERVICE <http://www.metaphacts.com/ontologies/platform/repository/federation#openstreetmap-lookup> 
       {
               ?results osm:osmId ?code.
@@ -44,7 +46,7 @@ SELECT (?subject as ?link) ?wkt WHERE {
               ?results osm:polygon ?wkt_osm .
               ?results osm:wikidataID ?wikidataID .
       }
-    }
+  }
   BIND(COALESCE(?wkt_osm, ?wkt_wikidata) as ?wkt)
 }
 '></semantic-map>

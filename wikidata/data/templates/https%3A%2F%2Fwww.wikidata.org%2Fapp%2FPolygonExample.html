@@ -33,18 +33,18 @@
 
       SELECT (?subject as ?link) ?wkt ?color (round(?density) as ?description)
       WHERE {
-
-        ?subject wdt:P131+ wd:Q8178    .
-        ?subject wdt:P402 ?code .
-        OPTIONAL { ?subject  wdt:P2046 ?area } 
-        OPTIONAL {?subject wdt:P1082 ?population } 
-
-      SERVICE <http://www.metaphacts.com/ontologies/platform/repository/federation#openstreetmap-lookup> {
-              ?results osm:osmId ?code.
-              ?results rdfs:label ?label .
-              ?results osm:polygon ?wkt .
-              ?results osm:wikidataID ?wikidataID .
-            }
+        SERVICE Repository:default {
+          ?subject wdt:P131+ wd:Q8178    .
+          ?subject wdt:P402 ?code .
+          OPTIONAL { ?subject  wdt:P2046 ?area } 
+          OPTIONAL { ?subject wdt:P1082 ?population } 
+        }
+        SERVICE <http://www.metaphacts.com/ontologies/platform/repository/federation#openstreetmap-lookup> {
+          ?results osm:osmId ?code.
+          ?results rdfs:label ?label .
+          ?results osm:polygon ?wkt .
+          ?results osm:wikidataID ?wikidataID .
+        }
 
         BIND(?population/?area as ?density)
         BIND(IF(?density<300, "rgba(0,255,0,0.5)", IF(?density<600, "rgba(255,165,0,0.5)", "rgba(255,0,0,0.5)")) as ?color)
