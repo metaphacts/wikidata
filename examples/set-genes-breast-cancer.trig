@@ -1,0 +1,38 @@
+@prefix : <http://www.metaphacts.com/resource/> .
+@prefix bd: <http://www.bigdata.com/rdf#> .
+@prefix User: <http://www.metaphacts.com/resource/user/> .
+@prefix Help: <http://help.metaphacts.com/resource/> .
+@prefix Platform: <http://www.metaphacts.com/ontologies/platform#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix wdt: <http://www.wikidata.org/prop/direct/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix wd: <http://www.wikidata.org/entity/> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix Assets: <http://www.metaphacts.com/resource/assets/> .
+@prefix sp: <http://spinrdf.org/sp#> .
+@prefix app: <https://www.wikidata.org/app/> .
+@prefix lookup: <http://www.metaphacts.com/ontologies/platform/repository/lookup#> .
+@prefix wikibase: <http://wikiba.se/ontology#> .
+@prefix Service: <http://www.metaphacts.com/ontologies/platform/service/> .
+@prefix nextprot: <http://nextprot.org/rdf#> .
+@prefix Admin: <http://www.metaphacts.com/resource/admin/> .
+@prefix bds: <http://www.bigdata.com/rdf/search#> .
+@prefix Repository: <http://www.metaphacts.com/ontologies/repository#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix ephedra: <http://www.metaphacts.com/ontologies/platform/ephedra#> .
+
+<http://www.metaphacts.com/resource/set-genes-breast-cancer/context> {
+  :set-a032ecd7-5947-4f1b-9cfb-acad91436f8c a <http://www.w3.org/ns/prov#Entity>, Platform:Set;
+    rdfs:label "Genes (Breast Cancer)";
+    <http://www.w3.org/ns/prov#wasAttributedTo> Platform:anonymousUser;
+    <http://www.w3.org/ns/prov#generatedAtTime> "2021-07-14T15:49:52.824+02:00"^^xsd:dateTime;
+    Platform:hasSetItem wd:Q14881725, wd:Q14902310, wd:Q14911585, wd:Q14911644, wd:Q14913379,
+      wd:Q14913892, wd:Q15315135, wd:Q17816452, wd:Q17915128, wd:Q17917202, wd:Q17927651,
+      wd:Q18026498, wd:Q18028981, wd:Q18029021, wd:Q18030362, wd:Q18030409, wd:Q18030468,
+      wd:Q18030586, wd:Q18031496, wd:Q18034082, wd:Q18034329, wd:Q18036114, wd:Q18036570,
+      wd:Q18038782, wd:Q18041257, wd:Q18042957, wd:Q18043183, wd:Q18047180, wd:Q18047281,
+      wd:Q18047337, wd:Q18047762, wd:Q18049567, wd:Q18051831, wd:Q18058362, wd:Q18061762;
+    <http://www.w3.org/ns/prov#atLocation> "https://wikidata.metaphacts.com/resource/app:LifeScienceStructuredSearch?semanticSearch=N4IgziBcoNZQjAGhAEwPZRAdxZAigOzwAcBIyAxlANqgBOAplPQIaY77wBM8AzAGzkQjdigAukAApcuATl5CUNaiABKDMGgCudCk0SgAlnUPMQAFUwBJE0IBqZsQzoBbcwE8ADk0ggAciwuDCh%2BaCj6IABumAAWYmKekAD0SVhpAHRYhjCGKCxiLOlodADmSQwAdmKGYu5JeNzEAKzE8CAAvu3IADYsAEYM3Zh9jCxgYgAEFCwVenSKGhQmntVoFcOj41Mzc0JiWp7dPqBgWiUlGqvr0BbWtsgON06uHt6YAUEhYRHRvnEJyVSGSyOTyBSKpXKVRqdQaXGarQ6XVQi2WVzMll8ABkas4WEMHo5nG4vD4QDjnvihL8QNNZs4JmIYvkJsVDCVDBV8hoJpzGTEGBMXIFhXR3BMSr0KkpkGD8qSMXdTISnsTXmSPsFQuFqbF4okUmksJleBCylwAAwW%2BBJAAaAFksQBlCgC4UAYnGJgqJSRPRmJS0LAumD9IF6AyGN0x5NxdCpKtAzxJb2xcYTUQ2DDGkzpu1l%2BXlqdAMZsypAjyTaoVvk1Xx1yBp-wNQONWFNxXNVptDudroYHq9nN9nX9PqDId8SM6AF0Z8itBVDABHLQMKxKSAW9rz5AAMxo86AA" .
+}

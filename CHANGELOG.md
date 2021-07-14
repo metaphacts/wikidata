@@ -12,6 +12,7 @@ Wikidata app compatible with the major metaphactory 4.2.x release
 * Update life science keyword type search example with new features
 * Activate global clipboard
 * Add "Save As Set" button to structured search examples
+* Add example sets for the anonymous user as bootstrap data
 
 
 

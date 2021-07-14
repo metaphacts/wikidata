@@ -1,0 +1,32 @@
+@prefix : <http://www.metaphacts.com/resource/> .
+@prefix bd: <http://www.bigdata.com/rdf#> .
+@prefix User: <http://www.metaphacts.com/resource/user/> .
+@prefix Help: <http://help.metaphacts.com/resource/> .
+@prefix Platform: <http://www.metaphacts.com/ontologies/platform#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix wdt: <http://www.wikidata.org/prop/direct/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix wd: <http://www.wikidata.org/entity/> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix Assets: <http://www.metaphacts.com/resource/assets/> .
+@prefix sp: <http://spinrdf.org/sp#> .
+@prefix app: <https://www.wikidata.org/app/> .
+@prefix lookup: <http://www.metaphacts.com/ontologies/platform/repository/lookup#> .
+@prefix wikibase: <http://wikiba.se/ontology#> .
+@prefix Service: <http://www.metaphacts.com/ontologies/platform/service/> .
+@prefix nextprot: <http://nextprot.org/rdf#> .
+@prefix Admin: <http://www.metaphacts.com/resource/admin/> .
+@prefix bds: <http://www.bigdata.com/rdf/search#> .
+@prefix Repository: <http://www.metaphacts.com/ontologies/repository#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix ephedra: <http://www.metaphacts.com/ontologies/platform/ephedra#> .
+
+<http://www.metaphacts.com/resource/set-metaphacts/context> {
+  :set-da8a91ab-3fc0-48b0-b86e-20f0af2865f4 a <http://www.w3.org/ns/prov#Entity>, Platform:Set;
+    rdfs:label "metaphacts";
+    <http://www.w3.org/ns/prov#wasAttributedTo> Platform:anonymousUser;
+    <http://www.w3.org/ns/prov#generatedAtTime> "2021-07-14T15:44:54.242+02:00"^^xsd:dateTime;
+    Platform:hasSetItem wd:Q23831639, wd:Q22132500, wd:Q22872 .
+}
