@@ -5,7 +5,7 @@ All notable changes to the Wikidata app are summarized in this file.
 Note: when updating to a newer release of metaphactory, make sure to select a matching version of the Wikidata app.
 
 
-## unreleased (Release 4.2.0)
+## 2020-08-16 (Release 4.2.0)
 
 Wikidata app compatible with the major metaphactory 4.2.x release
 
