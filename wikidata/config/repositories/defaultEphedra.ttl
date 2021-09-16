@@ -9,6 +9,9 @@
       rep:repositoryType "metaphacts:EphedraRepository";
       ephedra:defaultMember "proxyToDefault";
       ephedra:serviceMember [
+          ephedra:delegateRepositoryID "pathfinder";
+          ephedra:serviceReference <http://www.metaphacts.com/ontologies/platform/service/pathfinder>
+        ], [
           ephedra:delegateRepositoryID "chemsimilarity";
           ephedra:serviceReference <http://www.metaphacts.com/ontologies/platform/repository/federation#chemsimilarity>
         ], [
