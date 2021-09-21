@@ -1,4 +1,5 @@
 @prefix lookup: <http://www.metaphacts.com/ontologies/platform/repository/lookup#> .
+@prefix pathfinder: <http://www.metaphacts.com/ontologies/platform/service/pathfinder/> .
 @prefix mph: <http://www.metaphacts.com/ontologies/platform/repository#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix rep: <http://www.openrdf.org/config/repository#> .
@@ -16,4 +17,12 @@
       rep:repositoryType "metaphactory:SPARQLRepository";
       sparql:query-endpoint <https://wikidata.metaphacts.com/bigdata/sparql>
     ];
-  rdfs:label "SPARQL repository" .
+  rdfs:label "SPARQL repository" ;
+  pathfinder:configuration [
+    pathfinder:type "metaphacts:sparqlUnionPathFinder";
+    pathfinder:additionalExpressionsTemplate """
+  # exclude statement qualifiers and non direct properties
+  FILTER (!(STRSTARTS(STR(?relation), "http://www.wikidata.org/prop/statement/")) && !(STRSTARTS(STR(?relation), "http://www.wikidata.org/prop/P")))
+"""
+  ]
+.
