@@ -1,0 +1,123 @@
+<style>
+
+  /* These styles are required to fit Ontodia into the available space, and fit KnowledgePanel inside of Ontodia */
+
+   .ontodia-container {
+    flex: auto;
+    display: flex;
+    height: 100%;
+    width: 100%;
+  }
+  .ontodia-workspace-container {
+    flex-grow: 1;
+    min-width: 0;
+  }
+  .ontodia-knowledge-panel-container {
+    background-color: whitesmoke;
+    padding: 10px 10px 0px 0px;
+    max-width: 30%;
+  }
+  .ontodia-knowledge-panel-container .knowledge-panel-frame {
+    box-shadow: 0px 5px 13px 5px rgba(0, 0, 0, 0.12);
+    height: calc(100% - 10px);
+    transition: height 0.3s;
+    overflow: hidden;
+    margin-left: 0;
+    width: 380px;
+    max-width: 100%;
+  }
+
+</style>
+<div style="border: 1px solid #80808026; height: calc(100vh - 60px);'">
+  <ontodia>
+    <mp-event-proxy id="proxy-selection" on-event-type="Ontodia.ShowElementInfo" proxy-event-type="KnowledgePanel.Open" proxy-targets="[]">
+    </mp-event-proxy>
+    <div class="ontodia-container">
+      <div class="ontodia-workspace-container">
+        <mp-workspace-layout>
+          <mp-workspace-row>
+            <mp-workspace-item id="paper" undocked="true">
+              <ontodia-canvas use-knowledge-panel="true">
+                <ontodia-toolbar dock="sw">
+                  <div class="btn-group btn-group-sm" style="margin-right: 10px;">
+                    <button name="zoomIn" class="btn btn-secondary" title="Zoom in"><i class="fa fa-search-plus"></i></button>
+                    <button name="zoomOut" class="btn btn-secondary" title="Zoom out"><i class="fa fa-search-minus"></i></button>
+                    <button name="zoomToFit" class="btn btn-secondary" title="Fit to screen"><i class="fa fa-arrows-alt"></i></button>
+                  </div>
+                  <div class="btn-group btn-group-sm" style="margin-right: 10px;">
+                    <button name="clearAll" class="btn btn-secondary"><i class="fa fa-trash"></i> Clear All</button>
+                    <mp-event-target-template-render id="pathFinderTrigger" template="{{> trigger}}">
+                      <template id="trigger">
+                        <mp-event-trigger type="PathFinder.TogglePanel" targets='["ontodia-path-finder"]'>
+                          <button class="{{#if isOpen}}PathFinderToggleButtonActive{{/if}} btn btn-secondary">
+                            Pathfinder
+                          </button>
+                        </mp-event-trigger>
+                      </template>
+                    </mp-event-target-template-render>
+                    <mp-event-proxy on-event-type="PathFinder.Visibility" on-event-source="ontodia-path-finder" proxy-event-type="Component.TemplateUpdate" proxy-targets='["pathFinderTrigger"]'>
+                    </mp-event-proxy>
+                  </div>
+                  <bs-dropdown size="sm" drop="up" class="btn-group btn-group-sm" style="margin-right: 10px;">
+                    <button name="forceLayout" class="btn btn-secondary">
+                      <i class="fa fa-snowflake-o"></i> Force layout
+                    </button>
+                    <bs-dropdown-toggle id="layout-type" variant="secondary"></bs-dropdown-toggle>
+                    <bs-dropdown-menu>
+                      <bs-menu-item name="layout" event-key="forceLayout"><i class="fa fa-snowflake-o"></i> Force layout</bs-menu-item>
+                      <bs-menu-item name="layout" event-key="flowLayout"><i class="fa fa-sitemap"></i> Flow layout</bs-menu-item>
+                      <bs-menu-item name="layout" event-key="sankeyLayout"><i class="fa fa-sitemap" style="transform: rotate(90deg);"></i> Sankey layout</bs-menu-item>
+                      <bs-menu-item name="layout" event-key="gridLayout"><i class="fa fa-th"></i> Grid layout</bs-menu-item>
+                      <bs-menu-item name="layout" event-key="autoLayout"><i class="fa fa-magic"></i> Auto layout</bs-menu-item>
+                    </bs-dropdown-menu>
+                  </bs-dropdown>
+                </ontodia-toolbar>
+                <ontodia-halo></ontodia-halo>
+                <ontodia-path-finder default-open="true">
+                  <semantic-path-finder id="ontodia-path-finder" query='
+                      PREFIX Service: <http://www.metaphacts.com/ontologies/platform/service/>
+                      PREFIX pathfinder: <http://www.metaphacts.com/ontologies/platform/service/pathfinder/>
+                      PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+
+                      SELECT ?path ?index ?startNode ?predicate ?endNode ?relation ?edge
+                      WHERE {
+                        BIND(?__from__ as ?sourceNode)
+                        BIND(?__to__ as ?targetNode)
+                        SERVICE Service:pathfinder {
+                        ?item pathfinder:sourceNode ?sourceNode ;
+                              pathfinder:targetNode ?targetNode ;
+                              pathfinder:minPathLength ?__minPathLength__ ;
+                              pathfinder:maxPathLength ?__maxPathLength__ ;
+                              pathfinder:limit ?__maxPathsCount__ ;
+                              pathfinder:excludedRelation ?__excludedRelation__ ;
+                              pathfinder:excludedRelation rdf:type ;
+                              pathfinder:mode "allPaths" ; # alternative: shortestPath
+                              pathfinder:pathId ?path ;
+                              pathfinder:segmentId ?index ;
+                              pathfinder:relation ?predicate ;
+                              pathfinder:startNode ?startNode ;
+                              pathfinder:endNode ?endNode .
+                        }
+                      }
+                    ' 
+                    droppable-check-query='ASK {?value <http://www.wikidata.org/prop/direct/P31> ?type}'
+                    start-node-iri="http://www.wikidata.org/entity/Q11081" end-node-iri="http://www.wikidata.org/entity/Q2034004" excluded-relations='["http://www.wikidata.org/prop/direct/P5008"]' path-visualization-mode="diff" min-path-length="1" max-path-length="3" max-paths-count="10">
+                  </semantic-path-finder>
+                </ontodia-path-finder>
+                <ontodia-halo-link></ontodia-halo-link>
+                <ontodia-navigator expanded="false"></ontodia-navigator>
+                <ontodia-snaplines></ontodia-snaplines>
+                <ontodia-selection></ontodia-selection>
+              </ontodia-canvas>
+            </mp-workspace-item>
+          </mp-workspace-row>
+        </mp-workspace-layout>
+      </div>
+      <div class="ontodia-knowledge-panel-container">
+        <semantic-context repository="default">
+          <mp-knowledge-panel-frame no-pin="true"></mp-knowledge-panel-frame>
+        </semantic-context>
+      </div>
+    </div>
+  </ontodia>
+</div>
