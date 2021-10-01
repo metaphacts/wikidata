@@ -23,7 +23,7 @@ See https://help.metaphacts.com/resource/Help:AppDeployment for details on the d
 Notes: 
 
 * we recommend to deploy the app in a fresh metaphactory installation
-* please make sure to use a compatible app version (e.g. Wikidata 4.2 for metaphactory 4.2.x)
+* please make sure to use a compatible app version (e.g. Wikidata 4.3 for metaphactory 4.3.x)
 
 
 ## Building the app artifact
