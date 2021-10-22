@@ -9,6 +9,12 @@
       rep:repositoryType "metaphacts:EphedraRepository";
       ephedra:defaultMember "proxyToDefault";
       ephedra:serviceMember [
+          ephedra:delegateRepositoryID "lookup";
+          ephedra:serviceReference <http://www.metaphacts.com/ontologies/repository#lookup>
+        ] , [
+          ephedra:delegateRepositoryID "label";
+          ephedra:serviceReference <http://www.metaphacts.com/ontologies/platform/service/label>
+        ] ,[
           ephedra:delegateRepositoryID "pathfinder";
           ephedra:serviceReference <http://www.metaphacts.com/ontologies/platform/service/pathfinder>
         ], [

@@ -4,6 +4,10 @@ All notable changes to the Wikidata app are summarized in this file.
 
 Note: when updating to a newer release of metaphactory, make sure to select a matching version of the Wikidata app.
 
+## unreleased (Release 4.4.0)
+
+* Maintenance of app specific roles, header.hbs and default repository
+
 
 ## 2020-09-30 (Release 4.3.0)
 
