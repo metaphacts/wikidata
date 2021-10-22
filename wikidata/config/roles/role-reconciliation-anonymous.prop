@@ -1,0 +1,5 @@
+description=Permissions for making reconciliation accessible for the anonymous user
+includes = system-base, guest
+permissions = \
+    reconciliation:lookup:*, \
+    reconciliation:manifest:read

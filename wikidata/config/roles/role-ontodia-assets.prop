@@ -1,0 +1,4 @@
+description=Permissions for read access to Ontodia assets
+permissions = \
+    api:ldp:container:<http://www.metaphacts.com/ontologies/platform#ontodiaDiagramContainer>:create:any, \
+    api:ldp:container:<http://www.metaphacts.com/ontologies/platform#ontodiaDiagramContainer>:read:any

@@ -1,0 +1,9 @@
+description=Permissions defining the wikidata guest role
+includes = system-base, guest
+permissions = \
+    api:ldp:container:<http://www.metaphacts.com/ontologies/platform#ontodiaDiagramContainer>:create:any, \
+    sparql:*:query:*, \
+    ui:page:sparql-editor, \
+    proxy:graphscope, \
+    proxy:wikidata-images, \
+    proxy:rcsb-pdb
