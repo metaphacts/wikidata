@@ -10,6 +10,12 @@
       {{deploymentTitle}}
     </bs-navbar-brand>
   </div>
+  {{#if systemNotificationMessage}}
+    <div class='navbar-system-message'>
+      {{!-- Use {{{systemNotificationMessage}}}, if you want not escape html--}}
+    	<strong>{{systemNotificationMessage}}</strong>
+    </div>
+  {{/if}}
   <bs-navbar-toggle></bs-navbar-toggle>
   <bs-navbar-collapse>
     <ul class='nav mr-auto'></ul>
@@ -21,9 +27,11 @@
           </mp-resource-link-container>
         </bs-nav-item>
       </bs-nav>
-      <bs-nav-item>
-        <mp-link class="nav-link" url='/sparql' title='Sparql Endpoint'>SPARQL</mp-link>
-      </bs-nav-item>
+      <mp-has-permission permission='ui:page:sparql-editor'>
+        <bs-nav-item>
+          <mp-link class="nav-link" url='/sparql' title='Sparql Endpoint'>SPARQL</mp-link>
+        </bs-nav-item>
+      </mp-has-permission>
       <bs-nav>
         {{!-- only show assets menu for admins --}}
         <mp-has-permission permission='pages:view:*'>
