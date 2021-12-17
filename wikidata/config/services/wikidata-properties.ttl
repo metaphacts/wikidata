@@ -1,0 +1,59 @@
+PREFIX sp: <http://spinrdf.org/sp#>
+PREFIX spin: <http://spinrdf.org/spin#>
+PREFIX spl: <http://spinrdf.org/spl#>
+PREFIX example: <http://www.example.org/ontology#>
+PREFIX geo: <http://www.opengis.net/ont/geosparql#>
+PREFIX ephedra: <http://www.metaphacts.com/ontologies/platform/ephedra#>
+PREFIX : <http://www.metaphacts.com/ontologies/platform/service/custom#>
+
+ephedra:WikidataProperties a ephedra:Service ;
+	<http://www.openrdf.org/config/sail#sailType> "metaphacts:RESTService" ;
+	<http://www.w3.org/2000/01/rdf-schema#label> "A wrapper for a the wikdiata property REST API." ;
+	ephedra:hasSPARQLPattern (
+		[
+			sp:subject :_results ;
+			sp:predicate <http://www.metaphacts.com/ontology/wikidata/token> ;
+			sp:object :_search
+		]
+		[
+			sp:subject :_results ;
+			sp:predicate <http://www.metaphacts.com/ontology/wikidata/propertyID> ;
+			sp:object :_propertyID
+		]
+    [
+			sp:subject :_results ;
+			sp:predicate <http://www.w3.org/2000/01/rdf-schema#label>  ;
+			sp:object :_label
+		]
+	) ;
+	spin:constraint
+	[
+		a spl:Argument ;
+		rdfs:comment "search token" ;
+		spl:predicate :_search ;
+		spl:valueType xsd:string
+    ] ;
+	spin:column
+  [
+    a spin:Column ;
+      rdfs:comment "result" ;
+      spl:predicate :_results ;
+      spl:valueType rdfs:Resource;
+      ephedra:jsonPath "$.search[*]"
+  ] 
+  ;spin:column
+    [
+      a spin:Column ;
+      rdfs:comment "The wikidata poperty ID as string e.g. P18" ;
+      spl:predicate :_propertyID ;
+      spl:valueType xsd:string;
+      ephedra:jsonPath "$.id"
+    ]
+  ;spin:column
+    [
+      a spin:Column ;
+      rdfs:comment "The label of the property" ;
+      spl:predicate :_label ;
+      spl:valueType xsd:string;
+      ephedra:jsonPath "$.label"
+    ] .

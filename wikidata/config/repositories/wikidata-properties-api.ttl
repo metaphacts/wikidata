@@ -1,0 +1,28 @@
+@prefix lookup: <http://www.metaphacts.com/ontologies/platform/repository/lookup#> .
+@prefix pathfinder: <http://www.metaphacts.com/ontologies/platform/service/pathfinder/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rep: <http://www.openrdf.org/config/repository#> .
+@prefix sail: <http://www.openrdf.org/config/sail#> .
+@prefix sr: <http://www.openrdf.org/config/repository/sail#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix mph: <http://www.metaphacts.com/ontologies/platform/repository#> .
+@prefix ephedra: <http://www.metaphacts.com/ontologies/platform/ephedra#> .
+@prefix fedsail: <http://www.openrdf.org/config/sail/federation#> .
+@prefix sparqlr: <http://www.openrdf.org/config/repository/sparql#> .
+
+[] a rep:Repository;
+  rep:repositoryID "wikidata-properties-api";
+  rdfs:label "Repository to access the wikidata propertes API through Ephedra";
+  rep:repositoryImpl [
+      rep:repositoryType "openrdf:SailRepository";
+      sr:sailImpl [
+          sail:sailType "metaphacts:RESTService";
+          ephedra:serviceURL "https://www.wikidata.org/w/api.php?origin=*&action=wbsearchentities&format=json&limit=20&continue=0&language=en&uselang=en&type=property";
+          ephedra:implementsService ephedra:WikidataProperties;
+          ephedra:httpMethod "GET";
+          ephedra:httpHeader [
+              ephedra:name "Accept";
+              ephedra:value "application/json"
+            ]
+        ]
+    ] .

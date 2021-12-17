@@ -1,0 +1,54 @@
+[[!-- Overridden version for wikidata with a customized relation query --]]
+[[!--
+This is the default configuration for the path finder, currently it could be used only with Ontodia.
+Please consult the documentation on embedding pathfinder in custom Ontodia instances.
+--]]
+<semantic-path-finder
+  id='ontodia-path-finder'
+  query='
+    PREFIX Service: <http://www.metaphacts.com/ontologies/platform/service/>
+    PREFIX pathfinder: <http://www.metaphacts.com/ontologies/platform/service/pathfinder/>
+
+    SELECT ?path ?index ?startNode ?predicate ?endNode ?relation ?edge
+    WHERE {
+      BIND(?__from__ as ?sourceNode)
+      BIND(?__to__ as ?targetNode)
+      SERVICE Service:pathfinder {
+      ?item pathfinder:sourceNode ?sourceNode ;
+            pathfinder:targetNode ?targetNode ;
+            [[#if (urlParam "serviceName")]]pathfinder:serviceName "[[urlParam "serviceName"]]" ; [[/if]]
+            pathfinder:minPathLength ?__minPathLength__ ;
+            pathfinder:maxPathLength ?__maxPathLength__ ;
+            pathfinder:limit ?__maxPathsCount__ ;
+            pathfinder:excludedRelation ?__excludedRelation__ ;
+            pathfinder:excludedRelation <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> ;
+            pathfinder:mode "allPaths" ; # alternative: shortestPath
+            pathfinder:pathId ?path ;
+            pathfinder:segmentId ?index ;
+            pathfinder:relation ?predicate ;
+            pathfinder:startNode ?startNode ;
+            pathfinder:endNode ?endNode .
+      }
+    }
+  '
+  relation-query='
+                      SELECT ?iri ?label WHERE {
+                      BIND(REPLACE(?__token__,"\\*","") as ?t)
+                      SERVICE <http://www.metaphacts.com/ontologies/platform/repository/federation#wikidata-properties-api> {
+                        ?results <http://www.metaphacts.com/ontology/wikidata/token>  ?t .
+                        ?results <http://www.metaphacts.com/ontology/wikidata/propertyID> ?propertyID.
+                        ?results rdfs:label ?label.
+                      }
+                      BIND(IRI(CONCAT("http://www.wikidata.org/prop/direct/",STR(?propertyID))) as ?iri)
+                      } LIMIT 20
+                      '
+  droppable-check-query='ASK {?value <http://www.wikidata.org/prop/direct/P31> ?type}'
+  start-node-iri='[[#if startNode]][[startNode]][[/if]]'
+  end-node-iri=''
+  excluded-relations='["http://www.wikidata.org/prop/direct/P31"]'
+  path-visualization-mode="diff"
+  min-path-length=1
+  max-path-length=4
+  max-paths-count=10>
+
+</semantic-path-finder>

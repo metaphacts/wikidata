@@ -41,6 +41,9 @@
         ], [
           ephedra:delegateRepositoryID "linked-data";
           ephedra:serviceReference <http://www.metaphacts.com/ontologies/platform/repository/federation#linked-data>
+        ], [
+          ephedra:delegateRepositoryID "wikidata-properties-api";
+          ephedra:serviceReference <http://www.metaphacts.com/ontologies/platform/repository/federation#wikidata-properties-api>
         ];
      ];
      ephedra:writable false;

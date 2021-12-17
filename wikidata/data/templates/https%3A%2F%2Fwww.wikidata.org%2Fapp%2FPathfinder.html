@@ -99,7 +99,19 @@
                               pathfinder:endNode ?endNode .
                         }
                       }
-                    ' 
+                    '
+                  
+                  relation-query='
+                      SELECT ?iri ?label WHERE {
+                      BIND(REPLACE(?__token__,"\\*","") as ?t)
+                      SERVICE <http://www.metaphacts.com/ontologies/platform/repository/federation#wikidata-properties-api> {
+                        ?results <http://www.metaphacts.com/ontology/wikidata/token>  ?t .
+                        ?results <http://www.metaphacts.com/ontology/wikidata/propertyID> ?propertyID.
+                        ?results rdfs:label ?label.
+                      }
+                      BIND(IRI(CONCAT("http://www.wikidata.org/prop/direct/",STR(?propertyID))) as ?iri)
+                      } LIMIT 20
+                      '
                     droppable-check-query='ASK {?value <http://www.wikidata.org/prop/direct/P31> ?type}'
                     start-node-iri="http://www.wikidata.org/entity/Q11081" end-node-iri="http://www.wikidata.org/entity/Q2034004" excluded-relations='["http://www.wikidata.org/prop/direct/P5008"]' path-visualization-mode="diff" min-path-length="1" max-path-length="3" max-paths-count="10">
                   </semantic-path-finder>
