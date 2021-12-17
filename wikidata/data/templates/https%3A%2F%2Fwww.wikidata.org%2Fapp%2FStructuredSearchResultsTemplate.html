@@ -13,10 +13,7 @@
     <div data-flex-self="md-full">
     <semantic-search-facet-breadcrumbs></semantic-search-facet-breadcrumbs>
     <semantic-search-result>
-      <mp-sparql-result-counts id="result-counts"
-                               query="SELECT DISTINCT * {}"
-                               template='{{#if hasLimit}} <bs-alert bs-style="warning"> Showing <span class="num-results">{{numberOfResults}}</span> of {{totalNumberOfResults}} matches. <strong>Please, refine your search.</strong> </bs-alert> {{else}} <span>found <span class="num-results">{{numberOfResults}}</span> matches</span> {{/if}}'>
-      </mp-sparql-result-counts>
+
     </semantic-search-result>
 
     <bs-tabs unmount-on-exit=true id='search-results' animation=false>
@@ -95,7 +92,7 @@
                             header="text/csv"
                             filename="csv-result.csv"
         >
-          <button class="btn btn-default">Download CSV</button>
+          <button class="btn btn-secondary mr-2">Download CSV</button>
         </mp-sparql-download>
       </semantic-search-result>
       <semantic-search-result>
@@ -103,15 +100,17 @@
                             header="application/sparql-results+json"
                             filename="json-result.json"
         >
-          <button class="btn btn-default">Download JSON</button>
+          <button class="btn btn-secondary mr-2">Download JSON</button>
         </mp-sparql-download>
         <semantic-search-action-use-result-in-extended-search>
-          <button class="btn btn-danger" style="margin-right:10px">Use in Search</button>
+          <button class="btn btn-secondary mr-2">Use in Search</button>
         </semantic-search-action-use-result-in-extended-search>
+        <semantic-search-action-save-set-result id='save-set-result-action'>
+                  <button
+                    class="btn btn-secondary mr-2"
+                  >Save As Set</button>
+        </semantic-search-action-save-set-result>
       </semantic-search-result>
-      <semantic-search-action-save-set-result id="save-set-result-action">
-          <button class="btn btn-primary" style="margin-right:10px">Save As Set</button>
-      </semantic-search-action-save-set-result>
     </bs-panel>
   </div>
   </semantic-search-result-holder>
