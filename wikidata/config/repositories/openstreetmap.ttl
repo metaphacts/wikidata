@@ -1,11 +1,23 @@
-[] a <http://www.openrdf.org/config/repository#Repository> ;
-    <http://www.openrdf.org/config/repository#repositoryID> "openstreetmap" ;
-    <http://www.w3.org/2000/01/rdf-schema#label> "Repository to test the generic service wrapper applied to OpenStreetMap." ;
-    <http://www.openrdf.org/config/repository#repositoryImpl> _:node1b9j1riotx2 .
+PREFIX sail: <http://www.openrdf.org/config/sail#>
+PREFIX repo: <http://www.openrdf.org/config/repository#>
+PREFIX repo-sail: <http://www.openrdf.org/config/repository/sail#>
+PREFIX ephedra: <http://www.metaphacts.com/ontologies/platform/ephedra#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
+PREFIX osm: <http://www.metaphacts.com/ontologies/osm#> 
 
-_:node1b9j1riotx2 <http://www.openrdf.org/config/repository#repositoryType> "openrdf:SailRepository" ;
-                                     <http://www.openrdf.org/config/repository/sail#sailImpl> _:node1b9j1riotx3 .
-
-_:node1b9j1riotx3 <http://www.openrdf.org/config/sail#sailType> "metaphacts:RESTService" ;
-                                    <http://www.metaphacts.com/ontologies/platform/ephedra#serviceURL> "https://nominatim.openstreetmap.org/search" ;
-                                    <http://www.metaphacts.com/ontologies/platform/ephedra#implementsService> <http://www.metaphacts.com/ontologies/platform/service#openstreetmap> .
+[] a repo:Repository ;
+    repo:repositoryID "openstreetmap" ;
+    rdfs:label "Repository to test the generic service wrapper applied to OpenStreetMap." ;
+    repo:repositoryImpl [
+        repo:repositoryType "openrdf:SailRepository" ;
+        repo-sail:sailImpl [
+            sail:sailType "metaphacts:RESTService" ;
+            ephedra:httpMethod "GET" ;
+            ephedra:serviceURL "https://nominatim.openstreetmap.org/search" ;
+            ephedra:httpHeader [
+                ephedra:name "Accept" ;
+                ephedra:value "application/json" ;
+            ] ;
+            ephedra:implementsService osm:openstreetmap
+        ] 
+    ] .

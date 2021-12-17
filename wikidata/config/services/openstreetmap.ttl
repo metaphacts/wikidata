@@ -4,50 +4,46 @@ PREFIX spl: <http://spinrdf.org/spl#>
 PREFIX osm: <http://www.metaphacts.com/ontologies/osm#>
 PREFIX geo: <http://www.opengis.net/ont/geosparql#>
 PREFIX ephedra: <http://www.metaphacts.com/ontologies/platform/ephedra#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX sail: <http://www.openrdf.org/config/sail#>
 PREFIX : <http://www.metaphacts.com/ontologies/platform/service/custom#>
 
-<http://www.metaphacts.com/ontologies/platform/service#openstreetmap> a <http://www.metaphacts.com/ontologies/platform/ephedra#Service> ;
-    <http://www.openrdf.org/config/sail#sailType> "metaphacts:RESTService" ;
-    <http://www.w3.org/2000/01/rdf-schema#label> "A wrapper for the OpenStreetMap service." ;
-    <http://www.metaphacts.com/ontologies/platform/ephedra#hasInputCardinality> "1" ;
-    <http://www.metaphacts.com/ontologies/platform/ephedra#hasSPARQLPattern> (
+osm:openstreetmap a ephedra:Service ;
+    rdfs:label "A wrapper for the OpenStreetMap service." ; 
+    sail:sailType "metaphacts:RESTService" ;
+    ephedra:hasSPARQLPattern (
         [
-            sp:subject :_results ;
+            sp:subject :_result ;
             sp:predicate osm:hasSearchTerm ;
-            sp:object :_q
+            sp:object :_city
         ]
         [
-            sp:subject :_results ;
-            sp:predicate osm:key ;
-            sp:object :_key
-        ]
-        [
-            sp:subject :_results ;
+            sp:subject :_result ;
             sp:predicate osm:polygonText ;
             sp:object :_polygon_text
         ]
         [
-            sp:subject :_results ;
+            sp:subject :_result ;
             sp:predicate osm:format ;
             sp:object :_format
         ]
         [
-            sp:subject :_results ;
+            sp:subject :_result ;
             sp:predicate osm:extratags ;
             sp:object :_extratags
         ]
         [
-            sp:subject :_results ;
+            sp:subject :_result ;
             sp:predicate rdfs:label ;
             sp:object :_display_name
         ]
         [
-            sp:subject :_results ;
-            sp:predicate osm:polygon ;
+            sp:subject :_result ;
+            sp:predicate osm:wktGeotext ;
             sp:object :_geotext
         ]
         [
-            sp:subject :_results ;
+            sp:subject :_result ;
             sp:predicate osm:wikidataID ;
             sp:object :_wikidataID
         ]
@@ -56,46 +52,38 @@ PREFIX : <http://www.metaphacts.com/ontologies/platform/service/custom#>
     [
         a spl:Argument ;
         rdfs:comment "search term" ;
-        spl:predicate :_q ;
+        spl:predicate :_city ;
         spl:valueType xsd:string
     ] ;
-    spin:constraint                         
-    [                                       
-        a spl:Argument ;                    
-        rdfs:comment "key" ;      
-        spl:predicate :_key ;               
-        spl:valueType xsd:string ;
-        spl:defaultValue "gpxvsMv5902wodHtmCTgvDzSABGfTRPr"
-    ] ;                                   
     spin:constraint
     [
         a spl:Argument ;
         rdfs:comment "polygon text flag" ;
         spl:predicate :_polygon_text ;
-        spl:valueType xsd:integer ;
-        spl:defaultValue "1"^^xsd:integer
+        spl:defaultValue "1"^^xsd:integer ;
+        spl:valueType xsd:integer
     ] ;
     spin:constraint
     [
         a spl:Argument ;
         rdfs:comment "format" ;
         spl:predicate :_format ;
-        spl:valueType xsd:string ;
-        spl:defaultValue "json"
+        spl:defaultValue "json" ;
+        spl:valueType xsd:string
     ] ;
     spin:constraint
     [
         a spl:Argument ;
         rdfs:comment "extra tags flag" ;
         spl:predicate :_extratags ;
-        spl:valueType xsd:integer ;
-        spl:defaultValue "1"^^xsd:integer
+        spl:defaultValue "1"^^xsd:integer ;
+        spl:valueType xsd:integer
     ] ;
     spin:column
     [
         a spin:Column ;
-        rdfs:comment "results" ;
-        spl:predicate :_results ;
+        rdfs:comment "result" ;
+        spl:predicate :_result ;
         spl:valueType rdfs:Resource;
         ephedra:jsonPath "$"
     ] ;

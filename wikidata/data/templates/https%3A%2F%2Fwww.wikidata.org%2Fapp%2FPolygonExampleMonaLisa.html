@@ -43,7 +43,7 @@ The result of this query is applied in the metaphactory platform to display the 
 			} 
   			SERVICE <http://www.metaphacts.com/ontologies/platform/repository/federation#openstreetmap> { 
     			?result osm:hasSearchTerm ?label . 
-    			?result osm:polygon ?wkt . 
+    			?result osm:wktGeotext ?wkt . 
   			}
   			FILTER(STRSTARTS(STR(?wkt), "POLYGON")) 
 			} LIMIT 1'

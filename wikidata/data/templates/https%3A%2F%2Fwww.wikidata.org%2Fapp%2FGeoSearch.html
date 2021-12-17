@@ -38,7 +38,7 @@
       SERVICE <http://www.metaphacts.com/ontologies/platform/repository/federation#openstreetmap> {
         ?results osm:hasSearchTerm ?__token__ .
         ?results rdfs:label ?label .
-        ?results osm:polygon ?wkt .
+        ?results osm:wktGeotext ?wkt .
         ?results osm:wikidataID ?wikidataID .
       }
       FILTER(STRSTARTS(STR(?wkt), "POLYGON")||STRSTARTS(STR(?wkt), "POINT"))
