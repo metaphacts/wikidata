@@ -4,9 +4,14 @@ All notable changes to the Wikidata app are summarized in this file.
 
 Note: when updating to a newer release of metaphactory, make sure to select a matching version of the Wikidata app.
 
-## unreleased (Release 4.4.0)
+## 2020-12-17 (Release 4.4.0)
+
+Wikidata app compatible the metaphactory 4.4.x release
 
 * Maintenance of app specific roles, header.hbs and default repository
+* Refinements to some stylings to match the 4.4 design system
+* Fix and refine OpenStreetMap Ephedra examples
+* Fix schema change in DBLP Ephedra example
 
 
 ## 2020-09-30 (Release 4.3.0)
