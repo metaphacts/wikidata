@@ -6,7 +6,7 @@
 		<mp-code-example>
 			  <semantic-table 
 			 query="
-				PREFIX dblp: <https://dblp.org/rdf/schema-2020-07-01#>
+				PREFIX dblp: <https://dblp.org/rdf/schema#>
 				SELECT ?title ?year ?conference WHERE {
 				  
 				   BIND ('[[singleValueFromSelect "SELECT ?dblpUrlRdf WHERE {?? wdt:P2456 ?dblp . ?property  <http://wikiba.se/ontology#directClaim> wdt:P2456 ; wdt:P1630 ?url_template .BIND(REPLACE(?url_template, '\\$1', ?dblp) AS ?url) .  BIND (CONCAT(STR(?url), '.rdf') AS ?dblpUrlRdf) . } "]]' AS ?ldDocument) .
@@ -40,7 +40,7 @@
 			<bs-tab event-key="7" title='Co-Authors'>
 			  <semantic-table 
 			 query="
-				PREFIX dblp: <https://dblp.org/rdf/schema-2020-07-01#>
+				PREFIX dblp: <https://dblp.org/rdf/schema#>
 				SELECT ?name ?coAuthor WHERE {
 				  
 				   BIND ('[[singleValueFromSelect "SELECT ?dblpUrlRdf WHERE {?? wdt:P2456 ?dblp . ?property  <http://wikiba.se/ontology#directClaim> wdt:P2456 ; wdt:P1630 ?url_template .BIND(REPLACE(?url_template, '\\$1', ?dblp) AS ?url) .  BIND (CONCAT(STR(?url), '.rdf') AS ?dblpUrlRdf) . } "]]' AS ?ldDocument) .
