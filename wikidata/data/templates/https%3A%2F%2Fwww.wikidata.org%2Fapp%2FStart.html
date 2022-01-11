@@ -125,13 +125,7 @@
       transform: translate(90px, 0px);
     }
   }
-  @media (min-width: 1000px) {
-    .guide-tour {
-      transform: translate(110px, 0px);
-    }
-  }
-
-  .guide-tour__tour-row:hover .tour-text-holder,
+    .guide-tour__tour-row:hover .tour-text-holder,
   .guide-tour__examples-row:hover .examples-text-holder {
     text-decoration: underline;
   }
@@ -142,7 +136,6 @@
     cursor: pointer;
   }
 
-  .tour-icon-holder,
   .examples-icon-holder {
     flex-shrink: 0;
     width: 40px;
@@ -238,16 +231,6 @@
       </bs-col>
       <bs-col sm=3 sm-offset=1>
         <div class="guide-tour">
-          <mp-event-trigger id='guided-tour-wikidata-start' type='GuidedTour.Start' targets='["guided-tour-wikidata"]'>
-            <div class="guide-tour__tour-row">
-              <div class="tour-icon-holder">
-                <img src='/assets/no_auth/images/guide.png'/>
-              </div>
-              <div class="tour-text-holder">
-                <span>Take a guided tour</span>
-              </div>
-            </div>
-          </mp-event-trigger>
           <semantic-link iri='[[resolvePrefix "app:Examples"]]'>
             <div class="guide-tour__examples-row">
               <div class="examples-icon-holder">
@@ -330,31 +313,3 @@
   </div>
 </div>
 
-<rs-guided-tour id='guided-tour-wikidata' steps='[{
-  "title": "Welcome",
-  "text": "<p>This metaphactory demo system is based on the Wikidata data set and connects to other data sources (e.g., OpenStreetMap, MeSH, DBLP) via federation.</p>",
-  "selector": "#wikidata-image",
-  "position": "left"
-}, {
-  "title": "Semantic search",
-  "text": "<p>The semantic search component with integrated disambiguation allows you to experience search results in context.</p>",
-  "selector": ".search-widget",
-  "position": "right"
-}, {
-  "title": "Use cases",
-  "text": "<p>Here you can explore a small selection of the use cases supported by metaphactory on the Wikidata dataset. Just imagine what it could do for you!</p>",
-  "selector": ".slick-center[tabindex=\"-1\"] .carousel-imagetext",
-  "position": "top"
-}, {
-  "title": "Example gallery",
-  "text": "<p>The example gallery allows you to browse through pre- configured metaphactory components and discover how they work in practice.</p>",
-  "selector": ".examples-text-holder",
-  "position": "bottom"
-}, {
-  "title": "Get started",
-  "text": "<p>Time to get started! Search for anything in the Wikidata dataset. Try something that could mean different things, like “Corona”.</p>",
-  "selector": ".search-widget",
-  "position": "right"
-}]'>
-
-</rs-guided-tour>
