@@ -88,6 +88,21 @@
 
     <bs-panel>
       <semantic-search-result>
+      <mp-overlay-dialog title="SPARQL Query" bs-size="large">
+                    <mp-overlay-dialog-trigger>
+                      <button class="btn btn-secondary mr-2" style="margin-right:10px">Show Query</button>
+                    </mp-overlay-dialog-trigger>
+                    <mp-overlay-dialog-content>
+                      <semantic-search-display-query></semantic-search-display-query>
+                      <div style="display: flex;justify-content: flex-end;">
+                        <mp-event-trigger type="Dialog.HideAll">
+                          <button class="btn btn-primary">Close</button>
+                        </mp-event-trigger>
+                      </div>
+                    </mp-overlay-dialog-content>
+                  </mp-overlay-dialog>
+      </semantic-search-result>
+      <semantic-search-result>
         <mp-sparql-download id="csv-download" query="SELECT * WHERE { }"
                             header="text/csv"
                             filename="csv-result.csv"
