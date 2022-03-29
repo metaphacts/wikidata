@@ -92,7 +92,7 @@
       query-template='{
           "queryString": "
           SELECT DISTINCT ?subject ?author ?countryOfPublication ?year WHERE {
-              ?subject wdt:P921 ?disease .
+              ?subject wdt:P921/<http://www.wikidata.org/prop/direct/P279>* ?disease .
               {
                 ?subject wdt:P50 ?author .
               } UNION {
@@ -222,7 +222,7 @@
                     options='{
                       "groupingOptions": {"groupedBy": ["subject"]}
                     }' 
-                    query='SELECT DISTINCT ?subject ?author ?countryOfPublication ?year WHERE { }'
+                    query='SELECT DISTINCT ?subject ?author ?countryOfPublication ?year ?disease WHERE { ?subject wdt:P921 ?disease }'
                     column-configuration='[
                       {
                         "variableName": "subject",
@@ -230,9 +230,10 @@
                         "cellTemplate": "{{> subjectTemplate}}",
                         "aggregationCellTemplate": "{{> subjectTemplate subject=rows.0.subject}}"
                       }, 
-                      {"variableName": "author", "displayName": "Authors"},  
-                      {"variableName": "countryOfPublication", "displayName": "Country of publication"},
-                      {"variableName": "year", "displayName": "Year of publication"}
+                      {"variableName": "disease", "displayName": "Disease", "showFilter": true}, 
+                      {"variableName": "author", "displayName": "Authors", "showFilter": true},  
+                      {"variableName": "countryOfPublication", "displayName": "Country of publication", "showFilter": true},
+                      {"variableName": "year", "displayName": "Year of publication", "showFilter": true}
                     ]'>
                     <template id='subjectTemplate'>
                       <mp-knowledge-panel-trigger
