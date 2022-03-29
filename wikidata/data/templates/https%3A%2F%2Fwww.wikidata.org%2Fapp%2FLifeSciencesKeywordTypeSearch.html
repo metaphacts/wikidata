@@ -18,38 +18,37 @@
   [[/inline]]
   [[#*inline "configuration"]]
 
-<div >
-  <div class='page__body' style="margin-top: 40px;">
+<div style="margin-top: 40px;">
 
-    <semantic-search limit=1000
-        [[>app:LifeScienceTypeSearchConfig]]>
-     <semantic-search-query-keyword-type
-        default-query='SELECT ?subject WHERE {
-              ?subject wdt:P31 ?__domain__ .
-          }'
-        default-count-query='SELECT (COUNT(*) as ?count) WHERE {
-            ?subject wdt:P31 ?__domain__
-          }'
-        count-query-mode='queryPerCategory'
-        token-pattern='
-              SERVICE Repository:lookup {
-                  ?subject lookup:token ?__token__  .
-                  ?subject lookup:limit 20 .
-                  # in wikidata lookup implementation next pattern will not give real benefit
-                  # other lookup implementations will make more use of type filtering directive
-                  ?subject lookup:type ?__domain__ .
-               }
-        '
-        inline-suggest='true'
-        no-result-template='No results found. Please refine your search'
-        >
-      </semantic-search-query-keyword-type>
+  <semantic-search limit=1000
+      [[>app:LifeScienceTypeSearchConfig]]>
+    <semantic-search-query-keyword-type
+      default-query='SELECT ?subject WHERE {
+            ?subject wdt:P31 ?__domain__ .
+        }'
+      default-count-query='SELECT (COUNT(*) as ?count) WHERE {
+          ?subject wdt:P31 ?__domain__
+        }'
+      count-query-mode='queryPerCategory'
+      token-pattern='
+            SERVICE Repository:lookup {
+                ?subject lookup:token ?__token__  .
+                ?subject lookup:limit 20 .
+                # in wikidata lookup implementation next pattern will not give real benefit
+                # other lookup implementations will make more use of type filtering directive
+                ?subject lookup:type ?__domain__ .
+              }
+      '
+      inline-suggest='true'
+      no-result-template='No results found. Please refine your search'
+      >
+    </semantic-search-query-keyword-type>
 
-    [[> app:TypeSearchResultsTemplate]]
+  [[> app:TypeSearchResultsTemplate]]
 
-    </semantic-search>
-  </div>
+  </semantic-search>
 </div>
+
 [[/inline]]
 	[[#*inline "description"]]
 		<p>Configuration description</p>

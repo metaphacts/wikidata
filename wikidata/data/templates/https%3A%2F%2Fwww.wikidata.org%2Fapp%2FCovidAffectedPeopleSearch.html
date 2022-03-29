@@ -64,19 +64,20 @@
         '>
       </semantic-search-query-constant>
 
-      <div data-flex-layout='row stretch-stretch'>
-        <div data-flex-self='size-1of3' style='flex: 0 0 20px;'>
-          <semantic-search-facet id='facet'></semantic-search-facet>
+      <semantic-search-facet-store id='facet'></semantic-search-facet-store>
+      <div style='display: flex;'>
+        <div style='flex: 0.33;'>          
+          <semantic-search-facet-group></semantic-search-facet-group>
         </div>
 
         <semantic-search-result-holder>
-          <div data-flex-self='md-full'>
+          <div style='flex: 1;'>
           <semantic-search-facet-breadcrumbs></semantic-search-facet-breadcrumbs>
 
           <semantic-search-result>
             <mp-sparql-result-counts id='result-counts'
               query='SELECT DISTINCT * {}' 
-              template='{{#if hasLimit}} <bs-alert bs-style="warning"> Showing <span class="num-results">{{numberOfResults}}</span> of {{totalNumberOfResults}} matches. <strong>Please, refine your search.</strong> </bs-alert> {{else}} <span>found <span class="num-results">{{numberOfResults}}</span> matches</span> {{/if}}'>
+              template='{{#if hasLimit}} <bs-alert variant="warning"> Showing <span class="num-results">{{numberOfResults}}</span> of {{totalNumberOfResults}} matches. <strong>Please, refine your search.</strong> </bs-alert> {{else}} <span>found <span class="num-results">{{numberOfResults}}</span> matches</span> {{/if}}'>
             </mp-sparql-result-counts>
           </semantic-search-result>
 

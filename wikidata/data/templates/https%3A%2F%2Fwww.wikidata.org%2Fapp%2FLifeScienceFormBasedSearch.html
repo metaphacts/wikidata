@@ -201,16 +201,16 @@
           <button type='button' name='submit' className='btn btn-primary'>Search</button>
         </div>
       </semantic-search-form-query>
-
-      <div data-flex-layout="row stretch-stretch">
-        <div data-flex-self="size-1of3" style="flex: 0 0 20px;">
-          <semantic-search-facet></semantic-search-facet>
+      <semantic-search-facet-store id="facet"></semantic-search-facet-store>
+      <div style='display: flex;'>
+        <div style='flex: 0.33;'>          
+          <semantic-search-facet-group></semantic-search-facet-group>
         </div>
         <semantic-search-result-holder>
-          <div data-flex-self="md-full">
+          <div style='flex: 1;'>
             <semantic-search-facet-breadcrumbs></semantic-search-facet-breadcrumbs>
             <semantic-search-result>
-                <mp-sparql-result-counts id='query-count' query="SELECT DISTINCT * {}" template_disabled='{{#if hasLimit}} <bs-alert bs-style="warning">
+                <mp-sparql-result-counts  id='query-count' query="SELECT DISTINCT * {}" template='{{#if hasLimit}} <bs-alert variant="warning">
                           Showing {{numberOfResults}} of {{totalNumberOfResults}} matches. <strong>Please, refine your search.</strong> </bs-alert>
                           {{else}}<span> found {{numberOfResults}} matches </span>{{/if}}'>
                 </mp-sparql-result-counts>
@@ -240,6 +240,7 @@
                         target='articles-kt'>
                       </mp-knowledge-panel-trigger>
                     </template>
+                  </semantic-table>
                 </div>
                 <mp-knowledge-panel-frame id="articles-kt"></mp-knowledge-panel-frame>
               </div>

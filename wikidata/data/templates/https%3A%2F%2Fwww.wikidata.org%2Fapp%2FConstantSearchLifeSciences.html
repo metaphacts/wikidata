@@ -88,27 +88,26 @@
         }
       '
     ></semantic-search-query-constant>
-    <div data-flex-layout="row stretch-stretch">
-    <div data-flex-self="size-1of3" style="flex: 0 0 20px;">
-      <semantic-search-facet>
-        
-      </semantic-search-facet>
-    </div>
+    <div style="display: flex;">
+    <semantic-search-facet-store></semantic-search-facet-store>
+    <semantic-search-facet-holder style="flex: 0.33;" collapsible="left">
+          <semantic-search-facet-group></semantic-search-facet-group>
+    </semantic-search-facet-holder>
     <semantic-search-result-holder>
-      <div data-flex-self="md-full">
+       <div style="flex: 1;">
         <semantic-search-facet-breadcrumbs></semantic-search-facet-breadcrumbs>
 
         <semantic-search-result>
           <mp-sparql-result-counts id='query-count'
                                    query="SELECT DISTINCT * {}"
-                                   template='{{#if hasLimit}} <bs-alert bs-style="warning">
+                                   template='{{#if hasLimit}} <bs-alert variant="warning">
                                              Showing {{numberOfResults}} of {{totalNumberOfResults}} matches. <strong>Please, refine your search.</strong> </bs-alert>
                                              {{else}} found {{numberOfResults}} matches {{/if}}'>
           </mp-sparql-result-counts>
         </semantic-search-result>
         <bs-tabs unmount-on-exit=true id='search-results'>
           <bs-tab event-key="1" title="Grid">
-            <bs-alert bs-style="info"> Only entities with image representation are shown in the Grid! </bs-alert>
+            <bs-alert variant="info"> Only entities with image representation are shown in the Grid! </bs-alert>
             <semantic-search-result>
               <semantic-table id='grid-result'
                               query='

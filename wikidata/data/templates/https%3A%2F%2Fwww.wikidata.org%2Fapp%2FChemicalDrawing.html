@@ -2,11 +2,8 @@
   #search-results .table-custom-row {
     justify-content: space-between;
   }
-  .facet__category-selector-holder, .facet__relation__content__category-image{
-  	display: none;
-  }
   
-    .page {
+  .page {
      padding-top: 0px;
   }
   
@@ -165,34 +162,35 @@
               "}'
               ></semantic-search-query-chemical-drawing>
           </div>
-        	<div data-flex-layout="row stretch-stretch">
-          <div data-flex-self="size-1of3" style="flex: 0 0 20px;">
-            <semantic-search-facet id='semantic-search-facet'></semantic-search-facet>
-          </div>
-          <semantic-search-result-holder>
-            <div data-flex-self="md-full">
-                <semantic-search-result>
-                    <semantic-table id='table-result'
-                                    query='SELECT ?substance ?similarity ?wikidataSmilesCode ?id ?inchi  WHERE {} LIMIT 10'
-                                    column-configuration='[
-                                      {
-                                        "variableName": "substance", "displayName": "Substance",
-                                        "cellTemplate": "<semantic-link class=\"text-centered\" target=\"_blank\" iri=\"{{substance.value}}\">{{#if wikidataSmilesCode.value}}<mp-smiles-code-drawer smiles-code=\"{{wikidataSmilesCode.value}}\"> </mp-smiles-code-drawer>{{/if}}<br><mp-label iri=\"{{substance.value}}\"></mp-label></semantic-link>"                
-                                      },
-                                      {"variableName": "inchi", "displayName": "InChIKey"},
-                                      {"variableName": "similarity", "displayName": "Similarity"},  
-                                      {
-                                        "variableName": "id", "displayName": "Chembl Reference", 
-                                        "cellTemplate": "<a target=\"_blank\" href=\"https://www.ebi.ac.uk/chembl/compound/inspect/{{id.value}}\">{{id.value}}</a>" 
-                                      }
-                                    ]'
+          <semantic-search-facet-store id="semantic-search-facet"></semantic-search-facet-store>
+        	<div style='display: flex;'>
+            <div style='flex: 0.33;'>
+              <semantic-search-facet-group></semantic-search-facet-group>              
+            </div>
+            <semantic-search-result-holder>
+              <div style='flex: 1;'>
+                  <semantic-search-result>
+                      <semantic-table id='table-result'
+                                      query='SELECT ?substance ?similarity ?wikidataSmilesCode ?id ?inchi  WHERE {} LIMIT 10'
+                                      column-configuration='[
+                                        {
+                                          "variableName": "substance", "displayName": "Substance",
+                                          "cellTemplate": "<semantic-link class=\"text-centered\" target=\"_blank\" iri=\"{{substance.value}}\">{{#if wikidataSmilesCode.value}}<mp-smiles-code-drawer smiles-code=\"{{wikidataSmilesCode.value}}\"> </mp-smiles-code-drawer>{{/if}}<br><mp-label iri=\"{{substance.value}}\"></mp-label></semantic-link>"                
+                                        },
+                                        {"variableName": "inchi", "displayName": "InChIKey"},
+                                        {"variableName": "similarity", "displayName": "Similarity"},  
+                                        {
+                                          "variableName": "id", "displayName": "Chembl Reference", 
+                                          "cellTemplate": "<a target=\"_blank\" href=\"https://www.ebi.ac.uk/chembl/compound/inspect/{{id.value}}\">{{id.value}}</a>" 
+                                        }
+                                      ]'
 
-                                    options='{"showFilter":false}'
-                    >
-                    </semantic-table>
-                </semantic-search-result>
-              </div>
-          </semantic-search-result-holder>
+                                      options='{"showFilter":false}'
+                      >
+                      </semantic-table>
+                  </semantic-search-result>
+                </div>
+            </semantic-search-result-holder>
         </div>
       </semantic-search>
   </div>

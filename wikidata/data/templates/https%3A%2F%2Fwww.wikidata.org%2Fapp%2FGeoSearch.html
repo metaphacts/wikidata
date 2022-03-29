@@ -52,14 +52,14 @@
           <semantic-search-result>
             <mp-sparql-result-counts id='query-count'
                                      query="SELECT  * WHERE {}"
-                                     template='{{#if hasLimit}} <bs-alert bs-style="warning">
+                                     template='{{#if hasLimit}} <bs-alert variant="warning">
                                                Showing {{numberOfResults}} of {{totalNumberOfResults}} matches. <strong>Please, refine your search.</strong> </bs-alert>
                                                {{else}} found {{numberOfResults}} matches {{/if}}'>
             </mp-sparql-result-counts>
           </semantic-search-result>
           <bs-tabs unmount-on-exit=true id='search-results' default-active-key=5>
             <bs-tab event-key="1" title="Grid">
-              <bs-alert bs-style="info"> Only entities with image representation are shown in the Grid! </bs-alert>
+              <bs-alert variant="info"> Only entities with image representation are shown in the Grid! </bs-alert>
               <semantic-search-result>
                 <semantic-table id='grid-result'
                                 query='
