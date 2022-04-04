@@ -4,7 +4,16 @@ All notable changes to the Wikidata app are summarized in this file.
 
 Note: when updating to a newer release of metaphactory, make sure to select a matching version of the Wikidata app.
 
-## 2020-12-17 (Release 4.4.0)
+## 2022-04-04 (Release 4.5.0)
+
+Wikidata app compatible the metaphactory 4.5.x release
+
+* Adjustments of Search Configurations to new metaphactory facets
+* Refinements to lifescience search configurations
+* Maintenance of template markup
+
+
+## 2021-12-17 (Release 4.4.0)
 
 Wikidata app compatible the metaphactory 4.4.x release
 
@@ -14,7 +23,7 @@ Wikidata app compatible the metaphactory 4.4.x release
 * Fix schema change in DBLP Ephedra example
 
 
-## 2020-09-30 (Release 4.3.0)
+## 2021-09-30 (Release 4.3.0)
 
 Wikidata app compatible the metaphactory 4.3.x release
 
@@ -22,7 +31,7 @@ Wikidata app compatible the metaphactory 4.3.x release
 * Optimize Pathfinding configuration for Wikidata
 
 
-## 2020-08-16 (Release 4.2.0)
+## 2021-08-16 (Release 4.2.0)
 
 Wikidata app compatible with the major metaphactory 4.2.x release
 
@@ -33,7 +42,7 @@ Wikidata app compatible with the major metaphactory 4.2.x release
 
 
 
-## 2020-04-15 (Release 4.1.0)
+## 2021-04-15 (Release 4.1.0)
 
 Wikidata app compatible with the major metaphactory 4.1.x release
 
@@ -42,7 +51,7 @@ Wikidata app compatible with the major metaphactory 4.1.x release
 * fix cross product due to multi-lingual labels in event tree example
 
 
-## 2020-02-23 (Release 4.0.0)
+## 2021-02-23 (Release 4.0.0)
 
 Wikidata app compatible with the major metaphactory 4.0.x release
 
