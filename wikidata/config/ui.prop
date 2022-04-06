@@ -1,4 +1,4 @@
-preferredThumbnails = {?subject <http://www.wikidata.org/prop/direct/P18>|<http://www.wikidata.org/prop/direct/P41>|<http://www.wikidata.org/prop/direct/P154> ?image . BIND(CONCAT("/proxy/wikidata-images/?f="\\,STRAFTER(STR(?image)\\,"Special:FilePath/")\\,"&w=300") as ?value)},<http://schema.org/thumbnail>
+preferredThumbnails = {?subject <http://www.wikidata.org/prop/direct/P18>|<http://www.wikidata.org/prop/direct/P41>|<http://www.wikidata.org/prop/direct/P154> ?image . FILTER(!STRENDS(STR(?image)\\,".tif"))\n BIND(CONCAT("/proxy/wikidata-images/?f="\\,STRAFTER(STR(?image)\\,"Special:FilePath/")\\,"&w=300") as ?value)},<http://schema.org/thumbnail>
 
 templateIncludeQuery = SELECT ?type WHERE { { BIND (IF(strstarts(str(??)\\, "http://www.wikidata.org/entity")\\, <http://wikidata.org/ontology/Item>\\, ?undef) AS ?type) . FILTER(BOUND(?type)) } UNION { ?? <http://www.wikidata.org/prop/direct/P31> ?type } UNION {  ??  <http://www.wikidata.org/prop/direct/P279> ?type } UNION { ?? a ?type } } ORDER BY DESC(str(?type))
 preferredLabels = <http://www.w3.org/2000/01/rdf-schema#label>,^<http://wikiba.se/ontology#directClaim>/<http://www.w3.org/2000/01/rdf-schema#label>

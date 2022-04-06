@@ -4,6 +4,11 @@ All notable changes to the Wikidata app are summarized in this file.
 
 Note: when updating to a newer release of metaphactory, make sure to select a matching version of the Wikidata app.
 
+
+## unreleased (Release 4.5.0)
+
+* Fix thumbnail service for TIF images (ignore retrieval of thumbnails)
+
 ## 2022-04-04 (Release 4.5.0)
 
 Wikidata app compatible the metaphactory 4.5.x release
