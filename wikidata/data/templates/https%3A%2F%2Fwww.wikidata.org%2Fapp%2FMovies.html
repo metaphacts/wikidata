@@ -1,0 +1,443 @@
+<style>
+    .semantic-form-input-decorator__header {
+        display: none;
+    }
+    .semantic-form-validation-messages__error {
+        color: #0284af;
+        font-style: italic;
+    }
+    .search-header {
+        border: 1px solid #efefef;
+        box-shadow: 0px 0px 19px 8px whitesmoke;
+        padding: 35px;
+        margin-bottom: 20px;
+        background-color: #0284af;
+        color: white;
+        margin-top: 20px;
+    }
+
+    .film-header img {
+        padding: 10px;
+        background-color: white;
+    }
+
+    .film-img {
+        position: relative;
+        background-color: white;
+        padding: 16px;
+        margin-right: 20px;
+        border-top-left-radius: 41px;
+    }
+
+    .film-img {
+        height: 80px;
+    }
+
+    .film-img img {
+        height: 100%;
+        vertical-align: middle;
+        object-fit: cover;
+    }
+
+    .info-row {
+        display: flex;
+        margin-bottom: 10px;
+    }
+
+    .search-info {
+        flex-grow: 1;
+    }
+
+    .search-img {
+        flex-grow: 0;
+        height: 100px;
+        margin-right: 10px;
+    }
+
+    .search-img img {
+        max-width: 100%;
+        max-height: 100%;
+    }
+
+    .person-img {
+        flex-grow: 0;
+        height: 20px;
+        width: 20px;
+        margin-right: 5px;
+    }
+
+    .responsive {
+        width: 100%;
+        height: auto;
+    }
+
+    .film-poster {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        margin: 10px;
+        width: 300px;
+        height: 400px;
+        background-color: black;
+        overflow: hidden;
+    }
+
+    .poster-image {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-grow: 1;
+        flex-shrink: 1;
+        max-width: 100%;
+    }
+
+    .poster-image img {
+        position: absolute;
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: cover;
+    }
+
+    .poster-label {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: white;
+        padding: 10px;
+        flex-grow: 0;
+        margin: 5px;
+        white-space: nowrap;
+        word-break: break-word;
+        text-overflow: ellipsis;
+    }
+
+    .poster-rank {
+        position: absolute;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: white;
+        border-radius: 100%;
+        top: 10px;
+        right: 10px;
+        min-width: 30px;
+        padding: 5px;
+        font-weight: bold;
+        cursor: help;
+    }
+</style>
+
+
+<div class="page">
+    <div class="page__body">
+        <div class='search-header'>
+            <div class='info-row'>
+                <div class="film-img">
+                    <div style="
+                       position: absolute;
+                       background-color: #f0501e;
+                       padding: 2px 18px;
+                       font-weight: bold;
+                       bottom: -14px;
+                       right: -24px;
+                       font-family: sans-serif;
+                       letter-spacing: 3px;
+                       border-bottom-right-radius: 10px;
+                   ">Films</div>
+                    <img src="/metaphacts/branding/metaphacts-logo.png" alt="Metaphacts" />
+                </div>
+                <div class="search-info">
+                    <h1>Search Films</h1>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4">
+                <mp-overlay-dialog title="Correlations" bs-size='large'>
+                    <mp-overlay-dialog-trigger>
+                        <button class="btn btn-success">Show Correlations</button>
+                    </mp-overlay-dialog-trigger>
+                    <mp-overlay-dialog-content>
+                        <div>
+                            <div class='search-header'>
+                                <div class='info-row'>
+                                    <div class="search-info">
+                                        <h1>Show top 50 correlations for </h1>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="padding: 20px">
+                                <semantic-search id="modal-search">
+                                    <!-- 1. search definition -->
+                                    <semantic-search-form-query
+                                        query-template='{
+                                            "queryString": "
+                                            SELECT DISTINCT ?subject WHERE {
+                                                ?subject ?movieprop ?m_value.
+                                            ?subject wdt:P161 ?actor.          
+                                            ?actor ?actorprop ?a_value.       
+                                            }",  
+                                            "arguments": {
+                                                "movieprop": {"type": "xsd:anyURI"},
+                                                "actorprop": {"type": "xsd:anyURI"}                                   
+                                            }
+                                            }'
+                                        fields='[
+                                            {
+                                                "id": "movieprop",
+                                                "label": "Movie property",
+                                                "xsdDatatype": "xsd:anyURI",
+                                                "valueSetPattern": "
+                                                    SELECT DISTINCT ?value WHERE {
+                                                    ?subclasses wdt:P279* wd:Q11424.
+                                                    ?subclasses wdt:P1963 ?claim.
+                                                    ?claim <http://wikiba.se/ontology#directClaim> ?value .
+                                                }"
+                                            }, {
+                                                "id": "actorprop",
+                                                "label": "Actor property",
+                                                "xsdDatatype": "xsd:anyURI",
+                                                "valueSetPattern": "
+                                                    SELECT DISTINCT ?value WHERE {
+                                                            {
+                                                                ?subclasses wdt:P279* wd:Q33999.    
+                                                    } union {
+                                                    ?subclasses wdt:P279* wd:Q5.
+                                                    }           
+                                                    ?subclasses wdt:P1963 ?claim .
+                                                    ?claim <http://wikiba.se/ontology#directClaim> ?value .
+                                                }"
+                                            }
+                                        ]'>
+                                        <div class="panel panel-default" style="padding: 10px">
+                                            <div>
+                                                <semantic-form-select-input for="movieprop" placeholder='Select movie property'>
+                                                </semantic-form-select-input>
+                                            </div>
+                                            <div>
+                                                <span style="padding-left: 20px; color: #0284af;">with</span>
+                                                <semantic-form-select-input for="actorprop" placeholder='Select actor property'>
+                                                </semantic-form-select-input>
+                                            </div>
+                                            <button
+                                                id="buttonId"
+                                                type='button'
+                                                name='submit'
+                                                className='btn btn-primary'>
+                                                Compare
+                                            </button>
+                                        </div>
+                                    </semantic-search-form-query>
+
+                                    <div data-flex-layout="row stretch-stretch"
+                                        style="
+                                            min-height: 300px;
+                                            background-color: whitesmoke;
+                                            border: 1px solid #ececec;
+                                        ">
+                                        <semantic-search-result-holder>
+                                            <semantic-search-result>
+                                                <semantic-chart
+                                                    type='bar'
+                                                    id='barchart'
+                                                    provider='highcharts'
+                                                    query='
+                                                        SELECT ?m_value ?a_value (count(distinct ?subject) as ?datasets) WHERE {
+
+                                                        }
+                                                        GROUP BY ?m_value ?a_value ORDER BY DESC(count(?subject)) LIMIT 50
+                                                    '
+                                                    multi-data-set='{"dataSetVariable": "m_value", "category": "a_value", "value": "datasets"}'
+                                                    styles='[{
+                                                        "provider": "highcharts",
+                                                        "style": {
+                                                        "chart": {
+                                                            "inverted": false
+                                                        },
+                                                        "plotOptions": {
+                                                            "series": {
+                                                            "stacking": "normal"
+                                                            }
+                                                        },
+                                                        "xAxis": {
+                                                            "title": {
+                                                            "enabled": true,
+                                                            "text": "actor"
+                                                            }
+                                                        },
+                                                        "yAxis": {
+                                                            "title": {
+                                                            "enabled": true,
+                                                            "text": "Total count"
+                                                            }
+                                                        },
+                                                        "legend": {
+                                                            "title": {
+                                                            "text": "movie"
+                                                            }
+                                                        }
+                                                        }
+                                                    }]
+                                                '>
+                                                </semantic-chart>
+                                            </semantic-search-result>
+                                        </semantic-search-result-holder>
+                                    </div>
+                                </semantic-search>
+                            </div>
+                        </div>
+                    </mp-overlay-dialog-content>
+                </mp-overlay-dialog>
+            </div>
+        </div>
+
+        <div class="row">
+            <semantic-search id="main-search" categories='{}' relations='{}' search-profile='{ 
+                    "defaultProfile": "<http://example.com/defaultprofile>",
+                    "relationsQuery": "
+                        SELECT DISTINCT
+                            (<http://example.com/defaultprofile> AS ?profile)
+                            ?relation
+                            ?label
+                            ?hasRange
+                            ?hasDomain
+                            (\"\" as ?description)
+                        WHERE {
+                            BIND( wd:Q11424 as ?hasDomain).
+                            ?hasDomain wdt:P1963 ?claim.
+                            ?hasDomain wdt:P1963 ?claim.
+                            ?claim <http://wikiba.se/ontology#directClaim> ?relation .
+                            ?claim <http://www.wikidata.org/prop/P2302> ?constraint .
+                            ?constraint <http://www.wikidata.org/prop/qualifier/P2308> ?hasRange;
+                            <http://www.wikidata.org/prop/statement/P2302> <http://www.wikidata.org/entity/Q21510865> .
+                            ?claim rdfs:label ?label.
+                            Filter(lang(?label)=\"en\")
+                    }",
+                    "categoriesQuery": "
+                       SELECT DISTINCT (<http://example.com/defaultprofile> as ?profile) ?category ?label (\"../images/help/thenounproject/noun_1285331.svg\" as ?thumbnail) (\"\" as ?description) WHERE {    
+                            BIND( wd:Q11424 as ?hasDomain).
+                            ?hasDomain wdt:P1963 ?claim.
+                            ?claim <http://wikiba.se/ontology#directClaim> ?relation .
+                              ?claim <http://www.wikidata.org/prop/P2302> ?constraint .
+                              ?constraint <http://www.wikidata.org/prop/qualifier/P2308> ?category;
+                             <http://www.wikidata.org/prop/statement/P2302> <http://www.wikidata.org/entity/Q21510865> .
+                            ?category rdfs:label ?label.
+                            Filter(lang(?label)=\"en\")
+                    }"
+                }'>
+                <!-- 1. form-based search as search definition -->
+                <semantic-search-form-query query-template='{
+                         "queryString": "
+                             SELECT DISTINCT ?subject WHERE {
+                             ?subject <http://www.wikidata.org/prop/direct/P31> <http://www.wikidata.org/entity/Q11424> .
+                             ?subject wdt:P136 ?genre .
+                             ?subject wdt:P495 ?country .
+                             }
+                         ",
+                         "arguments": {
+                             "genre": {"type": "xsd:anyURI"},
+                             "country": {"type": "xsd:anyURI"}            
+                         }
+                     }' fields='[
+                         {
+                             "id": "genre",
+                             "label": "Genre",
+                             "xsdDatatype": "xsd:anyURI",
+                             "valueSetPattern": "
+                             SELECT DISTINCT $value $label WHERE {
+                                 ?value <http://www.wikidata.org/prop/direct/P31> <http://www.wikidata.org/entity/Q201658> .
+                                 ?value <http://www.wikidata.org/prop/direct/P373> ?label .
+                             }"
+                         },
+                         {
+                             "id": "country",
+                             "label": "Country",
+                             "xsdDatatype": "xsd:anyURI",
+                             "valueSetPattern": "
+                             SELECT $value WHERE {
+                                 ?value <http://www.wikidata.org/prop/direct/P31> <http://www.wikidata.org/entity/Q6256> .
+ 
+                             } order by ?value"
+                         }      
+                     ]' field-dependencies='[{
+                      "field": "country",
+                      "dependencies": {
+                        "genre": "selectedGenre"
+                      },            
+                      "valueSetPattern": "
+                        SELECT DISTINCT ?value WHERE {
+                          ?movie wdt:P136 ?selectedGenre ;
+                                 <http://www.wikidata.org/prop/direct/P31> <http://www.wikidata.org/entity/Q11424>;
+                                 wdt:P495 ?value.
+                          ?value <http://www.wikidata.org/prop/direct/P31> <http://www.wikidata.org/entity/Q6256> . 
+                        }"
+                    }]'>
+                    <bs-row>
+                        <bs-col sm="6">
+                            <semantic-form-select-input for="genre"></semantic-form-select-input>
+                        </bs-col>
+                        <bs-col sm="6">
+                            <semantic-form-select-input for="country"></semantic-form-select-input>
+                        </bs-col>
+                    </bs-row>
+                    <button type='button' name='submit' class='btn btn-default pull-right'>Search</button>
+                </semantic-search-form-query>
+
+                <semantic-search-facet></semantic-search-facet>
+                <semantic-search-result-holder>
+
+                    <div data-flex-layout='row stretch-stretch'>
+                        <div data-flex-self='md-full'>
+                            <semantic-search-result>
+                                <mp-sparql-result-counts id='query-count' query="SELECT DISTINCT ?subject {}" template='{{#if hasLimit}} <bs-alert bs-style="info">
+                                    Showing {{numberOfResults}} of {{totalNumberOfResults}} matches. <strong>Please, refine your search.</strong> </bs-alert>
+                                    {{else}}<span> found {{numberOfResults}} matches </span>{{/if}}'>
+                                </mp-sparql-result-counts>
+                            </semantic-search-result>
+                            <semantic-search-result>
+                                <semantic-table id='table' query='
+                                    PREFIX example: <http://www.example.org/ontology#>
+                                    SELECT ?subject ?title ?image ?ranking WHERE{                               
+                                        optional { ?subject wdt:P1258 ?rottenID .
+                                        BIND(strafter(?rottenID,"/") as ?id).                                                             
+                                                 }
+                                 } ORDER BY DESC(?ranking) ' tuple-template='{{> tupleTemplate}}'>
+                                    <template id='tupleTemplate'>
+                                        <div class="film-poster">
+                                            <div class="poster-image">
+                                                <mp-resource-thumbnail iri='{{subject.value}}'>
+                                                </mp-resource-thumbnail>
+                                            </div>
+                                            <div class="poster-label">
+                                                <mp-knowledge-panel-trigger key='{{subject.value}}'
+                                                    iri='{{subject.value}}'>
+                                                </mp-knowledge-panel-trigger>
+                                            </div>
+                                            {{#if ranking}}
+                                            <div class="poster-rank" title='Rank'>
+                                                {{ranking.value}}
+                                            </div>
+                                            {{/if}}
+                                        </div>
+                                    </template>
+                                </semantic-table>
+                            </semantic-search-result>
+                        </div>
+                        <mp-knowledge-panel-frame></mp-knowledge-panel-frame>
+                    </div>
+                </semantic-search-result-holder>
+            </semantic-search>
+        </div>
+        <div class="row">
+            <br>
+            <div style='border: 1px solid #80808026; height:  350px'>
+                <ontodia>
+                    <ontodia-canvas id='canvas-demo5'>
+                    </ontodia-canvas>
+                </ontodia>
+            </div>
+        </div>
+    </div>
+</div>
