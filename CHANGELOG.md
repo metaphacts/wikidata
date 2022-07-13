@@ -8,6 +8,8 @@ Note: when updating to a newer release of metaphactory, make sure to select a ma
 ## unreleased (Release 4.5.0)
 
 * Fix thumbnail service for TIF images (ignore retrieval of thumbnails)
+* Fix Linked Data retrieval example for DBLP
+
 
 ## 2022-04-04 (Release 4.5.0)
 
