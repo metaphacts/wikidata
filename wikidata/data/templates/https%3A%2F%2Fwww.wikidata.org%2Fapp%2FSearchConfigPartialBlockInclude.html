@@ -1,0 +1,636 @@
+<semantic-search limit=1000 search-profile='{
+    "categories": [
+     [[!-- TODO: Remove all object related relations / replace with more domain specific one e.g. from manufacturing {
+      "iri": "<http://www.wikidata.org/entity/Q488383>",
+      "label": "Object",
+      "includeAsDomain":false,
+      "thumbnail": "../images/help/thenounproject/noun_1312395.svg"
+    }, --]]
+    {
+      "iri": "<http://www.wikidata.org/entity/Q5>",
+      "label": "Person",
+      "thumbnail": "/assets/images/flaticon/manager.png"
+    }, {
+      "iri": "<http://www.wikidata.org/entity/Q43229>",
+      "label": "Organization",
+      "thumbnail": "/assets/images/flaticon/teamwork.png"
+    }, {
+      "iri": "<http://www.wikidata.org/entity/Q17334923>",
+      "label": "Place",
+      "thumbnail": "/assets/images/flaticon/europe.png",
+      "includeAsDomain": false
+    }, {
+      "iri": "<http://www.wikidata.org/entity/Q1190554>",
+      "label": "Event",
+      "thumbnail": "/assets/images/flaticon/event.png",
+      "includeAsDomain":true
+    }, {
+      "iri": "<http://www.w3.org/2001/XMLSchema#dateTime>",
+      "label": "Time",
+      "thumbnail": "/assets/images/flaticon/timetable.png"
+    }, {
+      "iri": "<http://www.w3.org/2002/07/owl#Class>",
+      "label": "Class",
+      "thumbnail": "/assets/images/flaticon/diagram.png",
+      "includeAsDomain":false
+    },{
+      "iri": "<http://www.wikidata.org/entity/Q13442814>", [[!-- Q13442814 is the broader scholary article, but has too many--]]
+      "label": "Scholary Article",
+      "thumbnail": "/assets/images/flaticon/application.png"
+    },{
+      "iri": "<http://www.wikidata.org/entity/Q1469824>",
+      "thumbnail": "/assets/images/flaticon/hierarchy.png",
+      "label": "Topic", [[!-- Q1469824 = Controlled Vocabulary --]]
+      "includeAsDomain":false
+    },{
+      "iri": "<http://www.wikidata.org/entity/Q2996394>",
+      "label": "Biological Process",
+      "thumbnail": "/assets/images/flaticon/metabolism.png",
+       "includeAsDomain":false
+    },{
+      "iri": "<http://www.wikidata.org/entity/Q12140>",
+      "label": "Medication",
+      "thumbnail": "/assets/images/flaticon/capsules.png"
+    },{
+      "iri": "<http://www.wikidata.org/entity/Q12136>",
+      "label": "Disease",
+      "thumbnail": "/assets/images/flaticon/heart-disease.png"
+    },{
+      "iri": "<http://www.wikidata.org/entity/Q8054>",
+      "label": "Protein",
+      "thumbnail": "/assets/images/flaticon/protein.png"
+    },{
+      "iri": "<http://www.wikidata.org/entity/Q7187>",
+      "label": "Gene",
+      "thumbnail": "/assets/images/flaticon/gene.png"
+    },{
+      "iri": "<http://www.wikidata.org/entity/Q16521>",
+      "label": "Taxon",
+      "includeAsDomain": false,
+      "thumbnail": "/assets/images/flaticon/organism.png"
+    }, {
+      "iri": "<http://www.wikidata.org/entity/Q15989253>",
+      "label": "Cell Component",
+      "thumbnail": "/assets/images/flaticon/white-blood-cell.png",
+      "includeAsDomain": false
+    }, {
+      "iri": "<http://www.w3.org/2002/07/owl#Class-gender>",
+      "label": "Gender",
+      "thumbnail": "/assets/images/flaticon/diagram.png",
+      "includeAsDomain": false
+    }, {
+      "iri": "<http://www.w3.org/2002/07/owl#Class-occupation>",
+      "label": "Occupation",
+      "thumbnail": "/assets/images/flaticon/diagram.png",
+      "includeAsDomain": false
+    }, {
+      "iri": "<http://www.w3.org/2002/07/owl#Class-organizationType>",
+      "label": "Organization Type",
+      "thumbnail": "/assets/images/flaticon/diagram.png",
+      "includeAsDomain": false
+    }, {
+      "iri": "<http://www.w3.org/2002/07/owl#Class-organizationIndustry>",
+      "label": "Industry",
+      "thumbnail": "/assets/images/flaticon/diagram.png",
+      "includeAsDomain": false
+    }, {
+      "iri": "<http://www.w3.org/2002/07/owl#Class-placeType>",
+      "label": "Place type",
+      "thumbnail": "/assets/images/flaticon/diagram.png",
+      "includeAsDomain": false
+    },
+    {
+      "iri": "<http://www.w3.org/2002/07/owl#Class-eventType>",
+      "label": "Event Type",
+      "thumbnail": "/assets/images/flaticon/diagram.png",
+      "includeAsDomain": false
+    }
+
+    ],
+    "relations": [
+      [[!-- TODO: Remove all object related relations / replace with more domain specific one e.g. from manufacturing
+      {
+        "hasDomain": "<http://www.wikidata.org/entity/Q488383>",
+        "iri": "<http://www.wikidata.org/prop/direct/P276>",
+        "hasRange": "<http://www.wikidata.org/entity/Q17334923>", !-- Place --
+        "label": "location"
+      },
+      {
+        "hasDomain": "<http://www.wikidata.org/entity/Q488383>",
+        "iri": "<http://www.wikidata.org/prop/direct/P625>",
+        "hasRange": "<http://www.wikidata.org/entity/Q17334923>", !-- Place --
+        "label": "has coordinates"
+      },
+      {
+        "hasDomain": "<http://www.wikidata.org/entity/Q488383>",
+        "iri": "<http://www.wikidata.org/prop/direct/P170>",
+        "hasRange": "<http://www.wikidata.org/entity/Q5>",
+        "label": "creator"
+      },
+      {
+        "hasDomain": "<http://www.wikidata.org/entity/Q488383>",
+        "iri": "<http://www.wikidata.org/prop/direct/P176>",
+        "hasRange": "<http://www.wikidata.org/entity/Q43229>", !-- organization --
+        "label": "manufacturer"
+      },
+      {
+        "hasDomain": "<http://www.wikidata.org/entity/Q488383>",
+        "iri": "<http://www.wikidata.org/prop/direct/P195>",
+        "hasRange": "<http://www.wikidata.org/entity/Q43229>", !-- organization --
+        "label": "collection"
+      },
+      {
+        "hasDomain": "<http://www.wikidata.org/entity/Q488383>",
+        "iri": "<http://www.wikidata.org/prop/direct/P607>",
+        "hasRange": "<http://www.wikidata.org/entity/Q1190554>",
+        "label": "conflict"
+      },
+      {
+        "hasDomain": "<http://www.wikidata.org/entity/Q488383>",
+        "iri": "<http://www.wikidata.org/prop/direct/P31>",
+        "hasRange": "<http://www.w3.org/2002/07/owl#Class>",
+        "label": "instance of"
+      },
+      {
+        "hasDomain": "<http://www.wikidata.org/entity/Q488383>",
+        "iri": "<http://www.wikidata.org/prop/direct/P186>",
+        "hasRange": "<http://www.wikidata.org/entity/Q488383>",
+        "label": "material used"
+      }, --]]
+      {
+        "hasDomain": "<http://www.wikidata.org/entity/Q5>",
+        "iri": "<http://www.wikidata.org/prop/direct/P108>",
+        "hasRange": "<http://www.wikidata.org/entity/Q43229>", [[!-- organization --]]
+        "label": "employer"
+      },
+      {
+        "hasDomain": "<http://www.wikidata.org/entity/Q5>",
+        "iri": "<http://www.wikidata.org/prop/direct/P69>",
+        "hasRange": "<http://www.wikidata.org/entity/Q43229>", [[!-- organization --]]
+        "label": "educated at"
+      },
+      {
+        "hasDomain": "<http://www.wikidata.org/entity/Q5>",
+        "iri": "<http://www.wikidata.org/prop/direct/P19>",
+        "hasRange": "<http://www.wikidata.org/entity/Q17334923>", [[!-- Place --]]
+        "label": "place of birth"
+      },
+      {
+        "hasDomain": "<http://www.wikidata.org/entity/Q5>",
+        "iri": "<http://www.wikidata.org/prop/direct/P20>",
+        "hasRange": "<http://www.wikidata.org/entity/Q17334923>", [[!-- Place --]]
+        "label": "place of death"
+      },
+      {
+        "hasDomain": "<http://www.wikidata.org/entity/Q5>",
+        "iri": "<http://www.wikidata.org/prop/direct/P27>",
+        "hasRange": "<http://www.wikidata.org/entity/Q17334923>", [[!-- Place --]]
+        "label": "country of citizenship"
+      },
+      {
+        "hasDomain": "<http://www.wikidata.org/entity/Q5>",
+        "iri": "<http://www.wikidata.org/prop/direct/P1344>",
+        "hasRange": "<http://www.wikidata.org/entity/Q1190554>",
+        "label": "participant of"
+      },
+     [[!--{
+        "hasDomain": "<http://www.wikidata.org/entity/Q5>",
+        "iri": "<http://www.wikidata.org/prop/direct/P31>",
+        "hasRange": "<http://www.w3.org/2002/07/owl#Class>",
+        "label": "instance of"
+      },--]]
+      {
+        "hasDomain": "<http://www.wikidata.org/entity/Q5>",
+        "iri": "<http://www.wikidata.org/prop/direct/P21>",
+        "hasRange": "<http://www.w3.org/2002/07/owl#Class-gender>",
+        "label": "gender"
+      },
+      {
+        "hasDomain": "<http://www.wikidata.org/entity/Q5>",
+        "iri": "<http://www.wikidata.org/prop/direct/P106>",
+        "hasRange": "<http://www.w3.org/2002/07/owl#Class-occupation>",
+        "label": "occupation"
+      },
+      {
+        "hasDomain": "<http://www.wikidata.org/entity/Q43229>", [[!-- organization --]]
+        "iri": "<http://www.wikidata.org/prop/direct/P17>",
+        "hasRange": "<http://www.wikidata.org/entity/Q17334923>", [[!-- Place --]]
+        "label": "country"
+      },
+      {
+        "hasDomain": "<http://www.wikidata.org/entity/Q43229>", [[!-- organization --]]
+        "iri": "<http://www.wikidata.org/prop/direct/P159>",
+        "hasRange": "<http://www.wikidata.org/entity/Q17334923>", [[!-- Place --]]
+        "label": "headquarters location"
+      },
+      {
+        "hasDomain": "<http://www.wikidata.org/entity/Q43229>", [[!-- organization --]]
+        "iri": "<http://www.wikidata.org/prop/direct/P112>",
+        "hasRange": "<http://www.wikidata.org/entity/Q5>",
+        "label": "founder"
+      },
+      {
+        "hasDomain": "<http://www.wikidata.org/entity/Q43229>", [[!-- organization --]]
+        "iri": "<http://www.wikidata.org/prop/direct/P1056>",
+        "hasRange": "<http://www.wikidata.org/entity/Q12140>", [[!-- medication --]]
+        "label": "product"
+      },
+      {
+        "hasDomain": "<http://www.wikidata.org/entity/Q43229>", [[!-- organization --]]
+        "iri": "<http://www.wikidata.org/prop/direct/P31>",
+        "hasRange": "<http://www.w3.org/2002/07/owl#Class-organizationType>",
+        "label": "instance of"
+      },
+      {
+        "hasDomain": "<http://www.wikidata.org/entity/Q43229>", [[!-- organization --]]
+        "iri": "<http://www.wikidata.org/prop/direct/P452>",
+        "hasRange": "<http://www.w3.org/2002/07/owl#Class-organizationIndustry>",
+        "label": "industry"
+      },
+      {
+        "hasDomain": "<http://www.wikidata.org/entity/Q17334923>", [[!-- Place --]]
+        "iri": "<http://www.wikidata.org/prop/direct/P361>",
+        "hasRange": "<http://www.wikidata.org/entity/Q17334923>", [[!-- Place --]]
+        "label": "part of"
+      },
+      {
+        "hasDomain": "<http://www.wikidata.org/entity/Q17334923>", [[!-- Place --]]
+        "iri": "<http://www.wikidata.org/prop/direct/P17>",
+        "hasRange": "<http://www.wikidata.org/entity/Q17334923>", [[!-- Place --]]
+        "label": "country"
+      },
+      {
+        "hasDomain": "<http://www.wikidata.org/entity/Q17334923>", [[!-- Place --]]
+        "iri": "<http://www.wikidata.org/prop/direct/P131>",
+        "hasRange": "<http://www.wikidata.org/entity/Q17334923>", [[!-- Place --]]
+        "label": "located in"
+      },
+      {
+        "hasDomain": "<http://www.wikidata.org/entity/Q17334923>", [[!-- Place --]]
+        "iri": "<http://www.wikidata.org/prop/direct/P47>",
+        "hasRange": "<http://www.wikidata.org/entity/Q17334923>", [[!-- Place --]]
+        "label": "shares border with"
+      },
+      {
+        "hasDomain": "<http://www.wikidata.org/entity/Q17334923>", [[!-- Place --]]
+        "iri": "<http://www.wikidata.org/prop/direct/P61>",
+        "hasRange": "<http://www.wikidata.org/entity/Q5>",
+        "label": "discoverer"
+      },
+      {
+        "hasDomain": "<http://www.wikidata.org/entity/Q17334923>", [[!-- Place --]]
+        "iri": "<http://www.wikidata.org/prop/direct/P31>",
+        "hasRange": "<http://www.w3.org/2002/07/owl#Class-placeType>",
+        "label": "instance of"
+      },
+      {
+        "hasDomain": "<http://www.wikidata.org/entity/Q1190554>",
+        "iri": "<http://www.wikidata.org/prop/direct/P276>",
+        "hasRange": "<http://www.wikidata.org/entity/Q17334923>", [[!-- Place --]]
+        "label": "location"
+      },
+      {
+        "hasDomain": "<http://www.wikidata.org/entity/Q1190554>",
+        "iri": "<http://www.wikidata.org/prop/direct/P17>",
+        "hasRange": "<http://www.wikidata.org/entity/Q17334923>", [[!-- Place --]]
+        "label": "country"
+      },
+      {
+        "hasDomain": "<http://www.wikidata.org/entity/Q1190554>",
+        "iri": "<http://www.wikidata.org/prop/direct/P710>",
+        "hasRange": "<http://www.wikidata.org/entity/Q5>",
+        "label": "participant"
+      },
+      {
+        "hasDomain": "<http://www.wikidata.org/entity/Q1190554>",
+        "iri": "<http://www.wikidata.org/prop/direct/P710>",
+        "hasRange": "<http://www.wikidata.org/entity/Q43229>", [[!-- organization --]]
+        "label": "participant"
+      },
+      {
+        "hasDomain": "<http://www.wikidata.org/entity/Q1190554>",
+        "iri": "<http://www.wikidata.org/prop/direct/P361>",
+        "hasRange": "<http://www.wikidata.org/entity/Q1190554>",
+        "label": "part of"
+      },
+      {
+        "hasDomain": "<http://www.wikidata.org/entity/Q1190554>",
+        "iri": "<http://www.wikidata.org/prop/direct/P31>",
+        "hasRange": "<http://www.w3.org/2002/07/owl#Class-eventType>",
+        "label": "instance of"
+      },
+      {
+        "hasDomain": "<http://www.wikidata.org/entity/Q5>",
+        "iri": "<http://www.wikidata.org/prop/direct/P569>",
+        "hasRange": "<http://www.w3.org/2001/XMLSchema#dateTime>",
+        "label": "date of birth"
+      },
+      {
+        "hasDomain": "<http://www.wikidata.org/entity/Q5>",
+        "iri": "<http://www.wikidata.org/prop/direct/P570>",
+        "hasRange": "<http://www.w3.org/2001/XMLSchema#dateTime>",
+        "label": "date of death"
+      },
+      {
+        "hasDomain": "<http://www.wikidata.org/entity/Q1190554>",
+        "iri": "<http://www.wikidata.org/prop/direct/P580>",
+        "hasRange": "<http://www.w3.org/2001/XMLSchema#dateTime>",
+        "label": "start time"
+      },
+      {
+        "hasDomain": "<http://www.wikidata.org/entity/Q1190554>",
+        "iri": "<http://www.wikidata.org/prop/direct/P582>",
+        "hasRange": "<http://www.w3.org/2001/XMLSchema#dateTime>",
+        "label": "end time"
+      },{
+        "hasDomain": "<http://www.wikidata.org/entity/Q13442814>", [[!-- article --]]
+        "iri": "<http://www.wikidata.org/prop/direct/P2860>",
+        "inverse":{
+          "iri": "<http://www.wikidata.org/prop/direct/P2860-inverse>",
+          "label": "cited by"
+        },
+        "hasRange": "<http://www.wikidata.org/entity/Q13442814>", [[!-- article --]]
+        "label": "cites"
+      }, {
+        "hasDomain": "<http://www.wikidata.org/entity/Q13442814>", [[!-- article --]]
+        "iri": "<http://www.wikidata.org/prop/direct/P577>",
+        "hasRange": "<http://www.w3.org/2001/XMLSchema#dateTime>",
+        "label": "publication date"
+      } [[!-- does currently not work because P921 is overloaded,{
+        "hasDomain": "<http://www.wikidata.org/entity/Q13442814>", !-- article --
+        "iri": "<http://www.wikidata.org/prop/direct/P921>",
+        "hasRange": "<http://www.wikidata.org/entity/Q1469824>",
+        "label": "main subject"
+      } --]] ,{
+        "hasDomain": "<http://www.wikidata.org/entity/Q13442814>", [[!-- article --]]
+        "iri": "<http://www.wikidata.org/prop/direct/P50>",
+        "hasRange": "<http://www.wikidata.org/entity/Q5>",
+        "label": "author"
+      },{
+        "hasDomain": "<http://www.wikidata.org/entity/Q13442814>", [[!-- article --]]
+        "iri": "<http://www.wikidata.org/prop/direct/P921-biological-process>",
+        "hasRange": "<http://www.wikidata.org/entity/Q2996394>",
+        "label": "investigated"
+      },{
+        "hasDomain": "<http://www.wikidata.org/entity/Q2996394>",
+        "iri": "<http://www.wikidata.org/prop/direct/P921-biological-process-inverse>",
+        "hasRange": "<http://www.wikidata.org/entity/Q13442814>", [[!-- article --]]
+        "label": "investigated by"
+      },{
+        "hasDomain": "<http://www.wikidata.org/entity/Q8054>", [[!-- protein --]]
+        "iri": "<http://www.wikidata.org/prop/direct/P682>",
+        "hasRange": "<http://www.wikidata.org/entity/Q2996394>",
+        "label": "involved in" [[!--biological process (protein)--]]
+      },{
+        "hasDomain": "<http://www.wikidata.org/entity/Q8054>", [[!-- protein --]]
+        "iri": "<http://www.wikidata.org/prop/direct/P129>",
+        "hasRange": "<http://www.wikidata.org/entity/Q8054>", [[!-- protein --]]
+        "label": "interacts with" 
+      },{
+        "hasDomain": "<http://www.wikidata.org/entity/Q8054>", [[!-- protein --]]
+        "iri": "<http://www.wikidata.org/prop/direct/P703>",
+        "hasRange": "<http://www.wikidata.org/entity/Q16521>", [[!-- taxon --]]
+        "label": "found in" 
+      },{
+        "hasDomain": "<http://www.wikidata.org/entity/Q8054>", [[!-- protein --]]
+        "iri": "<http://www.wikidata.org/prop/direct/P681>",
+        "hasRange": "<http://www.wikidata.org/entity/Q15989253>",
+        "label": "located in"
+      },{
+        "hasDomain": "<http://www.wikidata.org/entity/Q2996394>",
+        "iri": "<http://www.wikidata.org/prop/direct/P682-inverse>",
+        "hasRange": "<http://www.wikidata.org/entity/Q8054>", [[!-- protein --]]
+        "label": "involved protein"
+      },{
+        "hasDomain": "<http://www.wikidata.org/entity/Q13442814>", [[!-- article --]]
+        "iri": "<http://www.wikidata.org/prop/direct/P921-medication>",
+        "hasRange": "<http://www.wikidata.org/entity/Q12140>", [[!-- medication --]]
+        "label": "investigated"
+      },{
+        "hasDomain": "<http://www.wikidata.org/entity/Q13442814>", [[!-- article --]]
+        "iri": "<http://www.wikidata.org/prop/direct/P921-disease>",
+        "hasRange": "<http://www.wikidata.org/entity/Q12136>", [[!-- disease --]]
+        "label": "investigated"
+      },{
+        "hasDomain": "<http://www.wikidata.org/entity/Q13442814>", [[!-- article --]]
+        "iri": "<http://www.wikidata.org/prop/direct/P921-protein>",
+        "hasRange": "<http://www.wikidata.org/entity/Q8054>", [[!-- protein --]]
+        "label": "investigated"
+      },
+      {
+        "hasDomain": "<http://www.wikidata.org/entity/Q7187>", [[!-- gene --]]
+        "iri": "<http://www.wikidata.org/prop/direct/P703>",
+        "hasRange": "<http://www.wikidata.org/entity/Q16521>", [[!-- taxon --]]
+        "label": "found in"
+      },{
+        "hasDomain": "<http://www.wikidata.org/entity/Q7187>", [[!-- gene --]]
+        "iri": "<http://www.wikidata.org/prop/direct/P2293>",
+        "hasRange": "<http://www.wikidata.org/entity/Q12136>", [[!-- disease --]]
+        "label": "genetic association"
+      },{
+        "hasDomain": "<http://www.wikidata.org/entity/Q12136>", [[!-- disease --]]
+        "iri": "<http://www.wikidata.org/prop/direct/P2293>",
+        "hasRange": "<http://www.wikidata.org/entity/Q7187>", [[!-- gene --]]
+        "label": "genetic association"
+      },{
+        "hasDomain": "<http://www.wikidata.org/entity/Q12136>", [[!-- disease --]]
+        "iri": "<http://www.wikidata.org/prop/direct/P2176>",
+        "hasRange": "<http://www.wikidata.org/entity/Q12140>", [[!-- medication --]]
+        "label": "used for treatment"
+      },
+         {[[!-- relations with Gene (Q7187) in Range ---]]
+        "hasDomain": "<http://www.wikidata.org/entity/Q8054>", [[!-- protein --]]
+        "iri": "<http://www.wikidata.org/prop/direct/P702>",
+        "hasRange": "<http://www.wikidata.org/entity/Q7187>",
+        "label": "encodedBy"
+      },{
+        "hasDomain": "<http://www.wikidata.org/entity/Q7187>",
+        "iri": "<http://www.wikidata.org/prop/direct/P688>",
+        "hasRange": "<http://www.wikidata.org/entity/Q8054>", [[!-- protein --]]
+        "label": "encodes"
+      } ,{
+        "hasDomain": "<http://www.wikidata.org/entity/Q12140>", [[!-- medication --]]
+        "iri": "<http://www.wikidata.org/prop/direct/P2175>",
+        "hasRange": "<http://www.wikidata.org/entity/Q12136>", [[!-- disease --]]
+        "label": "medical condition treated"
+      } 
+    ]
+}'
+
+categories='{
+  "<http://www.wikidata.org/entity/Q12136>": [ [[!-- disease --]]
+    {
+      "kind": "hierarchy",
+      "queryPattern": " ?subject $__relation__ ?__value__. 
+      ?__value__ wdt:P494|wdt:P493|wdt:P1692 ?x. ",
+      "resultPattern":"$subject $__relation__ ?hierarchyLeaf .
+                        ?hierarchyLeaf <http://www.wikidata.org/prop/direct/P279>* ?__value__",
+      "treePatterns": {
+            "kind":"full",
+            "parentsQuery": "PREFIX hint: <http://www.bigdata.com/queryHints#> SELECT ?item ?parent {
+              ?item <http://www.wikidata.org/prop/direct/P279> ?parent.    
+              ?parent (wdt:P279+) wd:Q12136.  hint:Prior hint:gearing \"forward\". 
+              [[!-- ?parent (wdt:P279+) wd:Q12136.  hint:Prior hint:gearing \"forward\". --]] 
+              }"              
+      }
+    }
+  ],
+  "<http://www.wikidata.org/entity/Q16521>": [ [[!-- taxon --]]
+    { 
+      "kind": "hierarchy",
+      "queryPattern": " $subject ?__relation__ ?__value__ . ?__value__ wdt:P171* wd:Q7377. hint:Prior hint:gearing \"forward\".",
+      "resultPattern":"$subject ?__relation__ ?hierarchyLeaf .
+                        ?hierarchyLeaf <http://www.wikidata.org/prop/direct/P171>* ?__value__",
+      "treePatterns": {
+        "kind": "simple",
+        "relationPattern": "?item wdt:P171 ?parent. ?parent wdt:P171* wd:Q7377. hint:Prior hint:gearing \"forward\"."
+      }
+  }
+  ],
+  "<http://www.w3.org/2002/07/owl#Class>": [
+    {
+      "kind": "hierarchy",
+      "queryPattern": "$subject $__relation__ ?__value__ ."
+    }
+  ],[[!-- organization  "<http://www.wikidata.org/entity/Q43229>": [
+    {
+      "kind": "resource",
+      "queryPattern": "$subject $__relation__ ?__value__ . ?__value__ wdt:P31 wd:Q43229."
+    }
+  ], --]]
+  "<http://www.wikidata.org/entity/Q17334923>": [ [[!-- Place --]]
+    {
+      "kind": "hierarchy",
+      "queryPattern": "$subject $__relation__ ?__value__ ."
+      },
+      {
+      "kind": "place",
+      "format": "Point(long lat)",
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "distanceQueryPattern": "{
+        $subject $__relation__ ?place .
+        { SELECT ?place {
+          SERVICE <http://wikiba.se/ontology#around> {
+            ?place wdt:P625 ?location .
+            bd:serviceParam <http://wikiba.se/ontology#center> ?__geoCenter__.
+            bd:serviceParam <http://wikiba.se/ontology#radius> ?__geoDistance__.
+            bd:serviceParam <http://wikiba.se/ontology#distance> ?distance .
+          }
+        } ORDER BY(?distance) }
+        <http://www.bigdata.com/queryHints#Prior> <http://www.bigdata.com/queryHints#runFirst> \"true\"^^<http://www.w3.org/2001/XMLSchema#boolean>.
+      }",
+      "boundingBoxQueryPattern": "{
+        $subject $__relation__ ?place .
+        { SERVICE Repository:wikidata {
+            SELECT ?place {
+                SERVICE <http://wikiba.se/ontology#box> {
+                  ?place wdt:P625 ?location .
+                  bd:serviceParam <http://wikiba.se/ontology#cornerSouthWest> ?__geoSouthWest__ .
+                  bd:serviceParam <http://wikiba.se/ontology#cornerNorthEast> ?__geoNorthEast__ .
+                }
+              } ORDER BY(?distance)
+          }
+        }
+        ephedra:Prior ephedra:executeFirst true .
+      }"
+      }
+  ],
+  "<http://www.w3.org/2001/XMLSchema#dateTime>": [
+      {
+        "kind": "date-range",
+        "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+        "queryPattern": "{
+          $subject ?__relation__ ?date .
+          FILTER(?date <= ?__dateEndValue__) .
+          FILTER(?date >= ?__dateBeginValue__) .
+        }"
+      }
+  ]
+}'
+
+relations='{
+  "<http://www.wikidata.org/prop/direct/P106>": [{ [[!-- property - occupation, range - Class --]]
+      "kind": "hierarchy",
+      "queryPattern": "$subject wdt:P106/wdt:P279* ?__value__ ."
+  }],
+  "<http://www.wikidata.org/prop/direct/P625>": [ [[!-- property: hasCoordinates, range - Place --]]
+      {
+      "kind": "place",
+      "format": "Point(long lat)",
+      "datatype": "http://www.opengis.net/ont/geosparql#wktLiteral",
+      "distanceQueryPattern": "{
+        { SELECT ?subject {
+          SERVICE <http://wikiba.se/ontology#around> {
+            ?subject wdt:P625 ?location .
+            bd:serviceParam <http://wikiba.se/ontology#center> ?__geoCenter__.
+            bd:serviceParam <http://wikiba.se/ontology#radius> ?__geoDistance__.
+            bd:serviceParam <http://wikiba.se/ontology#distance> ?distance .
+          }
+        } ORDER BY(?distance) }
+        <http://www.bigdata.com/queryHints#Prior> <http://www.bigdata.com/queryHints#runFirst> \"true\"^^<http://www.w3.org/2001/XMLSchema#boolean>.
+      }",
+      "boundingBoxQueryPattern": "{
+        { SELECT ?subject {
+          SERVICE <http://wikiba.se/ontology#box> {
+            ?subject wdt:P625 ?location .
+            bd:serviceParam <http://wikiba.se/ontology#cornerSouthWest> ?__geoSouthWest__ .
+            bd:serviceParam <http://wikiba.se/ontology#cornerNorthEast> ?__geoNorthEast__ .
+          }
+        } ORDER BY(?distance) }
+        <http://www.bigdata.com/queryHints#Prior> <http://www.bigdata.com/queryHints#runFirst> \"true\"^^<http://www.w3.org/2001/XMLSchema#boolean>.
+      }"
+      }
+  ],
+  "<http://www.wikidata.org/prop/direct/P921-biological-process>":[
+   {
+      "kind": "resource",
+      "queryPattern": "$subject <http://www.wikidata.org/prop/direct/P921> ?__value__ . ?__value__ <http://www.wikidata.org/prop/direct/P31> <http://www.wikidata.org/entity/Q2996394> ."
+    }
+  ],
+  "<http://www.wikidata.org/prop/direct/P921-biological-process-inverse>":[
+   {
+      "kind": "resource",
+      "queryPattern": "?__value__ <http://www.wikidata.org/prop/direct/P921> $subject . "
+    }
+  ],
+  "<http://www.wikidata.org/prop/direct/P682-inverse>":[
+   {
+      "kind": "resource",
+      "queryPattern": "?__value__ <http://www.wikidata.org/prop/direct/P682> $subject . "
+    }
+  ],
+  
+  "<http://www.wikidata.org/prop/direct/P921-medication>":[
+   {
+      "kind": "resource",
+      "queryPattern": "$subject wdt:P921 ?__value__ . ?__value__ wdt:P31 <http://www.wikidata.org/entity/Q12140> . "
+    }
+  ],
+  "<http://www.wikidata.org/prop/direct/P921-disease>":[
+   {
+     "kind": "hierarchy",
+      "queryPattern": " ?subject wdt:P921 ?__value__. 
+      FILTER(EXISTS {  ?__value__ wdt:P494|wdt:P493|wdt:P1692 ?x. }) ",
+      "resultPattern":"$subject wdt:P921 ?hierarchyLeaf .
+                        ?hierarchyLeaf <http://www.wikidata.org/prop/direct/P279>* ?__value__",
+      "treePatterns": {
+            "kind":"full",
+            "parentsQuery": "PREFIX hint: <http://www.bigdata.com/queryHints#> SELECT ?item ?parent {
+              ?item <http://www.wikidata.org/prop/direct/P279> ?parent.    
+              ?parent (wdt:P279+) wd:Q12136.  hint:Prior hint:gearing \"forward\". 
+              [[!-- ?parent (wdt:P279+) wd:Q12136.  hint:Prior hint:gearing \"forward\". --]] 
+              }"              
+      }      
+    }
+  ],
+  "<http://www.wikidata.org/prop/direct/P921-protein>":[
+   {
+      "kind": "resource",
+      "queryPattern": "$subject wdt:P921 ?__value__ . ?__value__ wdt:P31 wd:Q8054."
+    }
+  ]
+}'>
+
+{{> @partial-block }}
+
+</semantic-search>

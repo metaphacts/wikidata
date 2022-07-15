@@ -1,0 +1,18 @@
+@prefix lookup: <http://www.metaphacts.com/ontologies/platform/repository/lookup#> .
+@prefix pathfinder: <http://www.metaphacts.com/ontologies/platform/service/pathfinder/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rep: <http://www.openrdf.org/config/repository#> .
+@prefix sail: <http://www.openrdf.org/config/sail#> .
+@prefix sr: <http://www.openrdf.org/config/repository/sail#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix mph: <http://www.metaphacts.com/ontologies/platform/repository#> .
+@prefix ephedra: <http://www.metaphacts.com/ontologies/platform/ephedra#> .
+@prefix sparqlr: <http://www.openrdf.org/config/repository/sparql#> .
+
+[] a rep:Repository;
+  rep:repositoryID "uniprot";
+  rdfs:label "uniprot";
+  rep:repositoryImpl [
+      rep:repositoryType "metaphacts:VirtuosoWrapperRepository";
+      mph:delegateRepositoryID "uniprot-sparql-virtuoso"
+    ] .

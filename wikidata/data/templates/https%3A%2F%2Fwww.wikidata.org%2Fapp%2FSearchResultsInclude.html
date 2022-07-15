@@ -1,0 +1,165 @@
+<semantic-search-facet-store id="facet" values-limit='10000' ></semantic-search-facet-store>
+<div style='display: flex;'>
+  <div style='flex: 0.33;'>
+    <semantic-search-facet-group expand-result-context='false' allow-multiple-open='true' default-settings='{"headerTemplate": "{{> headerTemplate}}"}'>
+    <template id='headerTemplate'>
+        <div class='SemanticSearchFacet--relationHeader'>{{$relation.label.value}}
+        {{#if $range.label}}
+            <span class="pull-right">{{$range.label.value}}</span>
+        {{/if}}
+        </div>
+
+    </template>
+    
+    </semantic-search-facet-group>   
+  </div>
+
+  <semantic-search-result-holder>
+    <div style='flex: 1;'>
+      <semantic-search-facet-breadcrumbs></semantic-search-facet-breadcrumbs>
+
+      <bs-tabs unmount-on-exit=true id='search-results'>
+        <bs-tab event-key="1" title="Table">
+        <semantic-search-result-context
+            multi=true
+            preselect='[
+                            "http://www.wikidata.org/prop/direct/P703"
+                          ]'
+          >
+            <semantic-search-result>
+             <semantic-search-table-result>
+                <semantic-table
+                  id="results-table"
+                  query='SELECT DISTINCT ?subject WHERE { FILTER(?__contextRelationPattern__) }'
+                  options='{
+                                    "showFilter":false ,
+                                    "showNumberOfRows": true,
+                                    "sorting": {"subject": "asc"} ,
+                                    "enableGrouping": false,
+                                    "groupingOptions": {"groupedBy": ["subject"], "showOnlyAggregatedValue": true, "defaultAggregation":"concat"}
+                                  }'
+                  column-configuration='[{
+                                        "variableName": "subject",
+                                        "cellTemplate": "{{> subjectTemplate iri=subject.value}}"
+                                      }]'
+                >
+                  <!-- this column configuration is rewritten by semantic-search-table-result in multi mode and we have only default rendering without panel trigger -->
+                  <template id='subjectTemplate'>
+                    <mp-knowledge-panel-trigger iri='{{iri}}'></mp-knowledge-panel-trigger><mp-description iri='{{iri}}'>
+                    </mp-description> 
+                  </template>
+                  <template id='descriptionTemplate'>
+                    <mp-description iri='{{iri}}'></mp-description>
+                  </template>
+                </semantic-table>
+              </semantic-search-table-result>
+            </semantic-search-result>
+          </semantic-search-result-context>
+
+
+      </bs-tab>
+      <bs-tab event-key="2" title="Chart">
+        <semantic-search-result-context 
+        preselect='[
+          "http://www.wikidata.org/prop/direct/P921-disease"
+        ]'  
+        ranges='[
+            "http://www.wikidata.org/entity/Q215627", 
+            "http://www.wikidata.org/entity/Q43229", 
+            "http://www.wikidata.org/entity/Q17334923", 
+            "http://www.wikidata.org/entity/Q5",
+            "http://www.w3.org/2002/07/owl#Class",
+            "http://www.wikidata.org/entity/Q2996394",
+            "http://www.wikidata.org/entity/Q12140",
+            "http://www.wikidata.org/entity/Q12136",
+            "http://www.wikidata.org/entity/Q16521",
+            "http://www.wikidata.org/entity/Q8054",
+            "http://www.wikidata.org/entity/Q6256"
+          ]'>
+          <semantic-search-result>
+            <semantic-chart
+              id="results-chart"
+              query='
+                SELECT ?__value__ (count(?subject) as ?count) WHERE {
+                  FILTER(?__contextRelationPattern__)  
+                  } GROUP BY ?__value__  ORDER BY DESC(?count)
+              '
+              provider='highcharts'
+              type='bar'
+              sets='[{
+                              "category": "__value__",
+                              "value": "count"
+                            }]'
+            >
+            </semantic-chart>
+          </semantic-search-result>
+        </semantic-search-result-context>
+      </bs-tab>
+
+    </bs-tabs>
+
+    <bs-panel class='mb-5'>
+      <semantic-search-result>
+      <mp-overlay-dialog title="SPARQL Query" bs-size="large">
+                    <mp-overlay-dialog-trigger>
+                      <button class="btn btn-secondary mr-2" style="margin-right:10px;float:left;">Show Query</button>
+                    </mp-overlay-dialog-trigger>
+                    <mp-overlay-dialog-content>
+                      <semantic-search-display-query></semantic-search-display-query>
+                      <div style="display: flex;justify-content: flex-end;">
+                        <mp-event-trigger type="Dialog.HideAll">
+                          <button class="btn btn-primary">Close</button>
+                        </mp-event-trigger>
+                      </div>
+                    </mp-overlay-dialog-content>
+                  </mp-overlay-dialog>
+      </semantic-search-result>
+     
+      <bs-dropdown-button
+        id='download'
+        title='Download'
+        variant='secondary'
+        style='float:left;'
+        class='mr-2'
+      >
+        <semantic-search-result>
+        <mp-sparql-download
+          id="csv-download"
+          query="SELECT * WHERE { }"
+          header="text/csv"
+          filename="csv-result.csv"
+        >
+          <bs-dropdown-item>Download CSV</bs-dropdown-item>
+        </mp-sparql-download>
+        </semantic-search-result>
+        <semantic-search-result>
+          <mp-sparql-download
+            id="json-download"
+            query="SELECT * WHERE { }"
+            header="application/sparql-results+json"
+            filename="json-result.json"
+          >
+            <bs-dropdown-item>Download JSON</bs-dropdown-item>
+          </mp-sparql-download>
+        </semantic-search-result>
+      </bs-dropdown-button>
+
+      <semantic-search-action-use-result-in-extended-search>
+        <button class="btn btn-secondary mr-2">Use in Search</button>
+      </semantic-search-action-use-result-in-extended-search>
+        
+       <semantic-search-result>
+        <semantic-search-action-save-set-result id='save-set-result-action'>
+                  <button
+                    class="btn btn-secondary mr-2"
+                  >Save As Set</button>
+        </semantic-search-action-save-set-result>
+      </semantic-search-result>
+    </bs-panel>
+
+    </div>
+    <mp-knowledge-panel-frame></mp-knowledge-panel-frame>  
+  </semantic-search-result-holder>
+
+
+</div>

@@ -1,0 +1,305 @@
+<style>
+  .protein-viewer>div{
+
+  }
+</style>
+
+<style>
+  .knowledge-panel {
+    max-height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .knowledge-panel__header {
+    flex: 0 0;
+    background: #fafbfd;
+    border-bottom: 1px solid #f1f1ec;
+    display: flex;
+    align-items: center;
+  }
+
+  .knowledge-panel__thumbnail {
+    display: flex;
+    overflow: hidden;
+    justify-content: center;
+    align-items: center;
+    flex: 0 0 70px;
+    height: 70px;
+    width: 70px;
+    background-color: #f7f7f7;
+  }
+
+  .knowledge-panel__thumbnail:empty {
+    display: none;
+  }
+
+  .knowledge-panel__thumbnail img {
+    min-height: 100%;
+    max-width: 100%;
+    object-fit: cover;
+  }
+
+  .knowledge-panel__title {
+    font-size: 18px;
+    line-height: 22px;
+    margin: 0 65px 0 14px;
+    padding: 0px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    position: relative;
+  }
+
+  .knowledge-panel__link {
+    font-size: 12px;
+    margin-bottom: 10px;
+  }
+  .knowledge-panel__link-text {
+    margin-left: 5px;
+  }
+
+  .knowledge-panel__content {
+    flex: 1 1;
+    overflow-x: hidden;
+    overflow-y: auto;
+    background: #fff;
+    padding: 10px 20px 20px 20px;
+  }
+
+  .knowledge-panel__table {
+    overflow-wrap: anywhere;
+    overflow: visible;
+  }
+
+  .knowledge-panel__table td {
+    min-width: 100px;
+  }
+
+  .knowledge-panel__table .form-control {
+    height: 32px;
+  }
+
+  .knowledge-panel__table .table-header-container {
+    padding-bottom: 6px;
+  }
+
+  .knowledge-panel__table table thead {
+    border-bottom: 0 none;
+  }
+
+  .knowledge-panel__table thead > tr > th {
+    background: transparent;
+    border-bottom: 0 none;
+    padding-bottom: 2px !important;
+  }
+
+  .knowledge-panel__table thead > tr > th:first-child {
+    padding-left: 0 !important;
+  }
+
+  .knowledge-panel__table table {
+    font-size: 14px;
+  }
+
+  .knowledge-panel__table table > tbody > tr > td {
+    border-top: 0 none;
+  }
+
+  .knowledge-panel__table table > tbody > tr > td:first-child {
+    padding-left: 0 !important;
+  }
+
+  .knowledge-panel__table tr {
+    border-bottom: 0 none;
+  }
+
+  .knowledge-panel__uri {
+    display: flex;
+    align-items: center;
+  }
+
+  .knowledge-pane__uri-copy-button {
+    flex: 0 0 auto;
+    opacity: 0;
+    visibility: visible;
+    transition: opacity 0.3s;
+  }
+
+  .knowledge-panel__uri:hover .knowledge-panel__uri-copy-button {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .knowledge-panel__uri-text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+</style>
+
+<div class='knowledge-panel'>
+  <div class='knowledge-panel__header'>
+    <div class='knowledge-panel__thumbnail'>
+      <div class='protein-viewer'>
+        <semantic-query query='SELECT * WHERE { <{{page-resource}}> wdt:P638 ?PDBID }' template='{{> template}}' no-result-template='<img src="/assets/images/flaticon/protein.png">'>
+          <template id='template'>
+              {{#if bindings.0.PDBID}}
+                <div style='position: relative;'>
+                  <mp-protein-viewer url="/proxy/rcsb-pdb/{{bindings.0.PDBID.value}}.pdb" style="height: 200px;width:200px;"></mp-protein-viewer>
+                  <mp-overlay-dialog title="Protein Viewer" type="modal" bs-size="large">
+                    <mp-overlay-dialog-trigger><i class="fa fa-arrows-alt"></i></mp-overlay-dialog-trigger>
+                    <mp-overlay-dialog-content>
+                      <div><mp-protein-viewer url="/proxy/rcsb-pdb/{{bindings.0.PDBID.value}}.pdb" style="height:60vh"></mp-protein-viewer></div>
+                    </mp-overlay-dialog-content>
+                  </mp-overlay-dialog>
+                </div>
+              {{/if}}
+          </template>
+        </semantic-query>
+      </div>
+    </div>
+    <mp-popover>
+      <mp-popover-trigger placement='bottom' trigger='["hover", "focus"]'>
+        <div class='knowledge-panel__title'>
+          <mp-label iri='[[this]]'></mp-label>
+          <div class="mt-1" style="font-size: small; font-family: Lato; font-weight: bold;">Protein</div>
+          <div style="font-size: small; font-family: Lato; font-weight: lighter;">
+            <semantic-link iri='[[this]]' getlabel='false'>{{page-resource}}</semantic-link> 
+                <!--  
+            <mp-copy-to-clipboard text='[[this]]'>
+<button class='btn btn-link btn-xs knowledge-panel__uri-copy-button'>
+        <i class='fa fa-clipboard'></i>
+      </button> 
+    </mp-copy-to-clipboard>-->
+          </div>
+        </div>
+      </mp-popover-trigger>
+      <mp-popover-content>
+        <mp-label iri='[[this]]'></mp-label>
+      </mp-popover-content>
+    </mp-popover>
+  </div>
+  <div class='knowledge-panel__content'>
+    <semantic-query
+      query='SELECT ?uniprotIri { <{{page-resource}}> wdt:P352 ?uniprotId. BIND(IRI(CONCAT("http://purl.uniprot.org/uniprot/",str(?uniprotId))) as ?uniprotIri)}'
+      template='{{>template}}'>
+      <template id='template'>
+        <div class='mt-3 mb-3'>
+          <h5><a
+              href="{{bindings.0.uniprotIri.value}}"
+              target='_blank'
+            >Uniprot Synonyms</a><span class="badge badge-secondary badge-sm pull-right">Federated Query</span></h5>
+          <hr>
+          <semantic-query query='PREFIX up:<http://purl.uniprot.org/core/>
+          SELECT ?synonym WHERE {
+            SERVICE Repository:uniprot {
+            <{{bindings.0.uniprotIri.value}}> rdfs:label|(up:alternativeName/up:fullName)|(up:alternativeName/up:shortName)|
+            up:mnemonic ?synonym.
+          }
+          
+          }'></semantic-query>
+        </div>
+      </template>
+    </semantic-query>
+    
+    <semantic-query
+      query='SELECT ?meshIri {<{{page-resource}}> <http://www.wikidata.org/prop/direct-normalized/P486>|<http://www.wikidata.org/prop/direct-normalized/P6680> ?meshIri.}'
+      template='{{>template}}'
+    >
+      <template id='template'>
+        <div class='mb-3'>
+          <h5><a
+              href="{{bindings.0.meshIri.value}}"
+              target='_blank'
+            >MeSH Topical Descriptors</a> <span class="badge badge-secondary badge-sm pull-right">Federated Query</span></h5>
+          <hr>
+          <semantic-lazy-tree
+            focused-iri='{{bindings.0.meshIri.value}}'
+            roots-query="PREFIX mesh: <http://id.nlm.nih.gov/mesh/vocab#>
+              SELECT ?item ?label WHERE {
+                SERVICE Repository:mesh-sparql{
+                  <{{bindings.0.meshIri.value}}> mesh:broaderDescriptor* ?item.
+                  ?item rdfs:label ?label.
+                  FILTER NOT EXISTS { ?item mesh:broaderDescriptor ?x }
+                }
+                ephedra:Prior ephedra:disableJoinReordering true .
+              }
+            "
+            children-query="PREFIX mesh: <http://id.nlm.nih.gov/mesh/vocab#>
+              SELECT ?item ?label WHERE {
+                SERVICE Repository:mesh-sparql{
+                  ?item mesh:broaderDescriptor ?parent .
+                  ?item rdfs:label ?label.
+                  FILTER EXISTS{<{{bindings.0.meshIri.value}}> mesh:broaderDescriptor* ?item}
+                }
+              }
+            "
+            parents-query='PREFIX mesh: <http://id.nlm.nih.gov/mesh/vocab#>
+              SELECT ?item ?parent ?parentLabel WHERE {
+                SERVICE Repository:mesh-sparql{
+                  ?item mesh:broaderDescriptor ?parent.
+                  ?parent rdfs:label ?parentLabel.
+                  FILTER EXISTS{<{{bindings.0.meshIri.value}}> mesh:broaderDescriptor* ?parent}
+                }
+              }
+            
+            '
+          >
+          </semantic-lazy-tree>
+        </div>
+      </template>
+    </semantic-query>
+
+    <semantic-query
+      query='PREFIX word2vec: <http://www.metaphacts.com/ontologies/word2vec#>
+                      PREFIX wd: <http://www.wikidata.org/entity/>
+                        SELECT DISTINCT ?subject ?similarity WHERE {
+                          BIND(STRAFTER(STR(<{{page-resource}}>), STR(wd:)) AS ?qName)
+                          SERVICE SILENT Repository:most-similar {
+                            ?res word2vec:search ?qName .
+                            ?res word2vec:item ?newQName ;
+                                word2vec:similarity ?similarity .
+                          }
+                          FILTER (BOUND(?newQName))
+                          BIND(URI(CONCAT(STR(<http://www.wikidata.org/entity/>), STR(?newQName))) AS ?subject)
+                      } LIMIT 5'
+      template='{{>template}}'
+    >
+      <template id='template'>
+        <div class='mb-3'>
+          <h5>Similar Entities<span class="badge badge-secondary badge-sm pull-right">Word2Vec Machine Learning</span></h5>
+          <hr>
+          <ul>
+            {{#each bindings}}
+            <li>
+              <semantic-link uri="{{subject.value}}"></semantic-link> <span class='pull-right'>
+                {{number-toFixed similarity.value 3}}%</span>
+            </li>
+            {{/each}}
+          </ul>
+        </div>
+      </template>
+    </semantic-query>
+ 
+  <div class='mb-3'>
+    <h5>Authority Identifiers</h5>
+    <hr>
+    <semantic-table
+      query='SELECT ?property  ?id WHERE {
+    {SELECT ?property { ?p wdt:P31|(wdt:P31/wdt:P279*) wd:Q18614948.
+        BIND(IRI(CONCAT(STR(wdt:),STRAFTER(STR(?p),"http://www.wikidata.org/entity/"))) as ?property)}}
+    <{{page-resource}}> ?property ?id.
+  }'
+      options='{"showFilter": false, "enableGrouping": false,"groupingOptions": {"groupedBy": ["property"]}, "showTableHeading": false}'
+      number-of-displayed-rows='5'
+    ></semantic-table>
+  </div>
+
+  <div class='knowledge-panel__table'>
+   
+    </semantic-table>
+    </div>
+  </div>
+</div>
+

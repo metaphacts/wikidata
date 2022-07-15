@@ -1,0 +1,312 @@
+<template-fragment export id='query-keyword-type'>
+  <semantic-search-query-keyword-type
+    id='semantic-search-query-keyword-type-general'
+    default-query='SELECT ?subject WHERE {
+        ?subject wdt:P31 ?__domain__ . 
+      }'
+    default-count-query='SELECT (COUNT(*) as ?count) WHERE {
+        ?subject wdt:P31 ?__domain__
+      }'
+    count-query-mode='queryPerCategory'
+    token-pattern='
+          ephedra:Query ephedra:disableJoinReordering true .
+          SERVICE Repository:lookup {
+              ?subject lookup:token ?__token__  .
+              ?subject lookup:limit 50.
+              # in wikidata lookup implementation next pattern will not give real benefit
+              # other lookup implementations will make more use of type filtering directive
+              ?subject lookup:type ?__domain__ .
+            }
+    '
+    inline-suggest='true'
+    suggestion-template='{{> suggestion}}'
+
+    no-result-template='No results found. Please refine your search'
+    template='{{> template}}'>
+    <template id='suggestion'>
+    {{#switch kind}}
+      {{#case 'search' break=true}}
+        <div class='InlineDisambiguation--search'>
+          Search for "<span class='InlineDisambiguation--searchTerm'>{{searchTerm}}</span>"
+        </div>
+      {{/case}}
+      {{#case 'group' break=true}}
+        <div class='InlineDisambiguation--group' title='{{domain.iri}}'>
+          {{domain.label}}
+        </div>
+      {{/case}}
+      {{#case 'resource' break=true}}
+        <div class='InlineDisambiguation--resource' title='{{resource.iri}}'>
+          [{{domain.label}}] <mp-highlight highlight='{{searchTerm}}'>{{resource.label}}</mp-highlight> - <mp-description iri='{{resource.iri}}'></mp-description>
+        </div>
+      {{/case}}
+    {{/switch}}
+  </template>
+  <template id='template'>
+    <div>
+    {{#if selectedDomain}}
+      <div style='margin: 10px 0'>
+        {{#each domains}}
+        <span style='margin-right: 10px'>
+        <mp-event-trigger
+          type='KeywordTypeQuery.SelectDomain'
+          targets='["{{../componentId}}"]'
+          data='{"domainIri": "{{iri}}"}'>
+          <a style='color: #333; padding: 5px 0; {{#if selected}}border-bottom: 2px solid; font-weight: bold{{/if}}'>
+            {{#if thumbnail}}
+              <img src='{{thumbnail}}' style='height:20px;' alt='{{label}}' />&nbsp;
+            {{else}}
+              <i class='fa fa-edit'></i>
+            {{/if}}
+            {{label}}
+            {{#if ../loadingCounts}}
+              (⏳)
+            {{else}}
+              ({{count}})
+            {{/if}}
+          </a>
+        </mp-event-trigger>
+        {{#if selected}}
+        <mp-event-trigger
+          type='KeywordTypeQuery.ClearDomain'
+          targets='["{{../componentId}}"]'
+        >
+          <a style='color: #333; margin: 0 5px'><i class='fa fa-times'></i></a>
+        </mp-event-trigger>
+        {{/if}}
+        </span>
+        {{/each}}
+        <mp-event-trigger
+          type='KeywordTypeQuery.ClearSearch'
+          targets='["{{componentId}}"]'
+        >
+          <a class='pull-right' style='color: #333'><i class='fa fa-trash'></i> Clear</a>
+        </mp-event-trigger>
+      </div>
+    {{else}}
+    <div class='KeywordTypeQuery--domainCards'>
+      <div data-flex-layout='rows stretch-stretch'>
+        {{#each domains}}
+          {{#ifCond count "||" ../loadingCounts}}
+            <div data-flex-self='size-1of4 md-half sm-full' class='KeywordTypeQuery--domainCardItem'>
+              <mp-event-trigger
+                type='KeywordTypeQuery.SelectDomain'
+                targets='["{{../componentId}}"]'
+                data='{"domainIri": "{{iri}}"}'>
+                <button type=button class='btn btn-secondary KeywordTypeQuery--domainCard {{#if selected}}KeywordTypeQuery--domainCard--selected{{/if}}'>
+                  <div class='KeywordTypeQuery--domainCardThumbnail p-3'>
+                    {{#if thumbnail}}
+                      <img src='{{thumbnail}}' style='height:40px;' alt='{{label}}' />&nbsp;
+                    {{else}}
+                      <!-- <i class='fa fa-edit fa-lg'></i> -->
+                    {{/if}}
+                  </div>
+                  <span class='h4'>{{label}}</span>
+                  {{#if count}}<span class='h5'>{{count}}</span>{{/if}}
+                  {{#if ../loadingCounts}}<span class='h5'>⏳</span>{{/if}}
+                </button>
+              </mp-event-trigger>
+            </div>
+          {{/ifCond}}
+        {{/each}}
+      </div>
+    </div>
+    {{/if}}
+    </div>
+  </template>
+  </semantic-search-query-keyword-type>
+</template-fragment>
+
+<template-fragment export id='query-builder'>
+    <semantic-search-query-builder
+      id='semantic-query-builder'
+      resource-selector='{
+        "query": "
+            PREFIX lookup: <http://www.metaphacts.com/ontologies/platform/repository/lookup#>
+            SELECT DISTINCT (?resource AS ?suggestion) ?label ?description WHERE {
+                SERVICE Repository:lookup  {
+                    ?resource lookup:token ?__token__ .
+                    ?resource lookup:name ?label ;
+                        lookup:score ?score ;
+                        lookup:description ?description .
+                }
+                FILTER(EXISTS { ?subject ?__relation__ ?resource . }) .
+                BIND( xsd:integer(substr(str(?resource), 33)) as ?q)
+            } ORDER BY DESC(?score) ASC(?q)  LIMIT 30
+        ",
+        "suggestionTupleTemplate": "<span title=\"{{label.value}}\">{{label.value}} ({{description.value}})</span>",
+        "noSuggestionsTemplate": "<div class=\"suggestion-no-matches\">no matches found</div>"
+      }'
+      [[!--- this is a workaround for a bug: relations patterns (like inverse definitions) are not injected into the resource selector---]]
+      resource-selector-categories='{
+        "<http://www.wikidata.org/entity/Q8054>":  { [[!-- protein --]]
+            "query": "PREFIX lookup: <http://www.metaphacts.com/ontologies/platform/repository/lookup#>
+                  SELECT DISTINCT (?resource AS ?suggestion) ?label ?description WHERE {
+                      SERVICE Repository:lookup  {
+                          ?resource lookup:token ?__token__ .
+                          ?resource lookup:name ?label ;
+                              lookup:score ?score ;
+                              lookup:limit 50;
+                              lookup:description ?description .
+                      }
+                    ?resource wdt:P31 wd:Q8054.
+                      BIND( xsd:integer(substr(str(?resource), 33)) as ?q)
+                  } ORDER BY DESC(?score) ASC(?q)  LIMIT 30",
+            "suggestionTupleTemplate": "<span title=\"{{label.value}}\">{{label.value}} ({{description.value}})</span>"
+          },
+        "<http://www.w3.org/2002/07/owl#Class-gender>": {
+          "defaultQuery": "PREFIX mplabel: <http://www.metaphacts.com/ontologies/platform/service/label/>
+            SELECT ?suggestion WHERE {
+              ?suggestion wdt:P31 wd:Q4369513.               
+            }
+          ",
+          "suggestionTupleTemplate": "<span title=\"{{label.value}}\">{{label.value}}{{#if description.value}} ({{description.value}}){{/if}}</span>",
+          "query": " [[!-- use constant query not to repeat complex lookup API call with 3 values --]]
+            SELECT ?suggestion WHERE {
+              ?suggestion wdt:P31 wd:Q4369513.               
+            }"
+        }
+
+      }'
+    
+      tree-selector-categories='{
+      "<http://www.w3.org/2002/07/owl#Class>": {
+        "relationPattern": "?item wdt:P279 ?parent"
+      },
+      "<http://www.wikidata.org/entity/Q17334923>": { [[!-- Place --]]
+        "rootsQuery": "SELECT ?item WHERE { 
+                  ?item wdt:P31 wd:Q6256 .
+              }",
+        "childrenQuery": "select distinct ?item ?label ?hasChildren where { 
+                  ?item wdt:P131 ?parent .
+              }",
+        "parentsQuery": "select distinct ?item ?parent ?parentLabel where { 
+                    ?item wdt:P131 ?parent .
+              }",
+        "searchQuery": "
+            PREFIX lookup: <http://www.metaphacts.com/ontologies/platform/repository/lookup#>
+            SELECT DISTINCT ?item ?label ?score ?hasChildren WHERE {
+                SERVICE Repository:lookup  {
+                    ?item lookup:token ?__token__ .
+                    ?item lookup:name ?label ;
+                        lookup:score ?score .
+                }
+                FILTER(EXISTS { ?subject ?__relation__ ?item . }) .
+                BIND( false as ?hasChildren)
+            } ORDER BY DESC(?score)  LIMIT 30
+          "
+        },
+        "<http://www.wikidata.org/entity/Q12136>": { [[!-- disease --]]
+          "rootsQuery": "SELECT ?item WHERE { 
+              VALUES(?item){(wd:Q12136) }
+          }",
+          "childrenQuery": "select distinct ?item ?label ?hasChildren where { 
+                    ?item wdt:P279 ?parent . FILTER(EXISTS {  ?item wdt:P494|wdt:P493|wdt:P1692 ?x. })
+                }",
+          "parentsQuery": "select distinct ?item ?parent ?parentLabel where { 
+                    ?item wdt:P279 ?parent . FILTER(EXISTS {  ?parent wdt:P494|wdt:P493|wdt:P1692 ?x. })
+                }",
+          "searchQuery": "
+             PREFIX lookup: <http://www.metaphacts.com/ontologies/platform/repository/lookup#>
+              PREFIX ephedra: <http://www.metaphacts.com/ontologies/platform/ephedra#>
+              SELECT DISTINCT ?item ?label ?score ?hasChildren WHERE {
+                ephedra:Query ephedra:disableJoinReordering true .
+                  SERVICE Repository:lookup  {
+                      ?item lookup:token ?__token__ .
+                      ?item lookup:name ?label ;
+                          lookup:score ?score ;
+                      lookup:limit 50.
+                  }
+                  FILTER(EXISTS { ?item wdt:P494|wdt:P493|wdt:P1692 ?x. })                   
+                  BIND( false as ?hasChildren)
+              } ORDER BY DESC(?score) LIMIT 30
+            "
+        }
+      }' 
+                                  
+      tree-selector-relations='{
+      [[!--"<http://www.wikidata.org/prop/direct/P921-disease>": {
+          "rootsQuery": "SELECT ?item WHERE { 
+              VALUES(?item){(wd:Q12136) }
+          }",
+          "childrenQuery": "select distinct ?item ?label ?hasChildren where { 
+                    ?item wdt:P279 ?parent . FILTER(EXISTS {  ?item wdt:P494|wdt:P493|wdt:P1692 ?x. })
+                }",
+          "parentsQuery": "select distinct ?item ?parent ?parentLabel where { 
+                    ?item wdt:P279 ?parent . FILTER(EXISTS {  ?parent wdt:P494|wdt:P493|wdt:P1692 ?x. })
+                }",
+          "searchQuery": "
+             PREFIX lookup: <http://www.metaphacts.com/ontologies/platform/repository/lookup#>
+              PREFIX ephedra: <http://www.metaphacts.com/ontologies/platform/ephedra#>
+              SELECT DISTINCT ?item ?label ?score ?hasChildren WHERE {
+                ephedra:Query ephedra:disableJoinReordering true .
+                  SERVICE Repository:lookup  {
+                      ?item lookup:token ?__token__ .
+                      ?item lookup:name ?label ;
+                          lookup:score ?score ;
+                      lookup:limit 50.
+                  }
+                  FILTER(EXISTS { ?item wdt:P494|wdt:P493|wdt:P1692 ?x. })                   
+                  BIND( false as ?hasChildren)
+              } ORDER BY DESC(?score) LIMIT 30
+            "
+      },--]]
+      "<http://www.wikidata.org/prop/direct/P452>": { [[!-- industry --]]
+        "scheme": "http://www.wikidata.org/entity/Q739302",
+        "schemePattern": "{
+          {?item wdt:P279 ?__scheme__}
+          UNION
+          {?item wdt:P279/wdt:P279 ?__scheme__}
+        }",      
+        "relationPattern": "?item wdt:P279 ?parent"
+      },
+      "<http://www.wikidata.org/prop/direct/P106>": { [[!-- occupation --]]
+        "scheme": "http://www.wikidata.org/entity/Q12737077",
+        "schemePattern": "{
+          {?item wdt:P31 ?__scheme__}
+          UNION
+          {?item wdt:P31/wdt:P279 ?__scheme__}          
+        }",      
+        "relationPattern": "?item wdt:P279 ?parent"
+      },
+      "<http://www.wikidata.org/prop/direct/P17>": { [[!-- country --]]
+        "scheme": "http://www.wikidata.org/entity/Q6256",
+        "schemePattern": "{
+          {?item wdt:P31 ?__scheme__}
+          UNION
+          {?item wdt:P31/wdt:P279 ?__scheme__}
+        }"
+      },
+      "<http://www.wikidata.org/prop/direct/P27>": { [[!-- country of citizenship --]]
+        "scheme": "http://www.wikidata.org/entity/Q6256",
+        "schemePattern": "{
+          {?item wdt:P31 ?__scheme__}
+          UNION
+          {?item wdt:P31/wdt:P279 ?__scheme__}
+        }"
+      }
+    }' geo-selector='{
+    "query": "
+      PREFIX geo: <http://www.opengis.net/ont/geosparql#>
+      PREFIX geof: <http://www.opengis.net/def/geosparql/function/>
+
+      SELECT DISTINCT ?suggestion ?label ?description ?lat ?long WHERE {
+          SERVICE Repository:lookup  {
+              ?suggestion lookup:token ?__token__ .
+              ?suggestion lookup:name ?label ;
+                  lookup:score ?score ;
+                  lookup:description ?description .
+          }
+          FILTER(EXISTS { ?subject ?__relation__ ?suggestion . }) .
+          BIND(xsd:integer(STRAFTER(STR(?suggestion), STR(wd:Q))) as ?q)
+          ?suggestion wdt:P625 ?point.
+          BIND(geof:latitude(?point) as ?lat)
+          BIND(geof:longitude(?point) as ?long)
+      } ORDER BY DESC(?score) ASC(?q)  LIMIT 30
+    ",
+    "suggestionTupleTemplate": "<span title=\"{{label.value}}\">{{label.value}} ({{description.value}})</span>",
+    "noSuggestionsTemplate": "<div class=\"suggestion-no-matches\">no matches found</div>"
+  }'>
+
+  </semantic-search-query-builder>
+</template-fragment>

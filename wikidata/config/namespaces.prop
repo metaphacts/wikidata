@@ -5,3 +5,4 @@ wd = http://www.wikidata.org/entity/
 nextprot = http://nextprot.org/rdf#
 wikibase = http://wikiba.se/ontology#
 bd = http://www.bigdata.com/rdf#
+hint = http://www.bigdata.com/queryHints#

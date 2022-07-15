@@ -1,0 +1,99 @@
+<style> /*some ad hoc style specific to this page */
+  .nav-tabs .nav-link.active {
+      background-color: #fafbfd;
+      box-shadow: 1px -1px 6px 0 #0000004d;
+  }
+  .nav-tabs {
+      border-bottom: 1px solid #cacaca;
+  }
+  .page__body__wide {
+      flex: 0 0 93.33333333%;
+      max-width: 93.33333333%;
+      margin-left: 3%;
+  }
+
+  .highcharts-legend{
+    display: none;
+  }
+
+  .semantic-search__class-selector-item {
+      margin-right: 8px;
+  }
+
+  .knowledge-panel-frame{
+    width:none!important;
+  }
+</style>
+
+<ol class="page-breadcrumb">
+    <li>
+      <semantic-link title="Start" iri='{{rdf-resolvePrefix "app:Start"}}'>Start</semantic-link>
+    </li>
+    <li class="active">Search</li>
+</ol>
+
+
+<div class="page">
+  <div class="page__body__wide">
+    {{#> app:SearchConfigPartialBlockInclude }}
+    
+      <bs-tabs id="tabs" class='mt-2' unmount-on-exit='true' track-url-param='tab'>
+        <bs-tab event-key="1" title="Keyword Search">
+          [[!--Some workarounds to have both search components on one page with tabs without replicating the result section, please do not copy&paste incautiously --]]
+          <semantic-table id='search-definnition-loaded-fake-event' query='SELECT * WHERE{}'></semantic-table>
+          <div class='bs-panel mb-5' style='box-shadow: 0 2px 6px 0 #0000004d; padding: 8px; background-color: #fafbfd;'>
+            {{> app:SearchDefinitionFragments::query-keyword-type}}
+          </div>
+        </bs-tab>
+        <bs-tab event-key="2" title="Structured Search">
+          [[!--Some workarounds to have both search components on one page with tabs without replicating the result section, please do not copy&paste incautiously --]]
+          <semantic-table id='search-definnition-loaded-fake-event' query='SELECT * WHERE{}'></semantic-table>
+          {{> app:SearchDefinitionFragments::query-builder}}
+        </bs-tab>
+      </bs-tabs>
+
+      [[!--Some workarounds to have both search components on one page with tabs without replicating the result section, please do not copy&paste incautiously --]]
+      <mp-event-target-template-render id='refresh-result-section' template='{{> template}}'>
+        <template id='template'>
+        {{> app:SearchResultsInclude}}
+        </template>
+      </mp-event-target-template-render>
+
+    {{/app:SearchConfigPartialBlockInclude}}
+
+    [[!--Some workarounds to have both search components on one page with tabs without replicating the result section, please do not copy&paste incautiously --]]
+    <mp-event-proxy on-event-source="search-definnition-loaded-fake-event" proxy-event-type="Component.TemplateUpdate" proxy-targets='["refresh-result-section"]'>
+    </mp-event-proxy>
+    <mp-event-proxy on-event-source="search-definnition-loaded-fake-event" proxy-event-type="KeywordTypeQuery.ClearDomain" proxy-targets='["semantic-search-query-keyword-type-general"]'>
+    </mp-event-proxy>
+
+
+    <div class="" style="position: absolute; bottom: 8px;width: 100%;">
+      <div class="vertical-center-row mt-5">
+        <div align="center">
+          <mp-overlay-dialog title="Icon Attribution" type="modal" bs-size="large">
+            <mp-overlay-dialog-trigger><a>Icon attribution</a></mp-overlay-dialog-trigger>
+            <mp-overlay-dialog-content>  
+                <a href="https://www.flaticon.com/free-icons/heart-disease" title="heart disease icons">Heart disease icons created by Freepik - Flaticon</a><br>
+                <a href="https://www.flaticon.com/free-icons/pills" title="pills icons">Pills icons created by Freepik - Flaticon</a><br>
+                <a href="https://www.flaticon.com/free-icons/organization" title="organization icons">Organization icons created by monkik - Flaticon</a><br>
+                <a href="https://www.flaticon.com/free-icons/event" title="event icons">Event icons created by Freepik - Flaticon</a><br>
+                <a href="https://www.flaticon.com/free-icons/woman" title="woman icons">Woman icons created by Freepik - Flaticon</a><br>
+                <a href="https://www.flaticon.com/free-icons/article" title="article icons">Article icons created by Freepik - Flaticon</a><br>
+                <a href="https://www.flaticon.com/free-icons/protein" title="protein icons">Protein icons created by Freepik - Flaticon</a><br>
+                <a href="https://www.flaticon.com/free-icons/gene" title="gene icons">Gene icons created by Freepik - Flaticon</a><br>
+                <a href="https://www.flaticon.com/free-icons/metabolism" title="metabolism icons">Metabolism icons created by Freepik - Flaticon</a><br>
+                <a href="https://www.flaticon.com/free-icons/calendar" title="calendar icons">Calendar icons created by Freepik - Flaticon</a><br>
+                <a href="https://www.flaticon.com/free-icons/europe" title="europe icons">Europe icons created by Freepik - Flaticon</a><br>
+                <a href="https://www.flaticon.com/free-icons/hierarchy" title="hierarchy icons">Hierarchy icons created by surang - Flaticon</a><br>
+                <a href="https://www.flaticon.com/free-icons/organism" title="organism icons">Organism icons created by Freepik - Flaticon</a><br>
+                <a href="https://www.flaticon.com/free-icons/hierarchy" title="hierarchy icons">Hierarchy icons created by Becris - Flaticon</a><br>
+                <a href="https://www.flaticon.com/free-icons/white-blood-cell" title="white blood cell icons">White blood cell icons created by Freepik - Flaticon</a>
+            </mp-overlay-dialog-content>
+          </mp-overlay-dialog>
+        </div>
+      </div>
+    </div>
+    
+  </div>
+</div>
