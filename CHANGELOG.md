@@ -5,11 +5,14 @@ All notable changes to the Wikidata app are summarized in this file.
 Note: when updating to a newer release of metaphactory, make sure to select a matching version of the Wikidata app.
 
 
-## unreleased (Release 4.5.0)
+## 2022-07-15 (Release 4.6.0)
 
+* Refine and integrate search examples to app:Search (incl. hierarchical facets)
+* Improve search result visualizations on app:Search
+* Improve template for person instances
+* Add app:Movies Example
 * Fix thumbnail service for TIF images (ignore retrieval of thumbnails)
 * Fix Linked Data retrieval example for DBLP
-* Add app:Movies Example
 
 
 ## 2022-04-04 (Release 4.5.0)
