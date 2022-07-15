@@ -1,3 +1,24 @@
+<style>
+
+.card-group {
+  border-radius: 10px;
+  box-shadow: 0 0 5px 4px rgb(0 0 0 / 12%);
+  padding: 20px;
+}
+
+.card-group:hover {
+  box-shadow: 0 0 14px 10px rgb(0 0 0 / 12%);
+}
+
+.card-body {
+  flex: 1 1 auto;
+  height: 100px;
+  overflow: hidden;
+  padding: 16px;
+}
+
+</style>
+
 <semantic-search-facet-store id="facet" values-limit='10000' ></semantic-search-facet-store>
 <div style='display: flex;'>
   <div style='flex: 0.33;'>
@@ -18,47 +39,82 @@
     <div style='flex: 1;'>
       <semantic-search-facet-breadcrumbs></semantic-search-facet-breadcrumbs>
 
-      <bs-tabs unmount-on-exit=true id='search-results'>
-        <bs-tab event-key="1" title="Table">
-        <semantic-search-result-context
-            multi=true
-            preselect='[
-                            "http://www.wikidata.org/prop/direct/P703"
-                          ]'
-          >
+    <bs-tabs unmount-on-exit=true id='search-results'>
+      
+      <bs-tab event-key="1" title="Table">
+          <semantic-search-result-context
+              multi=true
+              preselect='[
+                              "http://www.wikidata.org/prop/direct/P703"
+                            ]'
+            >
             <semantic-search-result>
-             <semantic-search-table-result>
+              <semantic-search-table-result>
                 <semantic-table
-                  id="results-table"
-                  query='SELECT DISTINCT ?subject WHERE { FILTER(?__contextRelationPattern__) }'
-                  options='{
-                                    "showFilter":false ,
-                                    "showNumberOfRows": true,
-                                    "sorting": {"subject": "asc"} ,
-                                    "enableGrouping": false,
-                                    "groupingOptions": {"groupedBy": ["subject"], "showOnlyAggregatedValue": true, "defaultAggregation":"concat"}
-                                  }'
-                  column-configuration='[{
+                        id="results-table"
+                        query='SELECT DISTINCT ?subject WHERE { FILTER(?__contextRelationPattern__) }'
+                        options='{
+                                        "showFilter":false ,
+                                        "showNumberOfRows": true,
+                                        "sorting": {"subject": "asc"} ,
+                                        "enableGrouping": false,
+                                        "groupingOptions": {"groupedBy": ["subject"], "showOnlyAggregatedValue": true, "defaultAggregation":"concat"}
+                                        }'
+                        column-configuration='[{
                                         "variableName": "subject",
                                         "cellTemplate": "{{> subjectTemplate iri=subject.value}}"
-                                      }]'
-                >
-                  <!-- this column configuration is rewritten by semantic-search-table-result in multi mode and we have only default rendering without panel trigger -->
-                  <template id='subjectTemplate'>
-                    <mp-knowledge-panel-trigger iri='{{iri}}'></mp-knowledge-panel-trigger><mp-description iri='{{iri}}'>
-                    </mp-description> 
-                  </template>
-                  <template id='descriptionTemplate'>
-                    <mp-description iri='{{iri}}'></mp-description>
-                  </template>
+                                        }]'
+                        >
+                        <!-- this column configuration is rewritten by semantic-search-table-result in multi mode and we have only default rendering without panel trigger -->
+                        <template id='subjectTemplate'>
+                        <mp-knowledge-panel-trigger iri='{{iri}}'></mp-knowledge-panel-trigger><mp-description iri='{{iri}}'>
+                        </mp-description> 
+                        </template>
+                        <template id='descriptionTemplate'>
+                        <mp-description iri='{{iri}}'></mp-description>
+                        </template>
                 </semantic-table>
               </semantic-search-table-result>
             </semantic-search-result>
           </semantic-search-result-context>
-
-
       </bs-tab>
-      <bs-tab event-key="2" title="Chart">
+        
+      <bs-tab event-key="2" title="Grid">
+        <semantic-search-result>
+          <semantic-search-table-result>
+            <semantic-table
+              id="results-table"
+              query='SELECT DISTINCT ?subject WHERE { FILTER(?__contextRelationPattern__) }'
+              number-of-displayed-rows='12'
+              options='{
+                                "showFilter":false ,
+                                "showNumberOfRows": true,
+                                "sorting": {"subject": "asc"} ,
+                                "enableGrouping": false
+                              }'
+              tuple-template='{{> template}}'
+            >
+              <template id='template'>
+                <div style="margin: 20px; width: 420px; cursor: pointer;">
+                  <div class="card-group">
+                    <div class="card text-center" style='border: none;'>
+                      <semantic-link iri='{{subject.value}}'>
+                        <mp-resource-thumbnail iri="{{subject.value}}" no-image-uri="/assets/image-solid.svg" style="height: 250px; width: 335px;  object-fit: contain;"></mp-resource-thumbnail>
+                      </semantic-link>
+                      <div class="card-body">
+                        <span style='font-size: 20px; font-weight: bold;'><mp-knowledge-panel-trigger style='font-size: 16px;' iri='{{subject.value}}'></mp-knowledge-panel-trigger></span>
+                        <p style="color: #545454;"><i><mp-description iri="{{subject.value}}"></mp-description></i></p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </template>
+            </semantic-table>
+          </semantic-search-table-result>
+        </semantic-search-result>
+      </bs-tab>
+      
+      <bs-tab event-key="3" title="Chart">
         <semantic-search-result-context 
         preselect='[
           "http://www.wikidata.org/prop/direct/P921-disease"
@@ -96,23 +152,46 @@
         </semantic-search-result-context>
       </bs-tab>
 
+      <bs-tab event-key="4" title="Timeline">
+        <semantic-search-result-holder domains-include="http://www.wikidata.org/entity/Q5">
+          <semantic-search-result>
+            <semantic-timeline id='timeline' no-result-template='No information available'
+              query='
+                PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+                SELECT ?start ?subject WHERE { 
+                  ?subject wdt:P569 ?start. 
+                  FILTER (!isBlank(?start))
+                } LIMIT 200' tuple-template="{{> template}}" tuple-template-height='50'>
+              <template id="template">
+                <div>
+                  <semantic-link iri='{{subject.value}}'><h3><b><mp-label iri='{{subject.value}}'></mp-label></b></h3></semantic-link>
+                  <div>
+                    {{#if start}}<b>Date of birth:</b> {{start.value}}<br>{{/if}}
+                  </div>
+                </div>
+              </template>
+            </semantic-timeline>
+          </semantic-search-result>
+        </semantic-search-result-holder>
+      </bs-tab>
+
     </bs-tabs>
 
     <bs-panel class='mb-5'>
       <semantic-search-result>
       <mp-overlay-dialog title="SPARQL Query" bs-size="large">
-                    <mp-overlay-dialog-trigger>
-                      <button class="btn btn-secondary mr-2" style="margin-right:10px;float:left;">Show Query</button>
-                    </mp-overlay-dialog-trigger>
-                    <mp-overlay-dialog-content>
-                      <semantic-search-display-query></semantic-search-display-query>
-                      <div style="display: flex;justify-content: flex-end;">
-                        <mp-event-trigger type="Dialog.HideAll">
-                          <button class="btn btn-primary">Close</button>
-                        </mp-event-trigger>
-                      </div>
-                    </mp-overlay-dialog-content>
-                  </mp-overlay-dialog>
+          <mp-overlay-dialog-trigger>
+            <button class="btn btn-secondary mr-2" style="margin-right:10px;float:left;">Show Query</button>
+          </mp-overlay-dialog-trigger>
+          <mp-overlay-dialog-content>
+            <semantic-search-display-query></semantic-search-display-query>
+            <div style="display: flex;justify-content: flex-end;">
+              <mp-event-trigger type="Dialog.HideAll">
+                <button class="btn btn-primary">Close</button>
+              </mp-event-trigger>
+            </div>
+          </mp-overlay-dialog-content>
+        </mp-overlay-dialog>
       </semantic-search-result>
      
       <bs-dropdown-button
@@ -160,6 +239,5 @@
     </div>
     <mp-knowledge-panel-frame></mp-knowledge-panel-frame>  
   </semantic-search-result-holder>
-
 
 </div>
