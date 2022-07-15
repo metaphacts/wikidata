@@ -1,66 +1,251 @@
-[[#> "Template:http://wikidata.org/ontology/Item" customTabs=true]]
-  [[#*inline "customTabs"]]
-		
-		[[#if (ask "ASK {?? wdt:P2456 ?dblpId}")]]
-			<bs-tab event-key="6" title='Publications'>
-		<mp-code-example>
-			  <semantic-table 
-			 query="
-				PREFIX dblp: <https://dblp.org/rdf/schema#>
-				SELECT ?title ?year ?conference WHERE {
-				  
-				   BIND ('[[singleValueFromSelect "SELECT ?dblpUrlRdf WHERE {?? wdt:P2456 ?dblp . ?property  <http://wikiba.se/ontology#directClaim> wdt:P2456 ; wdt:P1630 ?url_template .BIND(REPLACE(?url_template, '\\$1', ?dblp) AS ?url) .  BIND (CONCAT(STR(?url), '.rdf') AS ?dblpUrlRdf) . } "]]' AS ?ldDocument) .
-					
-					
-				  SERVICE <http://www.metaphacts.com/ontologies/platform/repository/federation#linked-data> {
-					  ?subj <http://www.metaphacts.com/ontologies/ld#document> ?ldDocument .
-					  ?subj <http://www.metaphacts.com/ontologies/ld#follow> dblp:authorOf . 
-					  ?subj <http://www.metaphacts.com/ontologies/ld#followSilent> true .
-					
-					  ?subj dblp:authorOf ?publication .
-					  ?publication dblp:title ?title .
-					  ?publication dblp:yearOfPublication ?year .
-					  ?publication dblp:publishedInBook ?conference
-				  }
-				}"
-			options='{ "sorting": {"year": "desc"} }'
-			column-configuration='[
-				  {"variableName": "title", "displayName": "Title"},
-				  {"variableName": "year", "displayName": "Year"},
-				  {"variableName": "conference", "displayName": "Conference"}
-					]'
-			  ></semantic-table>
-       </mp-code-example>   
-		  </bs-tab>
-		[[/if]]
-			
-			
-			
-		[[#if (ask "ASK {?? wdt:P2456 ?dblpId}")]]
-			<bs-tab event-key="7" title='Co-Authors'>
-			  <semantic-table 
-			 query="
-				PREFIX dblp: <https://dblp.org/rdf/schema#>
-				SELECT ?name ?coAuthor WHERE {
-				  
-				   BIND ('[[singleValueFromSelect "SELECT ?dblpUrlRdf WHERE {?? wdt:P2456 ?dblp . ?property  <http://wikiba.se/ontology#directClaim> wdt:P2456 ; wdt:P1630 ?url_template .BIND(REPLACE(?url_template, '\\$1', ?dblp) AS ?url) .  BIND (CONCAT(STR(?url), '.rdf') AS ?dblpUrlRdf) . } "]]' AS ?ldDocument) .
-					
-					
-				  SERVICE <http://www.metaphacts.com/ontologies/platform/repository/federation#linked-data> {
-					?subj <http://www.metaphacts.com/ontologies/ld#document> ?ldDocument .
-					?subj <http://www.metaphacts.com/ontologies/ld#follow> dblp:coCreatorWith .
-					?subj <http://www.metaphacts.com/ontologies/ld#followSilent> true . 
-					  ?subj dblp:coCreatorWith ?coAuthor .
-							?coAuthor dblp:primaryFullCreatorName ?name .
-				  }
-				}"
-			  column-configuration='[
-				  {"variableName": "name", "displayName": "Name",
-				   "cellTemplate": "<a href=\"{{coAuthor.value}}\" target=\"_BLANK\">{{name.value}}</a>"
-				  }
-					]'
-			  ></semantic-table>
-		  </bs-tab>
-		[[/if]]
-  [[/inline]]
-[[/Template:http://wikidata.org/ontology/Item]]
+<style >
+  h2, .h2 {
+    #background-color: lightgray;
+    font-size: 1 rem;
+  }
+  
+  .tile {
+    border-right: 4px solid rgb(235, 119, 119); 
+    color: rgb(235, 119, 119);
+    box-shadow: 0px 0px 2px 2px rgba(0, 0, 0, 0.15);
+    background-color: white;
+    font-size: 1.5 rem;
+    color: black;
+    height: 100%;
+    max-height: 500px;
+  }
+
+  .header {
+    padding: 10px;
+    font-weight: bold;
+  }
+
+  .tile2 {
+    #border: lightgray;
+    #border-style: solid;
+    padding-left: 0px;
+    padding-right: 0px;
+    height: 100%;
+  }
+</style>
+<div style='overflow-x: hidden;'>
+  <div style="background-color: whitesmoke;">
+  <bs-row>
+    <bs-col sm="8">     
+      <div style="padding: 10px">
+        <bs-row>
+          <bs-col sm="2">
+            <div style="height: 100%; width: 100%; padding: 10px">
+              <mp-resource-thumbnail iri="[[this]]" no-image-uri="/images/help/thenounproject/noun_1113333.svg" style="max-width: 100%;"></mp-resource-thumbnail>
+            </div>
+          </bs-col>
+          <bs-col sm="10">
+            <p>Country of citizenship: <semantic-query query="SELECT * WHERE { ?? wdt:P27 ?country. }" style="display: inline;"></semantic-query></p>
+            <p>Language: <semantic-query query="SELECT * WHERE { ?? wdt:P1412 ?language. }" style="display: inline;"></semantic-query></p>
+            <p>Gender: <semantic-query query="SELECT * WHERE { ?? wdt:P21 ?gender. }" style="display: inline;"></semantic-query></p>
+            <p>Birth: <semantic-query query="SELECT * WHERE { ?? wdt:P19 ?birthlocation }" style="display: inline;"></semantic-query>, <semantic-query query="SELECT (CONCAT(STR(DAY(?date)),'-',STR(MONTH(?date)),'-',STR(YEAR(?date))) as ?birthdate) WHERE { ?? wdt:P569 ?date . }" style="display: inline;"></semantic-query></p>
+            <p>Death: <semantic-query query="SELECT * WHERE { ?? wdt:P20 ?deathlocation }" style="display: inline;"></semantic-query>, <semantic-query query="SELECT (CONCAT(STR(DAY(?date)),'-',STR(MONTH(?date)),'-',STR(YEAR(?date))) as ?deathdate) WHERE { ?? wdt:P570 ?date }" style="display: inline;"></semantic-query></p>
+            <p>Field of work: <semantic-query query="SELECT * WHERE { ?? wdt:P101 ?field. }" style="display: inline;"></semantic-query></p>
+            <p>ISNI: <semantic-query query="SELECT * WHERE { ?? wdt:P213 ?isni. }" style="display: inline;"></semantic-query></p>
+          </bs-col>
+        </bs-row>
+        <bs-row>
+          [[#if (ask "ASK {?achievement wdt:P138|wdt:P50|wdt:P161 ??}")]]
+          <bs-col sm="4">
+            <div class="tile">
+              <div class="header">
+                Comparison on number of achievements
+              </div>
+              <semantic-query query="SELECT ?p WHERE { ?p wdt:P31 wd:Q5} LIMIT 4"
+                template='{{> template}}'>
+                <template id='template'>
+                  <semantic-chart type='radar' style="padding: 10px"
+                  query='
+                    PREFIX person: <http://example.com/person/>
+                    PREFIX org: <http://example.com/org/>
+                    SELECT ?person ?relation (COUNT(?matches) as ?total) WHERE {
+                      {{#each bindings}}
+                      {
+                        ?matches ?relation {{p}}.
+                        FILTER(?relation IN (wdt:P138, wdt:P50, wdt:P161))
+                        BIND({{p}} as ?person)
+                      } UNION
+                      {{/each}}
+                      {
+                        ?matches ?relation ??.
+                        FILTER(?relation IN (wdt:P138, wdt:P50, wdt:P161))
+                        BIND(?? as ?person)
+                      }
+                    }
+                    GROUP BY ?person ?relation
+                ' multi-data-set='{"dataSetVariable": "person", "category": "relation", "value": "total"}'>
+                </semantic-chart>         
+                </template>
+              </semantic-query> 
+            </div>
+          </bs-col>
+          [[/if]]
+          [[#if (ask "ASK {?? ^wdt:P737 ?influence}")]]
+          <bs-col sm="4">
+            <div class="tile">
+              <div class="header">Influence propagation</div>
+              <semantic-chart type='line' provider='highcharts'
+                  query='
+                    PREFIX person: <http://example.com/person/>
+                    PREFIX org: <http://example.com/org/>
+                    SELECT ?level (COUNT(?influence) as ?total) WHERE {
+                      {
+                        ?influence wdt:P737 ?? .
+                        BIND("1 level" as ?level)
+                      } UNION {
+                        ?start wdt:P737 ?? .
+                        ?influence wdt:P737 ?start .
+                        BIND("2 levels" as ?level)
+                      } UNION {
+                        ?start wdt:P737/wdt:P737 ?? .
+                        ?influence wdt:P737 ?start .
+                        BIND("3 levels" as ?level)
+                      } UNION {
+                        ?start wdt:P737/wdt:P737/wdt:P737 ?? .
+                        ?influence wdt:P737 ?start .
+                        BIND("4 levels" as ?level)
+                      }
+                    }
+                    GROUP BY ?level
+                ' sets='[{"dataSetName": "Influence", "category": "level", "y": "total"}]'>
+                </semantic-chart>  
+              </div>
+          </bs-col>
+          [[/if]]
+          [[#if (ask "ASK {?? wdt:P40|^wdt:P22|^wdt:P25 ?child}")]]
+          <bs-col sm="4">      
+            <div class="tile">
+              <div class="header">Family tree (children)</div> 
+              <div style="overflow:auto; max-height: 450px;">
+              <semantic-tree
+                query="
+                      SELECT ?node ?parent WHERE {
+                        # mother P25, father P22, child P40
+                        {
+                          ?parent wdt:P40|^wdt:P22|^wdt:P25 ?node.
+                          ?? (wdt:P40|^wdt:P22|^wdt:P25)* ?parent.
+                        } UNION {
+                          ?? wdt:P40|^wdt:P22|^wdt:P25 ?node.
+                          BIND(?? as ?parent)
+                        }                    
+                      }"
+              >
+              </semantic-tree>
+              </div>
+            </div>
+          </bs-col>
+          [[/if]]
+        </bs-row> 
+        <br>
+        <bs-row>
+          [[#if (ask "ASK {?? wdt:P737|^wdt:P737 ?influencer}")]]
+          <bs-col sm="9" md="6">
+            <div class="tile">
+              <div class="header">Influences (influenced by and influencer of)</div>
+              <semantic-tree query="SELECT ?node ?parent WHERE {
+                {
+                  BIND(?? as ?node)
+                  ?node wdt:P737 ?parent
+                } UNION {
+                  BIND(?? as ?parent)
+                  ?node wdt:P737 ?parent
+                }
+              }"
+              provider='d3-sankey'
+              ></semantic-tree>
+            </div>
+          </bs-col>
+          [[/if]]
+          [[#if (ask "ASK {?? ?b ?c . FILTER(?b not in (wikibase:timestamp, <http://schema.org/dateModified>)) ?c <http://www.wikidata.org/prop/qualifier/P580> ?start. ?c <http://www.wikidata.org/prop/qualifier/P582> ?end.}")]]
+          <bs-col sm="9" md="6">
+            <div class="tile">
+              <div class="header">Achievements and important life milestones</div>
+              <semantic-timeline query='
+                SELECT ?start ?end ?subject ?relation WHERE {
+                  ?? ?b ?c .
+                  FILTER(?b not in (wikibase:timestamp, <http://schema.org/dateModified>))
+                  ?c <http://www.wikidata.org/prop/qualifier/P580> ?start.
+                  ?c <http://www.wikidata.org/prop/qualifier/P582> ?end.
+                  BIND(REPLACE(?b, "/prop/", "/prop/direct/") AS ?relation)
+                  BIND(REPLACE(?b, "/prop/", "/prop/statement/") AS ?b3)
+                  ?? ?relation ?subject .
+                  FILTER(?relation IN (wdt:P551, wdt:P108, wdt:P463, wdt:P27, wdt:P69, wdt:P26))
+                  ?c ?b3 ?subject
+                  FILTER(!isLiteral(?subject))
+                } LIMIT 100
+              ' tuple-template="{{> template}}" tuple-template-height="21"
+              options='{"maxHeight": "350px","timeAxis": {"scale": "year"},"zoomMin": "16556952000", "zoomMax": "101556952000"}'
+              >
+                <template id="template">
+                  <div>
+                    <b><mp-label iri={{relation.value}}></mp-label>&nbsp;<semantic-link iri={{subject.value}}></semantic-link></b>
+                  </div>
+                </template>
+              </semantic-timeline>
+            </div>
+          </bs-col>
+          [[/if]]
+        </bs-row>
+        <br>
+          [[#if (ask "ASK {?? wdt:P166 ?award}")]]
+          <div class="tile">
+            <div class="header">Awards received</div>
+            <semantic-table query="SELECT ?award ?conferedBy WHERE {
+              ?? wdt:P166 ?award .
+              OPTIONAL{ ?award wdt:P1027 ?conferedBy .}
+            }"
+            options='{
+              "showFilter": false,
+              "enableGrouping": false,
+              "groupingOptions": {"groupedBy": ["award"], "showOnlyAggregatedValue": true}
+            }'
+            ></semantic-table>
+          </div>
+          [[/if]]
+        <br>   
+          [[#if (ask "ASK {?? wdt:P2456 ?dblpId}")]]    
+          <div class="tile">
+            <div class="header">Publications (via dblp.org)</div>
+            <semantic-table query="
+              PREFIX dblp: <https://dblp.org/rdf/schema-2020-07-01#>
+              SELECT ?title ?year ?conference WHERE {
+                BIND ('[[singleValueFromSelect "SELECT ?dblpUrlRdf WHERE {?? wdt:P2456 ?dblp . ?property  <http://wikiba.se/ontology#directClaim> wdt:P2456 ; wdt:P1630 ?url_template .BIND(REPLACE(?url_template, '\\$1', ?dblp) AS ?url) .  BIND (CONCAT(STR(?url), '.rdf') AS ?dblpUrlRdf) . } "]]' AS ?ldDocument) .
+                SERVICE <http://www.metaphacts.com/ontologies/platform/repository/federation#linked-data> {
+                  ?subj <http://www.metaphacts.com/ontologies/ld#document> ?ldDocument .
+                  ?subj <http://www.metaphacts.com/ontologies/ld#follow> dblp:authorOf . 
+                  ?subj <http://www.metaphacts.com/ontologies/ld#followSilent> true .
+                  ?subj dblp:authorOf ?publication .
+                  ?publication dblp:title ?title .
+                  ?publication dblp:yearOfPublication ?year .
+                  ?publication dblp:publishedInBook ?conference
+                }
+              }" 
+              options='{ "sorting": {"year": "desc"}, "showFilter": false }' 
+              column-configuration='[
+                {"variableName": "title", "displayName": "Title"},
+                {"variableName": "year", "displayName": "Year"},
+                {"variableName": "conference", "displayName": "Conference"}
+              ]'>
+            </semantic-table>
+          </div>
+          [[/if]]
+      </div>
+    </bs-col>
+    <bs-col sm="4">
+      <div  style="width: 100%; height: calc(100vh - 60px); position: fixed;">
+        <semantic-map query="SELECT ?wkt ?place ?relation WHERE {
+          ?place wdt:P625 ?wkt . 
+          ?? ?relation ?place .
+        }"
+        fix-zoom-level=5
+        tuple-template='<semantic-link iri={{place.value}}></semantic-link><b> (<mp-label iri={{relation.value}}></mp-label>)</b>'> </semantic-map>  
+      </div>
+    </bs-col>
+  </bs-row> 
+  </div>
+</div>
