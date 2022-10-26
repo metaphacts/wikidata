@@ -70,13 +70,15 @@
                           FILTER(!REGEX (?uri_str, ".*(\\|).*"))
                           BIND(URI(?uri_str) AS ?uri)
                        }'
-                   [[> OntodiaClassAndLinksCustomization ]]
+                   default-node-style='{{> "http://www.metaphacts.com/resource/OntodiaUserTemplates::defaultNodeStyle"}}'
+                   node-styles='{{> "http://www.metaphacts.com/resource/OntodiaUserTemplates::nodeStyles"}}'
+
                       >
               <ontodia-data-providers>
                   [[!-- since we use specific magic in populating the diagram, we also need to change elementsInfo query in data provider --]]
-                  [[> "http://www.metaphacts.com/resource/OntodiaExternalLinksDataProvider" ]]
+                  {{> "http://www.metaphacts.com/resource/OntodiaExternalLinksDataProvider" }}
               </ontodia-data-providers>
-              [[> "http://www.metaphacts.com/resource/OntodiaSimpleWorkspace" readonly=true]]
+              {{> "http://www.metaphacts.com/resource/OntodiaSimpleWorkspace" readonly=true}}
           </ontodia>
        </bs-tab>
 		

@@ -33,6 +33,11 @@
             VALUES (?target) {${ids}}
             ${linkConfigurations}
           }",
+          "linkTypesInfoQuery":
+"SELECT ?link ?label WHERE {
+    VALUES(?link) {${ids}}
+    OPTIONAL { ?link ${schemaLabelProperty} ?label }
+}",
         "elementInfoQuery":
           "CONSTRUCT {
             ?inst rdf:type ?class .

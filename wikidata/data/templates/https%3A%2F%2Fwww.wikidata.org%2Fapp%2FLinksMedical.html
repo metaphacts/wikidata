@@ -24,11 +24,12 @@
                           ?constraint pq:P2308 ?type .
 
                         }"
-            [[> OntodiaClassAndLinksCustomization ]]
+                   default-node-style='{{> "http://www.metaphacts.com/resource/OntodiaUserTemplates::defaultNodeStyle"}}'
+                   node-styles='{{> "http://www.metaphacts.com/resource/OntodiaUserTemplates::nodeStyles"}}'
           >
               <ontodia-data-providers>
-                  [[> "http://www.metaphacts.com/resource/OntodiaUserDataProvider" ]]
+                  {{> "http://www.metaphacts.com/resource/OntodiaUserDataProvider" }}
               </ontodia-data-providers>
-              [[> "http://www.metaphacts.com/resource/OntodiaSimpleWorkspace" readonly=true]]
+              {{> "http://www.metaphacts.com/resource/OntodiaSimpleWorkspace" readonly=true}}
   </ontodia>
 </div>
