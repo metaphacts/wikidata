@@ -5,6 +5,12 @@ All notable changes to the Wikidata app are summarized in this file.
 Note: when updating to a newer release of metaphactory, make sure to select a matching version of the Wikidata app.
 
 
+## 2022-11-17 (Release 4.7.0)
+
+* Migrate Ontodia configurations to metaphactory 4.7
+* Fix: show a fallback image if a thumbnail does not exist
+
+
 ## 2022-07-15 (Release 4.6.0)
 
 * Refine and integrate search examples to app:Search (incl. hierarchical facets)
