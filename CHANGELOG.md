@@ -4,6 +4,10 @@ All notable changes to the Wikidata app are summarized in this file.
 
 Note: when updating to a newer release of metaphactory, make sure to select a matching version of the Wikidata app.
 
+## 2022-12-21 (Release 4.8.0)
+
+_No changes to the app were done in this release_
+
 
 ## 2022-11-17 (Release 4.7.0)
 
